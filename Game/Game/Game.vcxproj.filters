@@ -7,6 +7,9 @@
     <ClCompile Include="NanoLog.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
+    <ClCompile Include="NanoWindow.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -25,6 +28,9 @@
     </ClInclude>
     <ClInclude Include="Model.h">
       <Filter>Temp</Filter>
+    </ClInclude>
+    <ClInclude Include="NanoWindow.h">
+      <Filter>Engine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

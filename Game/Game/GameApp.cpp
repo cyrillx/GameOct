@@ -3,10 +3,8 @@
 #include "Camera.h"
 #include "Model.h"
 #include "NanoLog.h"
+#include "NanoWindow.h"
 //=============================================================================
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void mouse_callback(GLFWwindow* window, double xpos, double ypos);
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow* window);
 unsigned int loadTexture(const char* path, bool gammaCorrection);
 
@@ -30,41 +28,8 @@ void GameAppRun()
 {
 	try
 	{
-		// glfw: initialize and configure
-		// ------------------------------
-		glfwInit();
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-#ifdef __APPLE__
-		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif
-
-		// glfw window creation
-		// --------------------
-		GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "LearnOpenGL", NULL, NULL);
-		if (window == NULL)
-		{
-			std::cout << "Failed to create GLFW window" << std::endl;
-			glfwTerminate();
+		if (!window::Init(SCR_WIDTH, SCR_HEIGHT, "Game"))
 			return;
-		}
-		glfwMakeContextCurrent(window);
-		glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-		glfwSetCursorPosCallback(window, mouse_callback);
-		glfwSetScrollCallback(window, scroll_callback);
-
-		// tell GLFW to capture our mouse
-		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
-		// glad: load all OpenGL function pointers
-		const int openGLVersion = gladLoadGL(glfwGetProcAddress);
-		if (openGLVersion < GLAD_MAKE_VERSION(3, 3))
-		{
-			Fatal("Failed to initialize OpenGL context!");
-			return;
-		}
 
 		// configure global opengl state
 		// -----------------------------
@@ -130,7 +95,7 @@ void GameAppRun()
 
 		// render loop
 		// -----------
-		while (!glfwWindowShouldClose(window))
+		while (!window::WindowShouldClose())
 		{
 			// per-frame time logic
 			// --------------------
@@ -140,7 +105,7 @@ void GameAppRun()
 
 			// input
 			// -----
-			processInput(window);
+			processInput(window::windowHandle);
 
 			// render
 			// ------
@@ -166,24 +131,20 @@ void GameAppRun()
 
 			std::cout << (gammaEnabled ? "Gamma enabled" : "Gamma disabled") << std::endl;
 
-			// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-			// -------------------------------------------------------------------------------
-			glfwSwapBuffers(window);
-			glfwPollEvents();
+			window::Swap();
 		}
 
 		// optional: de-allocate all resources once they've outlived their purpose:
 		// ------------------------------------------------------------------------
 		glDeleteVertexArrays(1, &planeVAO);
 		glDeleteBuffers(1, &planeVBO);
-
-		glfwTerminate();
-		return;
+	
 	}
 	catch (const std::exception& exc)
 	{
 		puts(exc.what());
 	}
+	window::Close();
 }
 //=============================================================================
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly

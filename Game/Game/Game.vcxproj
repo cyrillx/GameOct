@@ -97,6 +97,7 @@
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="NanoLog.cpp" />
+    <ClCompile Include="NanoOpenGL3.cpp" />
     <ClCompile Include="NanoWindow.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -109,6 +110,7 @@
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="NanoLog.h" />
+    <ClInclude Include="NanoOpenGL3.h" />
     <ClInclude Include="NanoWindow.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="stdafx.h" />

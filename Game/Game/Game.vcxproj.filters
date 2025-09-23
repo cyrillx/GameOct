@@ -10,6 +10,9 @@
     <ClCompile Include="NanoWindow.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
+    <ClCompile Include="NanoOpenGL3.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -30,6 +33,9 @@
       <Filter>Temp</Filter>
     </ClInclude>
     <ClInclude Include="NanoWindow.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="NanoOpenGL3.h">
       <Filter>Engine</Filter>
     </ClInclude>
   </ItemGroup>

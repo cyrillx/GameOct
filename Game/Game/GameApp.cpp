@@ -4,6 +4,7 @@
 #include "Model.h"
 #include "NanoLog.h"
 #include "NanoWindow.h"
+#include "NanoOpenGL3.h"
 //=============================================================================
 void processInput(GLFWwindow* window);
 unsigned int loadTexture(const char* path, bool gammaCorrection);
@@ -53,19 +54,16 @@ void GameAppRun()
 			-10.0f, -0.5f, -10.0f,  0.0f, 1.0f, 0.0f,   0.0f, 10.0f,
 			10.0f, -0.5f, -10.0f,  0.0f, 1.0f, 0.0f,  10.0f, 10.0f
 		};
+	
+
 		// plane VAO
-		unsigned int planeVAO, planeVBO;
+		GLuint planeVBO = CreateStaticVertexBuffer(sizeof(planeVertices), planeVertices);
+
+		unsigned int planeVAO;
 		glGenVertexArrays(1, &planeVAO);
-		glGenBuffers(1, &planeVBO);
 		glBindVertexArray(planeVAO);
 		glBindBuffer(GL_ARRAY_BUFFER, planeVBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(planeVertices), planeVertices, GL_STATIC_DRAW);
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+		SetVertexPNTAttributes();
 		glBindVertexArray(0);
 
 		// load textures
@@ -119,8 +117,9 @@ void GameAppRun()
 			shader.setMat4("projection", projection);
 			shader.setMat4("view", view);
 			// set light uniforms
-			glUniform3fv(glGetUniformLocation(shader.ID, "lightPositions"), 4, &lightPositions[0][0]);
-			glUniform3fv(glGetUniformLocation(shader.ID, "lightColors"), 4, &lightColors[0][0]);
+
+			SetUniform(GetUniformLocation(shader.ID, "lightPositions"), lightPositions);
+			SetUniform(GetUniformLocation(shader.ID, "lightColors"), lightColors);
 			shader.setVec3("viewPos", camera.Position);
 			shader.setInt("gamma", gammaEnabled);
 			// floor
@@ -134,8 +133,6 @@ void GameAppRun()
 			window::Swap();
 		}
 
-		// optional: de-allocate all resources once they've outlived their purpose:
-		// ------------------------------------------------------------------------
 		glDeleteVertexArrays(1, &planeVAO);
 		glDeleteBuffers(1, &planeVBO);
 	
@@ -147,8 +144,6 @@ void GameAppRun()
 	window::Close();
 }
 //=============================================================================
-// process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
-// ---------------------------------------------------------------------------------------------------------
 void processInput(GLFWwindow* window)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -174,17 +169,11 @@ void processInput(GLFWwindow* window)
 	}
 }
 
-// glfw: whenever the window size changed (by OS or user resize) this callback function executes
-// ---------------------------------------------------------------------------------------------
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
-	// make sure the viewport matches the new window dimensions; note that width and 
-	// height will be significantly larger than specified on retina displays.
 	glViewport(0, 0, width, height);
 }
 
-// glfw: whenever the mouse moves, this callback is called
-// -------------------------------------------------------
 void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 {
 	float xpos = static_cast<float>(xposIn);
@@ -205,15 +194,11 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn)
 	camera.ProcessMouseMovement(xoffset, yoffset);
 }
 
-// glfw: whenever the mouse scroll wheel scrolls, this callback is called
-// ----------------------------------------------------------------------
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
 	camera.ProcessMouseScroll(static_cast<float>(yoffset));
 }
 
-// utility function for loading a 2D texture from file
-// ---------------------------------------------------
 unsigned int loadTexture(char const* path, bool gammaCorrection)
 {
 	unsigned int textureID;

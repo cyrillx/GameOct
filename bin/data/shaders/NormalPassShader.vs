@@ -14,13 +14,13 @@ out VS_OUT {
 uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 model;
-uniform mat4 cameraToShadowProjector;
+uniform mat4 cameraToShadowProjector; // directionalLightTransform
 
 void main()
 {
 	vs_out.FragPos = vec3(model * vec4(aPosition, 1.0));
-	vs_out.Normal = transpose(inverse(mat3(model))) * aNormal;
+	vs_out.Normal = mat3(transpose(inverse(model))) * aNormal;
 	vs_out.TexCoords = aTexCoords;
-	vs_out.FragPosLightSpace = cameraToShadowProjector * vec4(vs_out.FragPos, 1.0);
+	vs_out.FragPosLightSpace = cameraToShadowProjector * model * vec4(aPosition, 1.0);
 	gl_Position = projection * view * model * vec4(aPosition, 1.0);
 }

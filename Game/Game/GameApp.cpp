@@ -17,7 +17,7 @@ void processInput(GLFWwindow* window);
 // settings
 const unsigned int SCR_WIDTH = 1600;
 const unsigned int SCR_HEIGHT = 900;
-bool gammaEnabled = false;
+bool gammaEnabled = true;
 bool gammaKeyPressed = false;
 
 // camera

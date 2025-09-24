@@ -1,6 +1,7 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "NanoWindow.h"
 #include "NanoLog.h"
+#include "NanoOpenGLExt.h"
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
@@ -36,6 +37,8 @@ bool window::Init(uint16_t width, uint16_t height, std::string_view title)
 		Fatal("Failed to initialize OpenGL context!");
 		return false;
 	}
+
+	ext::Init();
 
 	return true;
 }

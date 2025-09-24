@@ -1,6 +1,6 @@
-#pragma once
+﻿#pragma once
 
-#include "Shader.h"
+#include "NanoOpenGL3.h"
 
 #define MAX_BONE_INFLUENCE 4
 
@@ -21,7 +21,8 @@ struct Vertex {
 	float m_Weights[MAX_BONE_INFLUENCE];
 };
 
-struct Texture {
+struct Texture
+{
 	unsigned int id;
 	std::string type;
 	std::string path;
@@ -47,7 +48,7 @@ public:
 	}
 
 	// render the mesh
-	void Draw(Shader& shader)
+	void Draw(GLuint shader)
 	{
 		// bind appropriate textures
 		unsigned int diffuseNr = 1;
@@ -70,14 +71,13 @@ public:
 				number = std::to_string(heightNr++); // transfer unsigned int to string
 
 			// now set the sampler to the correct texture unit
-			glUniform1i(glGetUniformLocation(shader.ID, (name + number).c_str()), i);
+			SetUniform(GetUniformLocation(shader, (name + number)), i);
 			// and finally bind the texture
 			glBindTexture(GL_TEXTURE_2D, textures[i].id);
 		}
 
 		// draw mesh
-		glBindVertexArray(VAO);
-		glDrawElements(GL_TRIANGLES, static_cast<unsigned int>(indices.size()), GL_UNSIGNED_INT, 0);
+		DrawElements(VAO, GL_TRIANGLES, static_cast<unsigned int>(indices.size()), GL_UNSIGNED_INT);
 		glBindVertexArray(0);
 
 		// always good practice to set everything back to defaults once configured.

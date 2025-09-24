@@ -96,8 +96,10 @@
   <ItemGroup>
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="NanoIO.cpp" />
     <ClCompile Include="NanoLog.cpp" />
     <ClCompile Include="NanoOpenGL3.cpp" />
+    <ClCompile Include="NanoOpenGLExt.cpp" />
     <ClCompile Include="NanoWindow.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -109,15 +111,18 @@
     <ClInclude Include="GameApp.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Model.h" />
+    <ClInclude Include="NanoIO.h" />
     <ClInclude Include="NanoLog.h" />
     <ClInclude Include="NanoOpenGL3.h" />
+    <ClInclude Include="NanoOpenGLExt.h" />
     <ClInclude Include="NanoWindow.h" />
-    <ClInclude Include="Shader.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\bin\data\shaders\2.gamma_correction.fs" />
     <None Include="..\..\bin\data\shaders\2.gamma_correction.vs" />
+    <None Include="..\..\bin\data\shaders\3.1.1.shadow_mapping_depth.fs" />
+    <None Include="..\..\bin\data\shaders\3.1.1.shadow_mapping_depth.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

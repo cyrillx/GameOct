@@ -1,5 +1,228 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "NanoOpenGL3.h"
+#include "NanoLog.h"
+#include "NanoOpenGLExt.h"
+//=============================================================================
+inline GLenum GetGLEnum(CompareFunc func)
+{
+	switch (func) {
+	case CompareFunc::Never:        return GL_NEVER;
+	case CompareFunc::Less:         return GL_LESS;
+	case CompareFunc::Equal:        return GL_EQUAL;
+	case CompareFunc::LessEqual:    return GL_LEQUAL;
+	case CompareFunc::Greater:      return GL_GREATER;
+	case CompareFunc::NotEqual:     return GL_NOTEQUAL;
+	case CompareFunc::GreaterEqual: return GL_GEQUAL;
+	case CompareFunc::Always:       return GL_ALWAYS;
+	default: std::unreachable();
+	}
+}
+//=============================================================================
+inline GLenum GetGLEnum(BlendFactor factor)
+{
+	switch (factor) {
+	case BlendFactor::Zero:             return GL_ZERO;
+	case BlendFactor::One:              return GL_ONE;
+	case BlendFactor::SrcColor:         return GL_SRC_COLOR;
+	case BlendFactor::OneMinusSrcColor: return GL_ONE_MINUS_SRC_COLOR;
+	case BlendFactor::DstColor:         return GL_DST_COLOR;
+	case BlendFactor::OneMinusDstColor: return GL_ONE_MINUS_DST_COLOR;
+	case BlendFactor::SrcAlpha:         return GL_SRC_ALPHA;
+	case BlendFactor::OneMinusSrcAlpha: return GL_ONE_MINUS_SRC_ALPHA;
+	case BlendFactor::DstAlpha:         return GL_DST_ALPHA;
+	case BlendFactor::OneMinusDstAlpha: return GL_ONE_MINUS_DST_ALPHA;
+	default: std::unreachable();
+	}
+}
+//=============================================================================
+inline GLenum GetGLEnum(CullFace cull)
+{
+	switch (cull) {
+	case CullFace::Front:        return GL_FRONT;
+	case CullFace::Back:         return GL_BACK;
+	case CullFace::FrontAndBack: return GL_FRONT_AND_BACK;
+	default: std::unreachable();
+	}
+}
+//=============================================================================
+inline GLenum GetGLEnum(PolygonMode mode)
+{
+	switch (mode) {
+	case PolygonMode::Point: return GL_POINT;
+	case PolygonMode::Line:  return GL_LINE;
+	case PolygonMode::Fill:  return GL_FILL;
+	default: std::unreachable();
+	}
+}
+//=============================================================================
+inline GLenum GetGLEnum(TextureFilter filter)
+{
+	switch (filter) {
+	case TextureFilter::Nearest:              return GL_NEAREST;
+	case TextureFilter::Linear:               return GL_LINEAR;
+	case TextureFilter::NearestMipmapNearest: return GL_NEAREST_MIPMAP_NEAREST;
+	case TextureFilter::LinearMipmapNearest:  return GL_LINEAR_MIPMAP_NEAREST;
+	case TextureFilter::NearestMipmapLinear:  return GL_NEAREST_MIPMAP_LINEAR;
+	case TextureFilter::LinearMipmapLinear:   return GL_LINEAR_MIPMAP_LINEAR;
+	default: std::unreachable();
+	}
+}
+//=============================================================================
+inline GLenum GetGLEnum(TextureWrap wrap)
+{
+	switch (wrap) {
+	case TextureWrap::Repeat:         return GL_REPEAT;
+	case TextureWrap::MirroredRepeat: return GL_MIRRORED_REPEAT;
+	case TextureWrap::ClampToEdge:    return GL_CLAMP_TO_EDGE;
+	case TextureWrap::ClampToBorder:  return GL_CLAMP_TO_BORDER;
+	default: std::unreachable();
+	}
+}
+//=============================================================================
+[[nodiscard]] inline std::string shaderStageToString(GLenum stage)
+{
+	switch (stage)
+	{
+	case GL_VERTEX_SHADER:   return "GL_VERTEX_SHADER";
+	case GL_GEOMETRY_SHADER: return "GL_GEOMETRY_SHADER";
+	case GL_FRAGMENT_SHADER: return "GL_FRAGMENT_SHADER";
+	default: std::unreachable();
+	}
+}
+//=============================================================================
+[[nodiscard]] inline std::string printShaderSource(const char* text)
+{
+	if (!text) return "";
+
+	std::ostringstream oss;
+	int line = 1;
+	oss << "\n(" << std::setw(3) << std::setfill(' ') << line << "): ";
+
+	while (*text)
+	{
+		if (*text == '\n')
+		{
+			oss << '\n';
+			line++;
+			oss << "(" << std::setw(3) << std::setfill(' ') << line << "): ";
+		}
+		else if (*text != '\r')
+		{
+			oss << *text;
+		}
+		text++;
+	}
+	return oss.str();
+}
+//=============================================================================
+[[nodiscard]] inline GLuint compileShaderGLSL(GLenum stage, std::string_view sourceGLSL)
+{
+	if (sourceGLSL.empty())
+	{
+		Error("Failed to create OpenGL shader object for stage: " + std::string(shaderStageToString(stage)) + ". Source code Empty.");
+		return { 0 };
+	}
+
+	GLuint shader = glCreateShader(stage);
+	if (!shader)
+	{
+		Error("Failed to create OpenGL shader object for stage: " + std::string(shaderStageToString(stage)));
+		return { 0 };
+	}
+	const GLchar* strings = sourceGLSL.data();
+	glShaderSource(shader, 1, &strings, nullptr);
+	glCompileShader(shader);
+
+	GLint success{ 0 };
+	glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+	if (success == GL_FALSE)
+	{
+		GLint infoLength{ 0 };
+		glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &infoLength);
+		std::string infoLog;
+		if (infoLength > 1)
+		{
+			infoLog.resize(static_cast<size_t>(infoLength - 1)); // исключаем \0
+			glGetShaderInfoLog(shader, infoLength, nullptr, infoLog.data());
+		}
+		else
+		{
+			infoLog = "<no info log>";
+		}
+
+		std::string logError = "OPENGL " + shaderStageToString(stage) + ": Shader compilation failed: " + infoLog;
+		if (strings != nullptr) logError += ", Source: \n" + printShaderSource(strings);
+		Error(logError);
+		return 0;
+	}
+
+	return shader;
+}
+//=============================================================================
+GLuint CreateShaderProgram(std::string_view vertexShader)
+{
+	return CreateShaderProgram(vertexShader, "", "");
+}
+//=============================================================================
+GLuint CreateShaderProgram(std::string_view vertexShader, std::string_view fragmentShader)
+{
+	return CreateShaderProgram(vertexShader, "", fragmentShader);
+}
+//=============================================================================
+GLuint CreateShaderProgram(std::string_view vertexShader, std::string_view geometryShader, std::string_view fragmentShader)
+{
+	struct shader final
+	{
+		~shader() { if (id) glDeleteShader(id); }
+		GLuint id{ 0 };
+	};
+
+	shader vs;
+	if (!vertexShader.empty())
+	{
+		vs.id = compileShaderGLSL(GL_VERTEX_SHADER, vertexShader);
+		if (!vs.id) return 0;
+	}
+	shader gs;
+	if (!geometryShader.empty())
+	{
+		gs.id = compileShaderGLSL(GL_GEOMETRY_SHADER, geometryShader);
+		if (!gs.id) return 0;
+	}
+	shader fs;
+	if (!fragmentShader.empty())
+	{
+		fs.id = compileShaderGLSL(GL_FRAGMENT_SHADER, fragmentShader);
+		if (!fs.id) return 0;
+	}
+	if (vs.id == 0 && gs.id == 0 && fs.id == 0)
+	{
+		Error("Shader not valid");
+		return 0;
+	}
+
+	GLuint program = glCreateProgram();
+	if (vs.id) glAttachShader(program, vs.id);
+	if (gs.id) glAttachShader(program, gs.id);
+	if (fs.id) glAttachShader(program, fs.id);
+	glLinkProgram(program);
+
+	GLint success{ 0 };
+	glGetProgramiv(program, GL_LINK_STATUS, &success);
+	if (!success)
+	{
+		GLint length = 512;
+		glGetProgramiv(program, GL_INFO_LOG_LENGTH, &length);
+		std::string infoLog;
+		infoLog.resize(static_cast<size_t>(length + 1), '\0');
+		glGetProgramInfoLog(program, length, nullptr, infoLog.data());
+		glDeleteProgram(program);
+		Error("Failed to compile graphics pipeline.\n" + infoLog);
+		program = 0;
+	}
+
+	return program;
+}
 //=============================================================================
 int GetUniformLocation(GLuint program, std::string_view name)
 {
@@ -14,6 +237,11 @@ void SetUniform(GLuint id, float s)
 void SetUniform(GLuint id, int s)
 {
 	glUniform1i(id, s);
+}
+//=============================================================================
+void SetUniform(GLuint id, unsigned s)
+{
+	glUniform1ui(id, s);
 }
 //=============================================================================
 void SetUniform(GLuint id, const glm::vec2& v)
@@ -102,13 +330,370 @@ void SetVertexPNTAttributes()
 	SpecifyVertexAttributes(vertexSize, attributes);
 }
 //=============================================================================
-GLuint CreateStaticVertexBuffer(GLsizeiptr size, const void* data)
+GLuint CreateStaticBuffer(GLenum target, GLsizeiptr size, const void* data)
 {
-	GLuint vbo{ 0 };
-	glGenBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	return vbo;
+	GLuint currentBuffer = GetCurrentBuffer(target);
+
+	GLuint buffer{ 0 };
+	glGenBuffers(1, &buffer);
+	glBindBuffer(target, buffer);
+	glBufferData(target, size, data, GL_STATIC_DRAW);
+	glBindBuffer(target, currentBuffer);
+	return buffer;
+}
+//=============================================================================
+GLuint LoadTexture2D(std::string_view path, bool gammaCorrection, bool flipVertically)
+{
+	stbi_set_flip_vertically_on_load(flipVertically);
+
+	GLuint textureID{ 0 };
+
+	int width, height, nrComponents;
+	stbi_uc* data = stbi_load(path.data(), &width, &height, &nrComponents, 0);
+	if (data)
+	{
+		glGenTextures(1, &textureID);
+
+		GLenum internalFormat{ 0 };
+		GLenum dataFormat{ 0 };
+		if (nrComponents == 1)
+		{
+			internalFormat = dataFormat = GL_RED;
+		}
+		else if (nrComponents == 2)
+		{
+			internalFormat = dataFormat = GL_RG;
+		}
+		else if (nrComponents == 3)
+		{
+			internalFormat = gammaCorrection ? GL_SRGB8 : GL_RGB8;
+			dataFormat = GL_RGB;
+		}
+		else if (nrComponents == 4)
+		{
+			internalFormat = gammaCorrection ? GL_SRGB8_ALPHA8 : GL_RGBA8;
+			dataFormat = GL_RGBA;
+		}
+		else
+		{
+			std::unreachable();
+		}
+
+		GLint currentTexture = GetCurrentTexture(GL_TEXTURE_2D);
+
+		glBindTexture(GL_TEXTURE_2D, textureID);
+		glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, dataFormat, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+		glBindTexture(GL_TEXTURE_2D, currentTexture);
+	}
+	else
+	{
+		Error("Texture failed to load at path: " + std::string(path));
+	}
+	stbi_image_free(data);
+
+	return textureID;
+}
+//=============================================================================
+GLuint CreateSamplerState(const SamplerInfo& info)
+{
+	GLuint sampler;
+	glGenSamplers(1, &sampler);
+
+	// Устанавливаем фильтры
+	glSamplerParameteri(sampler, GL_TEXTURE_MIN_FILTER, GetGLEnum(info.minFilter));
+	glSamplerParameteri(sampler, GL_TEXTURE_MAG_FILTER, GetGLEnum(info.magFilter));
+
+	// Устанавливаем режимы оборачивания
+	glSamplerParameteri(sampler, GL_TEXTURE_WRAP_S, GetGLEnum(info.wrapS));
+	glSamplerParameteri(sampler, GL_TEXTURE_WRAP_T, GetGLEnum(info.wrapT));
+	glSamplerParameteri(sampler, GL_TEXTURE_WRAP_R, GetGLEnum(info.wrapR));
+
+	// Устанавливаем максимальное значение анизотропии (если поддерживается)
+	if (info.maxAnisotropy > 1.0f && ext::ARB_texture_filter_anisotropic)
+	{
+		glSamplerParameterf(sampler, GL_TEXTURE_MAX_ANISOTROPY, info.maxAnisotropy);
+	}
+
+	// Устанавливаем уровни LOD
+	glSamplerParameterf(sampler, GL_TEXTURE_MIN_LOD, info.minLod);
+	glSamplerParameterf(sampler, GL_TEXTURE_MAX_LOD, info.maxLod);
+	glSamplerParameterf(sampler, GL_TEXTURE_LOD_BIAS, info.lodBias);
+
+	// Устанавливаем режим сравнения (для теней и т.п.)
+	if (info.compareEnabled)
+	{
+		glSamplerParameteri(sampler, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
+		glSamplerParameteri(sampler, GL_TEXTURE_COMPARE_FUNC, GetGLEnum(info.compareFunc));
+	}
+	else
+	{
+		glSamplerParameteri(sampler, GL_TEXTURE_COMPARE_MODE, GL_NONE);
+	}
+
+	// Устанавливаем цвет границы
+	glSamplerParameterfv(sampler, GL_TEXTURE_BORDER_COLOR, info.borderColor);
+
+	return sampler;
+}
+//=============================================================================
+struct CachedState final
+{
+	bool restoreDepth{ true };
+	bool restoreStencil{ true };
+	bool restoreBlend{ true };
+	bool restoreMultisample{ true };
+	bool restoreColorMaskState{ true };
+	bool restoreCullState{ true };
+	bool restorePolygonState{ true };
+
+	bool depthTestEnabled{ false };
+	CompareFunc depthFunc{ CompareFunc::Less };
+	bool depthMask{ true };
+
+	bool stencilEnabled{ false };
+	CompareFunc frontFunc{ CompareFunc::Always };
+	CompareFunc backFunc{ CompareFunc::Always };
+	int frontRef{ 0 };
+	int backRef{ 0 };
+	unsigned int frontMask{ 0xFF };
+	unsigned int backMask{ 0xFF };
+
+	bool blendEnabled{ false };
+	BlendFactor srcRGB{ BlendFactor::SrcAlpha };
+	BlendFactor dstRGB{ BlendFactor::OneMinusSrcAlpha };
+	BlendFactor srcAlpha{ BlendFactor::One };
+	BlendFactor dstAlpha{ BlendFactor::OneMinusSrcAlpha };
+
+	bool multisampleEnabled{ true };
+
+	bool colorMaskR{ true };
+	bool colorMaskG{ true };
+	bool colorMaskB{ true };
+	bool colorMaskA{ true };
+
+	bool cullEnabled{ false };
+	CullFace cullFace{ CullFace::Back };
+
+	PolygonMode polygonMode{ PolygonMode::Fill };
+} cachedState;
+//=============================================================================
+void ResetStateDepth()
+{
+	cachedState.restoreDepth = true;
+}
+//=============================================================================
+void ResetStateStencil()
+{
+	cachedState.restoreStencil = true;
+}
+//=============================================================================
+void ResetStateBlend()
+{
+	cachedState.restoreBlend = true;
+}
+//=============================================================================
+void ResetStateMultisample()
+{
+	cachedState.restoreMultisample = true;
+}
+//=============================================================================
+void ResetStateColorMaskState()
+{
+	cachedState.restoreColorMaskState = true;
+}
+//=============================================================================
+void ResetStateCullState()
+{
+	cachedState.restoreCullState = true;
+}
+//=============================================================================
+void ResetStatePolygonState()
+{
+	cachedState.restorePolygonState = true;
+}
+//=============================================================================
+void ResetStateAll()
+{
+	ResetStateDepth();
+	ResetStateStencil();
+	ResetStateBlend();
+	ResetStateMultisample();
+	ResetStateColorMaskState();
+	ResetStateCullState();
+	ResetStatePolygonState();
+}
+//=============================================================================
+void BindState(const GLState& state)
+{
+	// Depth State
+	if (cachedState.restoreDepth || cachedState.depthTestEnabled != state.depthState.enable)
+	{
+		if (state.depthState.enable) glEnable(GL_DEPTH_TEST);
+		else glDisable(GL_DEPTH_TEST);
+		cachedState.depthTestEnabled = state.depthState.enable;
+	}
+	if (cachedState.restoreDepth || cachedState.depthFunc != state.depthState.depthFunc)
+	{
+		glDepthFunc(GetGLEnum(state.depthState.depthFunc));
+		cachedState.depthFunc = state.depthState.depthFunc;
+	}
+	if (cachedState.restoreDepth || cachedState.depthMask != state.depthState.depthMask)
+	{
+		glDepthMask(state.depthState.depthMask ? GL_TRUE : GL_FALSE);
+		cachedState.depthMask = state.depthState.depthMask;
+	}
+	cachedState.restoreDepth = false;
+
+	// Stencil State
+	if (cachedState.restoreStencil || cachedState.stencilEnabled != state.stencilState.enable)
+	{
+		if (state.stencilState.enable) glEnable(GL_STENCIL_TEST);
+		else glDisable(GL_STENCIL_TEST);
+		cachedState.stencilEnabled = state.stencilState.enable;
+	}
+	if (cachedState.restoreStencil || 
+		cachedState.frontFunc != state.stencilState.frontFunc || cachedState.backFunc != state.stencilState.backFunc ||
+		cachedState.frontRef != state.stencilState.frontRef || cachedState.backRef != state.stencilState.backRef ||
+		cachedState.frontMask != state.stencilState.frontMask || cachedState.backMask != state.stencilState.backMask)
+	{
+		glStencilFuncSeparate(GL_FRONT, GetGLEnum(state.stencilState.frontFunc), state.stencilState.frontRef, state.stencilState.frontMask);
+		glStencilFuncSeparate(GL_BACK, GetGLEnum(state.stencilState.backFunc), state.stencilState.backRef, state.stencilState.backMask);
+		cachedState.frontFunc = state.stencilState.frontFunc;
+		cachedState.backFunc = state.stencilState.backFunc;
+		cachedState.frontRef = state.stencilState.frontRef;
+		cachedState.backRef = state.stencilState.backRef;
+		cachedState.frontMask = state.stencilState.frontMask;
+		cachedState.backMask = state.stencilState.backMask;
+	}
+	cachedState.restoreStencil = false;
+
+	// Blend State
+	if (cachedState.restoreBlend || cachedState.blendEnabled != state.blendState.enable)
+	{
+		if (state.blendState.enable) glEnable(GL_BLEND);
+		else glDisable(GL_BLEND);
+		cachedState.blendEnabled = state.blendState.enable;
+	}
+	if (cachedState.restoreBlend || 
+		cachedState.srcRGB != state.blendState.srcRGB || cachedState.dstRGB != state.blendState.dstRGB ||
+		cachedState.srcAlpha != state.blendState.srcAlpha || cachedState.dstAlpha != state.blendState.dstAlpha)
+	{
+		glBlendFuncSeparate(
+			GetGLEnum(state.blendState.srcRGB),
+			GetGLEnum(state.blendState.dstRGB),
+			GetGLEnum(state.blendState.srcAlpha),
+			GetGLEnum(state.blendState.dstAlpha)
+		);
+		cachedState.srcRGB = state.blendState.srcRGB;
+		cachedState.dstRGB = state.blendState.dstRGB;
+		cachedState.srcAlpha = state.blendState.srcAlpha;
+		cachedState.dstAlpha = state.blendState.dstAlpha;
+	}
+	cachedState.restoreBlend = false;
+
+	// Multisample State
+	if (cachedState.restoreMultisample || cachedState.multisampleEnabled != state.multisampleState.enable)
+	{
+		if (state.multisampleState.enable) glEnable(GL_MULTISAMPLE);
+		else glDisable(GL_MULTISAMPLE);
+		cachedState.multisampleEnabled = state.multisampleState.enable;
+	}
+	cachedState.restoreMultisample = false;
+
+	// Color Mask
+	if (cachedState.restoreColorMaskState || 
+		cachedState.colorMaskR != state.colorMaskState.r || cachedState.colorMaskG != state.colorMaskState.g ||
+		cachedState.colorMaskB != state.colorMaskState.b || cachedState.colorMaskA != state.colorMaskState.a)
+	{
+		glColorMask(state.colorMaskState.r ? GL_TRUE : GL_FALSE,
+			state.colorMaskState.g ? GL_TRUE : GL_FALSE,
+			state.colorMaskState.b ? GL_TRUE : GL_FALSE,
+			state.colorMaskState.a ? GL_TRUE : GL_FALSE);
+		cachedState.colorMaskR = state.colorMaskState.r;
+		cachedState.colorMaskG = state.colorMaskState.g;
+		cachedState.colorMaskB = state.colorMaskState.b;
+		cachedState.colorMaskA = state.colorMaskState.a;
+	}
+	cachedState.restoreColorMaskState = false;
+		
+	// Cull State
+	if (cachedState.restoreCullState || cachedState.cullEnabled != state.cullState.enable)
+	{
+		if (state.cullState.enable) glEnable(GL_CULL_FACE);
+		else glDisable(GL_CULL_FACE);
+		cachedState.cullEnabled = state.cullState.enable;
+	}
+	if (cachedState.restoreCullState || cachedState.cullFace != state.cullState.cullFace)
+	{
+		glCullFace(GetGLEnum(state.cullState.cullFace));
+		cachedState.cullFace = state.cullState.cullFace;
+	}
+	cachedState.restoreCullState = false;
+
+	// Polygon Mode
+	if (cachedState.restorePolygonState || cachedState.polygonMode != state.polygonState.mode)
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GetGLEnum(state.polygonState.mode));
+		cachedState.polygonMode = state.polygonState.mode;
+	}
+	cachedState.restorePolygonState = false;
+}
+//=============================================================================
+GLuint GetCurrentBuffer(GLenum target)
+{
+	GLenum targetBinding{ 0 };
+	switch (target)
+	{
+	case GL_ARRAY_BUFFER:         targetBinding = GL_ARRAY_BUFFER_BINDING; break;
+	case GL_ELEMENT_ARRAY_BUFFER: targetBinding = GL_ELEMENT_ARRAY_BUFFER_BINDING; break;
+	case GL_UNIFORM_BUFFER:       targetBinding = GL_UNIFORM_BUFFER_BINDING; break;
+	default: std::unreachable(); break;
+	}
+	GLuint currentBuffer{ 0 };
+	glGetIntegerv(targetBinding, (GLint*)&currentBuffer);
+
+	return currentBuffer;
+}
+//=============================================================================
+GLuint GetCurrentTexture(GLenum target)
+{
+	GLenum targetBinding{ 0 };
+	switch (target)
+	{
+	case GL_TEXTURE_1D:                   targetBinding = GL_TEXTURE_BINDING_1D; break;
+	case GL_TEXTURE_2D:                   targetBinding = GL_TEXTURE_BINDING_2D; break;
+	case GL_TEXTURE_3D:                   targetBinding = GL_TEXTURE_BINDING_3D; break;
+	case GL_TEXTURE_1D_ARRAY:             targetBinding = GL_TEXTURE_BINDING_1D_ARRAY; break;
+	case GL_TEXTURE_2D_ARRAY:             targetBinding = GL_TEXTURE_BINDING_2D_ARRAY; break;
+	case GL_TEXTURE_2D_MULTISAMPLE:       targetBinding = GL_TEXTURE_BINDING_2D_MULTISAMPLE; break;
+	case GL_TEXTURE_2D_MULTISAMPLE_ARRAY: targetBinding = GL_TEXTURE_BINDING_2D_MULTISAMPLE_ARRAY; break;
+	case GL_TEXTURE_BUFFER:               targetBinding = GL_TEXTURE_BINDING_BUFFER; break;
+	case GL_TEXTURE_CUBE_MAP:             targetBinding = GL_TEXTURE_BINDING_CUBE_MAP; break;
+	case GL_TEXTURE_RECTANGLE:            targetBinding = GL_TEXTURE_BINDING_RECTANGLE; break;
+
+	default: std::unreachable(); break;
+	}
+	GLuint currentState{ 0 };
+	glGetIntegerv(targetBinding, (GLint*)&currentState);
+	return currentState;
+}
+//=============================================================================
+void DrawArrays(GLuint vao, GLenum mode, GLint first, GLsizei count)
+{
+	glBindVertexArray(vao);
+	glDrawArrays(mode, first, count);
+}
+//=============================================================================
+void DrawElements(GLuint vao, GLenum mode, GLsizei count, GLenum type, const void* indices)
+{
+	glBindVertexArray(vao);
+	glDrawElements(mode, count, type, indices);
 }
 //=============================================================================

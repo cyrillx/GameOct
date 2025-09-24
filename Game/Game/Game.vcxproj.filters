@@ -13,12 +13,15 @@
     <ClCompile Include="NanoOpenGL3.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
+    <ClCompile Include="NanoOpenGLExt.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="NanoIO.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="Shader.h">
-      <Filter>Temp</Filter>
-    </ClInclude>
     <ClInclude Include="GameApp.h" />
     <ClInclude Include="NanoLog.h">
       <Filter>Engine</Filter>
@@ -38,6 +41,12 @@
     <ClInclude Include="NanoOpenGL3.h">
       <Filter>Engine</Filter>
     </ClInclude>
+    <ClInclude Include="NanoOpenGLExt.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="NanoIO.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Temp">
@@ -55,6 +64,12 @@
       <Filter>shaders</Filter>
     </None>
     <None Include="..\..\bin\data\shaders\2.gamma_correction.vs">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\bin\data\shaders\3.1.1.shadow_mapping_depth.fs">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\bin\data\shaders\3.1.1.shadow_mapping_depth.vs">
       <Filter>shaders</Filter>
     </None>
   </ItemGroup>

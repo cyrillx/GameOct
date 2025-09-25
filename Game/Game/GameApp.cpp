@@ -1,7 +1,7 @@
 ﻿#include "stdafx.h"
 #include "GameApp.h"
 #include "Camera.h"
-#include "Model.h"
+#include "ModelTemp.h"
 #include "NanoLog.h"
 #include "NanoWindow.h"
 #include "NanoOpenGL3.h"
@@ -153,7 +153,7 @@ void GameAppRun()
 
 		GLuint shadowProgram = CreateShaderProgram(io::ReadShaderCode("data/shaders/ShadowMappingDepth.vs"), io::ReadShaderCode("data/shaders/ShadowMappingDepth.fs"));
 
-		GLuint shader = CreateShaderProgram(io::ReadShaderCode("data/shaders/NormalPassShader.vs"), io::ReadShaderCode("data/shaders/NormalPassShader.fs"));
+		GLuint shader = CreateShaderProgram(io::ReadShaderCode("data/shaders/NormalPassShader.vs"), io::ReadShaderCode("data/shaders/NormalPassShaderOLD.fs"));
 
 		const unsigned int SHADOWMAP_SIZE = 1024;
 		unsigned int shadowMapFBO;
@@ -209,7 +209,7 @@ void GameAppRun()
 
 		glUseProgram(shader);
 		SetUniform(GetUniformLocation(shader, "diffuseTexture"), 0);
-		SetUniform(GetUniformLocation(shader, "shadowMap"), 1);
+		SetUniform(GetUniformLocation(shader, "directionalShadowMap"), 1);
 
 		// lighting info
 		// -------------
@@ -243,9 +243,9 @@ void GameAppRun()
 			processInput(window::windowHandle);
 
 			// change light position over time
-			//lightPos.x = sin(glfwGetTime()) * 3.0f;
-			//lightPos.z = cos(glfwGetTime()) * 2.0f;
-			//lightPos.y = 5.0 + cos(glfwGetTime()) * 1.0f;
+			lightPos.x = sin(glfwGetTime()) * 3.0f;
+			lightPos.z = cos(glfwGetTime()) * 2.0f;
+			lightPos.y = 5.0 + cos(glfwGetTime()) * 1.0f;
 
 			// render
 			BindState(state);
@@ -262,7 +262,7 @@ void GameAppRun()
 				lightSpaceMatrix = lightProjection * lightView;
 
 				glUseProgram(shadowProgram);
-				SetUniform(GetUniformLocation(shadowProgram, "cameraToShadowProjector"), lightSpaceMatrix);
+				SetUniform(GetUniformLocation(shadowProgram, "directionalLightTransform"), lightSpaceMatrix);
 
 				glViewport(0, 0, SHADOWMAP_SIZE, SHADOWMAP_SIZE);
 				glBindFramebuffer(GL_FRAMEBUFFER, shadowMapFBO);
@@ -291,7 +291,7 @@ void GameAppRun()
 				SetUniform(GetUniformLocation(shader, "viewPos"), camera.Position);
 				SetUniform(GetUniformLocation(shader, "gamma"), gammaEnabled);
 				SetUniform(GetUniformLocation(shader, "lightPos"), lightPos);
-				SetUniform(GetUniformLocation(shader, "cameraToShadowProjector"), lightSpaceMatrix);
+				SetUniform(GetUniformLocation(shader, "directionalLightTransform"), lightSpaceMatrix);
 
 				glActiveTexture(GL_TEXTURE0);
 				glBindTexture(GL_TEXTURE_2D, gammaEnabled ? floorTextureGammaCorrected : floorTexture);

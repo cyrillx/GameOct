@@ -4,7 +4,7 @@
 
 #define MAX_BONE_INFLUENCE 4
 
-struct Vertex {
+struct VertexTemp {
 	// position
 	glm::vec3 Position;
 	// normal
@@ -21,23 +21,23 @@ struct Vertex {
 	float m_Weights[MAX_BONE_INFLUENCE];
 };
 
-struct Texture
+struct TextureTemp
 {
 	unsigned int id;
 	std::string type;
 	std::string path;
 };
 
-class Mesh {
+class MeshTemp {
 public:
 	// mesh Data
-	std::vector<Vertex>       vertices;
+	std::vector<VertexTemp>       vertices;
 	std::vector<unsigned int> indices;
-	std::vector<Texture>      textures;
+	std::vector<TextureTemp>      textures;
 	unsigned int VAO;
 
 	// constructor
-	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures)
+	MeshTemp(std::vector<VertexTemp> vertices, std::vector<unsigned int> indices, std::vector<TextureTemp> textures)
 	{
 		this->vertices = vertices;
 		this->indices = indices;
@@ -102,7 +102,7 @@ private:
 		// A great thing about structs is that their memory layout is sequential for all its items.
 		// The effect is that we can simply pass a pointer to the struct and it translates perfectly to a glm::vec3/2 array which
 		// again translates to 3/2 floats which translates to a byte array.
-		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(VertexTemp), &vertices[0], GL_STATIC_DRAW);
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
@@ -110,26 +110,26 @@ private:
 		// set the vertex attribute pointers
 		// vertex Positions
 		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VertexTemp), (void*)0);
 		// vertex normals
 		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Normal));
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(VertexTemp), (void*)offsetof(VertexTemp, Normal));
 		// vertex texture coords
 		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords));
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(VertexTemp), (void*)offsetof(VertexTemp, TexCoords));
 		// vertex tangent
 		glEnableVertexAttribArray(3);
-		glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Tangent));
+		glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(VertexTemp), (void*)offsetof(VertexTemp, Tangent));
 		// vertex bitangent
 		glEnableVertexAttribArray(4);
-		glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Bitangent));
+		glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(VertexTemp), (void*)offsetof(VertexTemp, Bitangent));
 		// ids
 		glEnableVertexAttribArray(5);
-		glVertexAttribIPointer(5, 4, GL_INT, sizeof(Vertex), (void*)offsetof(Vertex, m_BoneIDs));
+		glVertexAttribIPointer(5, 4, GL_INT, sizeof(VertexTemp), (void*)offsetof(VertexTemp, m_BoneIDs));
 
 		// weights
 		glEnableVertexAttribArray(6);
-		glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, m_Weights));
+		glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(VertexTemp), (void*)offsetof(VertexTemp, m_Weights));
 		glBindVertexArray(0);
 	}
 };

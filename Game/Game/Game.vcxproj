@@ -109,8 +109,8 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="GameApp.h" />
-    <ClInclude Include="Mesh.h" />
-    <ClInclude Include="Model.h" />
+    <ClInclude Include="MeshTemp.h" />
+    <ClInclude Include="ModelTemp.h" />
     <ClInclude Include="NanoIO.h" />
     <ClInclude Include="NanoLog.h" />
     <ClInclude Include="NanoOpenGL3.h" />
@@ -121,6 +121,7 @@
   <ItemGroup>
     <None Include="..\..\bin\data\shaders\NormalPassShader.fs" />
     <None Include="..\..\bin\data\shaders\NormalPassShader.vs" />
+    <None Include="..\..\bin\data\shaders\NormalPassShaderOLD.fs" />
     <None Include="..\..\bin\data\shaders\ShadowMappingDepth.fs" />
     <None Include="..\..\bin\data\shaders\ShadowMappingDepth.vs" />
   </ItemGroup>

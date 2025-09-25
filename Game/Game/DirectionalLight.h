@@ -2,8 +2,7 @@
 
 #include "Light.h"
 
-class DirectionalLight :
-	public Light
+class DirectionalLight : public Light
 {
 public:
 	DirectionalLight();
@@ -12,8 +11,7 @@ public:
 		GLfloat aIntensity, GLfloat dIntensity,
 		GLfloat xDir, GLfloat yDir, GLfloat zDir);
 
-	void UseLight(GLfloat ambientIntensityLocation, GLfloat ambientColourLocation,
-		GLfloat diffuseIntensityLocation, GLfloat directionLocation);
+	void UseLight(GLfloat ambientIntensityLocation, GLfloat ambientColourLocation, GLfloat diffuseIntensityLocation, GLfloat directionLocation);
 
 	glm::mat4 CalculateLightTransform();
 

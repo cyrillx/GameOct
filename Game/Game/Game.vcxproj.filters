@@ -56,6 +56,7 @@
     <ClCompile Include="Scene.cpp">
       <Filter>temp2</Filter>
     </ClCompile>
+    <ClCompile Include="GameApp3.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />

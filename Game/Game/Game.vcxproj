@@ -98,6 +98,7 @@
     <ClCompile Include="DirectionalLight.cpp" />
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="GameApp2.cpp" />
+    <ClCompile Include="GameApp3.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Material.cpp" />

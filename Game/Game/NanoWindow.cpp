@@ -140,7 +140,7 @@ bool window::WindowShouldClose() noexcept
 void window::Swap()
 {
 	glfwSwapBuffers(windowHandle);
-	//glfwPollEvents();
+	glfwPollEvents();
 }
 //=============================================================================
 uint16_t window::GetBufferWidth() { return bufferWidth; }

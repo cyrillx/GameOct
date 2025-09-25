@@ -1,12 +1,14 @@
 ﻿#include "stdafx.h"
 #include "GameApp.h"
-#include "Camera.h"
+#include "CameraOld.h"
 #include "ModelTemp.h"
 #include "NanoLog.h"
 #include "NanoWindow.h"
 #include "NanoOpenGL3.h"
 #include "NanoIO.h"
 
+// https://github.com/vcoda/aggregated-graphics-samples
+// https://github.com/Mikepicker/opengl-sandbox
 // https://github.com/cforfang/opengl-shadowmapping
 // https://github.com/uobirek/opengl-3D-renderer
 // https://github.com/pulkitjuneja/GlEn
@@ -21,7 +23,7 @@ bool gammaEnabled = true;
 bool gammaKeyPressed = false;
 
 // camera
-Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+CameraOld camera(glm::vec3(0.0f, 0.0f, 3.0f));
 float lastX = (float)SCR_WIDTH / 2.0;
 float lastY = (float)SCR_HEIGHT / 2.0;
 bool firstMouse = true;

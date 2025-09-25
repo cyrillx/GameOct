@@ -19,6 +19,43 @@
     <ClCompile Include="NanoIO.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>temp2</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>temp2</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>temp2</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>temp2</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>temp2</Filter>
+    </ClCompile>
+    <ClCompile Include="ShadowMap.cpp">
+      <Filter>temp2</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>temp2</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectionalLight.cpp">
+      <Filter>temp2</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLight.cpp">
+      <Filter>temp2</Filter>
+    </ClCompile>
+    <ClCompile Include="SpotLight.cpp">
+      <Filter>temp2</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>temp2</Filter>
+    </ClCompile>
+    <ClCompile Include="GameApp2.cpp" />
+    <ClCompile Include="Scene.cpp">
+      <Filter>temp2</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -26,7 +63,7 @@
     <ClInclude Include="NanoLog.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
+    <ClInclude Include="CameraOld.h">
       <Filter>Temp</Filter>
     </ClInclude>
     <ClInclude Include="MeshTemp.h">
@@ -47,6 +84,42 @@
     <ClInclude Include="NanoIO.h">
       <Filter>Engine</Filter>
     </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>temp2</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>temp2</Filter>
+    </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>temp2</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>temp2</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>temp2</Filter>
+    </ClInclude>
+    <ClInclude Include="ShadowMap.h">
+      <Filter>temp2</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>temp2</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectionalLight.h">
+      <Filter>temp2</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLight.h">
+      <Filter>temp2</Filter>
+    </ClInclude>
+    <ClInclude Include="SpotLight.h">
+      <Filter>temp2</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>temp2</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>temp2</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Temp">
@@ -60,6 +133,9 @@
     </Filter>
     <Filter Include="temp2">
       <UniqueIdentifier>{4a886297-09d9-49bc-a40e-ebef0199be09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NewFilter1">
+      <UniqueIdentifier>{f1b3ca49-34c2-4cb3-aca4-882e0b45e01a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -76,6 +152,18 @@
       <Filter>shaders</Filter>
     </None>
     <None Include="..\..\bin\data\shaders\NormalPassShaderOLD.fs">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\bin\shaders\directionalShadowMap.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\bin\shaders\directionalShadowMap.vert">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\bin\shaders\shader.frag">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="..\..\bin\shaders\shader.vert">
       <Filter>shaders</Filter>
     </None>
   </ItemGroup>

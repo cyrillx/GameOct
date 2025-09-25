@@ -183,7 +183,7 @@ private:
 	}
 };
 
-unsigned int TextureFromFile(const char* path, const std::string& directory, bool gamma)
+inline unsigned int TextureFromFile(const char* path, const std::string& directory, bool gamma)
 {
 	std::string filename = std::string(path);
 	filename = directory + '/' + filename;

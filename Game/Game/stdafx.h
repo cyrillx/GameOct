@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "3rdparty/3rdpartyConfig.h"
 
@@ -67,6 +67,7 @@
 #include <assimp/cimport.h>
 #include <assimp/version.h>
 #include <assimp/GltfMaterial.h>
+#include <assimp/config.h>
 
 #if defined(_MSC_VER)
 #	pragma warning(pop)

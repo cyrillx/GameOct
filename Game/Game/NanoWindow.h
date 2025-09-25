@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 namespace window
 {
@@ -9,6 +9,16 @@ namespace window
 
 	void Swap();
 
+	uint16_t GetBufferWidth();
+	uint16_t GetBufferHeight();
+	uint16_t GetWidth();
+	uint16_t GetHeight();
+
+	bool* GetsKeys();
+	float GetXChange();
+	float GetYChange();
+
 	inline GLFWwindow* windowHandle{ nullptr };
+
 
 } // namespace window

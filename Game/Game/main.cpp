@@ -5,6 +5,7 @@
 #	pragma comment( lib, "3rdparty.lib" )
 #endif
 //=============================================================================
+// turso шаблон шейдеров
 // https://github.com/Keypekss/OpenGLTechDemo
 // https://github.com/Mikepicker/opengl-sandbox
 // https://github.com/petitg1987/urchinEngine
@@ -19,6 +20,8 @@ int main(
 {
 	//TempAppRun4();
 
-	ExampleApp001();
+	//ExampleApp001();
+	ExampleApp002();
+
 }
 //=============================================================================

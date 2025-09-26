@@ -9,3 +9,8 @@ void TempAppRun4();
  - минимальный пример
 */
 void ExampleApp001();
+
+/*
+ - 
+*/
+void ExampleApp002();

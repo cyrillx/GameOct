@@ -81,6 +81,12 @@
     <ClCompile Include="ExampleApp001.cpp">
       <Filter>Example</Filter>
     </ClCompile>
+    <ClCompile Include="ExampleApp002.cpp">
+      <Filter>Example</Filter>
+    </ClCompile>
+    <ClCompile Include="Framebuffer.cpp">
+      <Filter>Example\tmp</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -160,6 +166,9 @@
     <ClInclude Include="NanoCore.h">
       <Filter>Engine</Filter>
     </ClInclude>
+    <ClInclude Include="Framebuffer.h">
+      <Filter>Example\tmp</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -179,6 +188,9 @@
     </Filter>
     <Filter Include="tmp\temp2">
       <UniqueIdentifier>{4a886297-09d9-49bc-a40e-ebef0199be09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Example\tmp">
+      <UniqueIdentifier>{37b1790f-a2e6-43ad-a292-f9f8d8c80509}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

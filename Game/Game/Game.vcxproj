@@ -97,6 +97,8 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DirectionalLight.cpp" />
     <ClCompile Include="ExampleApp001.cpp" />
+    <ClCompile Include="ExampleApp002.cpp" />
+    <ClCompile Include="Framebuffer.cpp" />
     <ClCompile Include="NanoCore.cpp" />
     <ClCompile Include="NanoMath.cpp" />
     <ClCompile Include="NanoRender.cpp" />
@@ -130,6 +132,7 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraOld.h" />
     <ClInclude Include="DirectionalLight.h" />
+    <ClInclude Include="Framebuffer.h" />
     <ClInclude Include="GameApp.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Material.h" />

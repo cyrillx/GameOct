@@ -17,7 +17,3 @@ Light::Light(GLuint shadowWidth, GLuint shadowHeight, GLfloat red, GLfloat green
 	shadowMap = new ShadowMap();
 	shadowMap->Init(shadowWidth, shadowHeight);
 }
-
-Light::~Light()
-{
-}

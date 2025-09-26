@@ -20,8 +20,6 @@ public:
 
 	void SetFlash(glm::vec3 pos, glm::vec3 dir);
 
-	~SpotLight();
-
 private:
 	glm::vec3 direction;
 

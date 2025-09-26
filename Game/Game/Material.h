@@ -8,8 +8,6 @@ public:
 
 	void UseMaterial(GLuint specularIntensityLocation, GLuint shininessLocation);
 
-	~Materialo2();
-
 private:
 	GLfloat specularIntensity;
 	GLfloat shininess;

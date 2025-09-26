@@ -33,7 +33,3 @@ void PointLight::UseLight(GLuint ambientIntensityLocation, GLuint ambientColourL
 	glUniform1f(linearLocation, linear);
 	glUniform1f(exponentLocation, exponent);
 }
-
-PointLight::~PointLight()
-{
-}

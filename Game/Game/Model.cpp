@@ -1,10 +1,6 @@
 ﻿#include "stdafx.h"
 #include "Model.h"
 
-Modelo2::Modelo2()
-{
-}
-
 void Modelo2::RenderModel()
 {
 	for (size_t i = 0; i < meshList.size(); i++)
@@ -146,8 +142,4 @@ void Modelo2::ClearModel()
 			textureList[i] = nullptr;
 		}
 	}
-}
-
-Modelo2::~Modelo2()
-{
 }

@@ -1,15 +1,15 @@
 ﻿#pragma once
 
-class ShadowMap
+class ShadowMap final
 {
 public:
 	ShadowMap();
 
-	virtual bool Init(unsigned int width, unsigned int height);
+	bool Init(unsigned int width, unsigned int height);
 
-	virtual void Write();
+	void Write();
 
-	virtual void Read(GLenum TextureUnit);
+	void Read(GLenum TextureUnit);
 
 	GLuint GetShadowWidth() { return shadowWidth; }
 	GLuint GetShadowHeight() { return shadowHeight; }

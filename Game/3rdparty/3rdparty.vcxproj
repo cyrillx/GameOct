@@ -637,10 +637,10 @@
     <None Include="glm\gtx\vector_angle.inl" />
     <None Include="glm\gtx\vector_query.inl" />
     <None Include="glm\gtx\wrap.inl" />
-    <None Include="lib\assimp-vc143-mt.exp" />
+    <None Include="lib\assimp-vc145-mt.exp" />
   </ItemGroup>
   <ItemGroup>
-    <Library Include="lib\assimp-vc143-mt.lib" />
+    <Library Include="lib\assimp-vc145-mt.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

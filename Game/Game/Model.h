@@ -6,13 +6,9 @@
 class Modelo2
 {
 public:
-	Modelo2();
-
 	void LoadModel(const std::string& fileName);
 	void RenderModel();
 	void ClearModel();
-
-	~Modelo2();
 
 private:
 

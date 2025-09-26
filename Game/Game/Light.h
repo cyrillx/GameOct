@@ -12,8 +12,6 @@ public:
 
 	ShadowMap* GetShadowMap() { return shadowMap; }
 
-	~Light();
-
 protected:
 	glm::vec3 colour;
 	GLfloat ambientIntensity;

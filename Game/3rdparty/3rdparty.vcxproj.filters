@@ -1221,6 +1221,7 @@
     <ClInclude Include="glad\gl.h">
       <Filter>glad</Filter>
     </ClInclude>
+    <ClInclude Include="3rdpartyConfig.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="glm\detail\func_common.inl">
@@ -1640,9 +1641,6 @@
     <None Include="glm\gtx\wrap.inl">
       <Filter>glm\gtx</Filter>
     </None>
-    <None Include="lib\assimp-vc143-mt.exp">
-      <Filter>assimp</Filter>
-    </None>
     <None Include="assimp\color4.inl">
       <Filter>assimp</Filter>
     </None>
@@ -1667,9 +1665,12 @@
     <None Include="assimp\vector3.inl">
       <Filter>assimp</Filter>
     </None>
+    <None Include="lib\assimp-vc145-mt.exp">
+      <Filter>assimp</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="lib\assimp-vc143-mt.lib">
+    <Library Include="lib\assimp-vc145-mt.lib">
       <Filter>assimp</Filter>
     </Library>
   </ItemGroup>

@@ -42,6 +42,7 @@ public:
 	void UpdateResolveFBO(int width, int height);
 
 	std::vector<Attachment>& GetAttachments();
+	
 	void Bind();
 	void Unbind();
 	
@@ -71,7 +72,7 @@ private:
 	void updateDepthRenderbufferAttachment(int width, int height, int insertPos);
 	void updateDepthStencilRenderbufferAttachment(int width, int height, int insertPos);
 
-	GLuint fbo;
+	GLuint fbo{ 0 };
 	bool renderColor;
 	bool multiSample;
 	bool HDR;

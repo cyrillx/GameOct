@@ -18,7 +18,3 @@ void Materialo2::UseMaterial(GLuint specularIntensityLocation, GLuint shininessL
 	glUniform1f(specularIntensityLocation, specularIntensity);
 	glUniform1f(shininessLocation, shininess);
 }
-
-Materialo2::~Materialo2()
-{
-}

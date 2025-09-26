@@ -352,8 +352,6 @@ GLuint LoadTexture2D(std::string_view path, bool gammaCorrection, bool flipVerti
 	stbi_uc* data = stbi_load(path.data(), &width, &height, &nrComponents, 0);
 	if (data)
 	{
-		glGenTextures(1, &textureID);
-
 		GLenum internalFormat{ 0 };
 		GLenum dataFormat{ 0 };
 		if (nrComponents == 1)
@@ -381,6 +379,7 @@ GLuint LoadTexture2D(std::string_view path, bool gammaCorrection, bool flipVerti
 
 		GLint currentTexture = GetCurrentTexture(GL_TEXTURE_2D);
 
+		glGenTextures(1, &textureID);
 		glBindTexture(GL_TEXTURE_2D, textureID);
 		glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, dataFormat, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);

@@ -40,6 +40,8 @@ namespace
 //=============================================================================
 bool textures::Init()
 {
+	GLint currentTexture = GetCurrentTexture(GL_TEXTURE_2D);
+
 	// Create default diffuse texture
 	{
 		constexpr size_t SizeTexture = 32u;
@@ -50,22 +52,29 @@ bool textures::Init()
 			{
 				if ((i + j) % 2 == 0)
 				{
-					data[i][j][0] = 255;
-					data[i][j][1] = 0;
+					data[i][j][0] = 250;
+					data[i][j][1] = 70;
 					data[i][j][2] = 100;
 				}
 				else
 				{
-					data[i][j][0] = 100;
-					data[i][j][1] = 0;
-					data[i][j][2] = 255;
+					data[i][j][0] = 150;
+					data[i][j][1] = 50;
+					data[i][j][2] = 200;
 				}
 			}
 		}
 
-		defaultDiffuse2D.id = CreateTexture2D(GL_SRGB8, SizeTexture, SizeTexture, GL_RGB, GL_UNSIGNED_BYTE, data);
 		defaultDiffuse2D.width = SizeTexture;
 		defaultDiffuse2D.height = SizeTexture;
+		glGenTextures(1, &defaultDiffuse2D.id);
+		glBindTexture(GL_TEXTURE_2D, defaultDiffuse2D.id);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_SRGB8, SizeTexture, SizeTexture, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	}
 
 	// Create default normal texture
@@ -82,9 +91,16 @@ bool textures::Init()
 			}
 		}
 
-		defaultNormal2D.id = CreateTexture2D(GL_RGB8, SizeTexture, SizeTexture, GL_RGB, GL_UNSIGNED_BYTE, data);
 		defaultNormal2D.width = SizeTexture;
 		defaultNormal2D.height = SizeTexture;
+		glGenTextures(1, &defaultNormal2D.id);
+		glBindTexture(GL_TEXTURE_2D, defaultNormal2D.id);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, SizeTexture, SizeTexture, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	}
 
 	// Create default specular texture
@@ -101,10 +117,19 @@ bool textures::Init()
 			}
 		}
 
-		defaultSpecular2D.id = CreateTexture2D(GL_RGB8, SizeTexture, SizeTexture, GL_RGB, GL_UNSIGNED_BYTE, data);
 		defaultSpecular2D.width = SizeTexture;
 		defaultSpecular2D.height = SizeTexture;
+		glGenTextures(1, &defaultSpecular2D.id);
+		glBindTexture(GL_TEXTURE_2D, defaultSpecular2D.id);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, SizeTexture, SizeTexture, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	}
+
+	glBindTexture(GL_TEXTURE_2D, currentTexture);
 
 	return true;
 }
@@ -234,8 +259,8 @@ Mesh::Mesh(const std::vector<MeshVertex>& vertices, const std::vector<uint32_t>&
 	m_vertexCount = vertices.size();
 	m_indicesCount = indices.size();
 
-	GLuint currentVBO = GetCurrentBuffer(GL_ARRAY_BUFFER);
-	GLuint currentIBO = GetCurrentBuffer(GL_ELEMENT_ARRAY_BUFFER);
+	GLuint currentVBO = 0; //GetCurrentBuffer(GL_ARRAY_BUFFER);
+	GLuint currentIBO = 0; //GetCurrentBuffer(GL_ELEMENT_ARRAY_BUFFER);
 
 	m_vbo = CreateStaticBuffer(GL_ARRAY_BUFFER, vertices.size() * sizeof(MeshVertex), vertices.data());
 	if (!indices.empty())
@@ -251,11 +276,38 @@ Mesh::Mesh(const std::vector<MeshVertex>& vertices, const std::vector<uint32_t>&
 	glBindVertexArray(0);
 }
 //=============================================================================
+Mesh::Mesh(Mesh&& old) noexcept
+	: m_vertexCount(std::exchange(old.m_vertexCount, 0))
+	, m_indicesCount(std::exchange(old.m_indicesCount, 0))
+	, m_vao(std::exchange(old.m_vao, 0))
+	, m_vbo(std::exchange(old.m_vbo, 0))
+	, m_ibo(std::exchange(old.m_ibo, 0))
+	, m_material(std::exchange(old.m_material, std::nullopt))
+	, m_aabb(old.m_aabb)
+{
+}
+//=============================================================================
 Mesh::~Mesh()
 {
 	if (m_vbo) glDeleteBuffers(1, &m_vbo);
 	if (m_ibo) glDeleteBuffers(1, &m_ibo);
 	if (m_vao) glDeleteVertexArrays(1, &m_vao);
+}
+//=============================================================================
+Mesh& Mesh::operator=(Mesh&& old) noexcept
+{
+	if (this != &old)
+	{
+		this->~Mesh();
+		m_vertexCount = std::exchange(old.m_vertexCount, 0);
+		m_indicesCount = std::exchange(old.m_indicesCount, 0);
+		m_vao = std::exchange(old.m_vao, 0);
+		m_vbo = std::exchange(old.m_vbo, 0);
+		m_ibo = std::exchange(old.m_ibo, 0);
+		m_material = std::exchange(old.m_material, std::nullopt);
+		m_aabb = old.m_aabb;
+	}
+	return *this;
 }
 //=============================================================================
 void Mesh::Draw(GLenum mode)
@@ -265,6 +317,8 @@ void Mesh::Draw(GLenum mode)
 	glBindVertexArray(m_vao);
 	if (m_ibo > 0)
 	{
+		//glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
 		glDrawElements(mode, m_indicesCount, GL_UNSIGNED_INT, 0);
 	}
 	else
@@ -276,18 +330,18 @@ void Mesh::Draw(GLenum mode)
 //=============================================================================
 bool Model::Load(const std::string& fileName, std::optional<glm::mat4> modelTransformMatrix)
 {
-#define ASSIMP_LOAD_FLAGS (/*aiProcess_JoinIdenticalVertices |*/ \
-                           aiProcess_Triangulate |               \
-                           aiProcess_GenSmoothNormals |          \
-                           /*aiProcess_LimitBoneWeights |     */ \
-                           aiProcess_SplitLargeMeshes |          \
-                           aiProcess_ImproveCacheLocality |      \
-                           aiProcess_RemoveRedundantMaterials |  \
-                           aiProcess_FindDegenerates |           \
-                           aiProcess_FindInvalidData |           \
-                           /*aiProcess_GenUVCoords |          */ \
-                           aiProcess_FlipUVs |                   \
-                           aiProcess_CalcTangentSpace |          \
+#define ASSIMP_LOAD_FLAGS (aiProcess_JoinIdenticalVertices |    \
+                           aiProcess_Triangulate |              \
+                           aiProcess_GenSmoothNormals |         \
+                           aiProcess_LimitBoneWeights |         \
+                           aiProcess_SplitLargeMeshes |         \
+                           aiProcess_ImproveCacheLocality |     \
+                           aiProcess_RemoveRedundantMaterials | \
+                           aiProcess_FindDegenerates |          \
+                           aiProcess_FindInvalidData |          \
+                           aiProcess_GenUVCoords |              \
+                           aiProcess_FlipUVs |                  \
+                           aiProcess_CalcTangentSpace |         \
                            aiProcess_SortByPType)
 
 	Free();
@@ -311,7 +365,7 @@ bool Model::Load(const std::string& fileName, std::optional<glm::mat4> modelTran
 void Model::Create(const MeshCreateInfo& ci)
 {
 	Free();
-	m_meshes.emplace_back(Mesh(ci.vertices, ci.indices, ci.material));
+	m_meshes.emplace_back(Mesh{ ci.vertices, ci.indices, ci.material });
 	computeAABB();
 }
 //=============================================================================
@@ -344,11 +398,24 @@ void Model::Draw(GLenum mode)
 	}
 }
 //=============================================================================
+inline glm::mat4 aiMatrix4x4ToGlm(const aiMatrix4x4* from)
+{
+	glm::mat4 to;
+	to[0][0] = from->a1; to[0][1] = from->b1; to[0][2] = from->c1; to[0][3] = from->d1;
+	to[1][0] = from->a2; to[1][1] = from->b2; to[1][2] = from->c2; to[1][3] = from->d2;
+	to[2][0] = from->a3; to[2][1] = from->b3; to[2][2] = from->c3; to[2][3] = from->d3;
+	to[3][0] = from->a4; to[3][1] = from->b4; to[3][2] = from->c4; to[3][3] = from->d4;
+	return to;
+}
+//=============================================================================
 void Model::processNode(const aiScene* scene, aiNode* node, std::string_view directory, std::optional<glm::mat4> modelTransformMatrix)
 {
 	for (unsigned i = 0; i < node->mNumMeshes; i++)
 	{
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+		//glm::mat4 nodeTransform = aiMatrix4x4ToGlm(&node->mTransformation);
+		//if (modelTransformMatrix.has_value()) nodeTransform = modelTransformMatrix.value() * nodeTransform;
+		//m_meshes.emplace_back(processMesh(scene, mesh, directory, nodeTransform));
 		m_meshes.emplace_back(processMesh(scene, mesh, directory, modelTransformMatrix));
 	}
 
@@ -505,7 +572,7 @@ MeshCreateInfo GeometryGenerator::CreatePlane(float width, float height, float w
 			vertex.color = glm::vec3(1.0f);
 			vertex.normal = glm::vec3(0.0f, 1.0f, 0.0f);
 			vertex.texCoord = glm::vec2(static_cast<float>(ix) / wSegment, 1.0f - (static_cast<float>(iy) / hSegment));
-			vertex.tangent = glm::vec3(0.0f);
+			vertex.tangent = glm::vec3(0.0f); // TODO:
 			meshInfo.vertices.push_back(vertex);
 		}
 	}

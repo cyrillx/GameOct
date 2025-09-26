@@ -96,6 +96,7 @@
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DirectionalLight.cpp" />
+    <ClCompile Include="ExampleApp001.cpp" />
     <ClCompile Include="NanoCore.cpp" />
     <ClCompile Include="NanoMath.cpp" />
     <ClCompile Include="NanoRender.cpp" />

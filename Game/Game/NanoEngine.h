@@ -10,4 +10,6 @@ namespace engine
 	void EndFrame();
 
 	void DrawFPS();
+
+	float GetDeltaTime();
 }

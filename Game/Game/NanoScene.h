@@ -9,7 +9,11 @@ enum CameraMovement
 };
 
 // Default camera values
+#ifdef GLM_FORCE_LEFT_HANDED
 constexpr float CAMERA_YAW = 90.0f;
+#else
+constexpr float CAMERA_YAW = -90.0f;
+#endif
 constexpr float CAMERA_PITCH = 0.0f;
 constexpr float CAMERA_SPEED = 2.5f;
 constexpr float CAMERA_SENSITIVITY = 0.1f;

@@ -57,7 +57,6 @@ void mousePos(double xPos, double yPos) noexcept
 	cursorOffset.x += cursorPos.x - cursorPosLastFrame.x;
 	cursorOffset.y += cursorPosLastFrame.y - cursorPos.y;
 	cursorPosLastFrame = cursorPos;
-	cursorOffset *= input::sensitivity;
 }
 //=============================================================================
 void mouseScroll(double xOffset, double yOffset) noexcept
@@ -259,9 +258,10 @@ void window::Swap()
 	glfwSwapBuffers(handle);
 }
 //=============================================================================
-uint16_t window::GetWidth() { return windowWidth; }
-uint16_t window::GetHeight() { return windowHeight; }
-float window::GetAspect() { return windowAspect; }
+uint16_t window::GetWidth() noexcept { return windowWidth; }
+uint16_t window::GetHeight() noexcept { return windowHeight; }
+float window::GetAspect() noexcept { return windowAspect; }
+//=============================================================================
 bool* window::GetsKeys() { return keys; }
 //=============================================================================
 float window::GetXChange()
@@ -289,6 +289,17 @@ void input::Init()
 //=============================================================================
 void input::Update()
 {
+	for (unsigned i = 0; i < MaxKeys; ++i)
+	{
+		// keystates decay to either up or down after one frame
+		if (keysStatus[i] & KeyState::Up)   keysStatus[i] = KeyState::Up;
+		if (keysStatus[i] & KeyState::Down) keysStatus[i] = KeyState::Down;
+	}
+	for (unsigned i = 0; i < MaxMouseButtons; i++)
+	{
+		if (mouseButtonStatus[i] & KeyState::Up)   mouseButtonStatus[i] = KeyState::Up;
+		if (mouseButtonStatus[i] & KeyState::Down) mouseButtonStatus[i] = KeyState::Down;
+	}
 	scrollOffset = glm::vec2(0);
 	cursorOffset = glm::vec2(0);
 	glfwPollEvents();
@@ -299,17 +310,17 @@ void input::SetCursorVisible(bool state)
 	glfwSetInputMode(window::handle, GLFW_CURSOR, state ? GLFW_CURSOR_NORMAL : GLFW_CURSOR_DISABLED);
 }
 //=============================================================================
-const glm::vec2& input::GetCursorPos() { return cursorPos; }
-const glm::vec2& input::GetCursorOffset() { return cursorOffset; }
-const glm::vec2& input::GetPrevCursorPos() { return cursorPosLastFrame; }
-const glm::vec2& input::GetScrollOffset() { return scrollOffset; }
+const glm::vec2& input::GetCursorPos() noexcept { return cursorPos; }
+const glm::vec2& input::GetCursorOffset() noexcept { return cursorOffset; }
+const glm::vec2& input::GetPrevCursorPos() noexcept { return cursorPosLastFrame; }
+const glm::vec2& input::GetScrollOffset() noexcept { return scrollOffset; }
 //=============================================================================
-bool input::IsKeyDown(Key key)               { return keysStatus[key] == KeyState::Pressed || keysStatus[key] == KeyState::Down; }
-bool input::IsKeyUp(Key key)                 { return keysStatus[key] == KeyState::Released || keysStatus[key] == KeyState::Up; }
-bool input::IsKeyPressed(Key key)            { return keysStatus[key] == KeyState::Pressed; }
-bool input::IsKeyReleased(Key key)           { return keysStatus[key] == KeyState::Released; }
-bool input::IsMouseDown(MouseButton key)     { return mouseButtonStatus[key] == KeyState::Pressed || mouseButtonStatus[key] == KeyState::Down; }
-bool input::IsMouseUp(MouseButton key)       { return mouseButtonStatus[key] == KeyState::Released || mouseButtonStatus[key] == KeyState::Up; }
-bool input::IsMousePressed(MouseButton key)  { return mouseButtonStatus[key] == KeyState::Pressed; }
-bool input::IsMouseReleased(MouseButton key) { return mouseButtonStatus[key] == KeyState::Released; }
+bool input::IsKeyDown(Key key) noexcept { return keysStatus[key] & KeyState::Down; }
+bool input::IsKeyUp(Key key) noexcept { return keysStatus[key] & KeyState::Up; }
+bool input::IsKeyPressed(Key key) noexcept { return keysStatus[key] == KeyState::Pressed; }
+bool input::IsKeyReleased(Key key) noexcept { return keysStatus[key] == KeyState::Released; }
+bool input::IsMouseDown(MouseButton key) noexcept { return mouseButtonStatus[key] & KeyState::Down; }
+bool input::IsMouseUp(MouseButton key) noexcept { return mouseButtonStatus[key] & KeyState::Up; }
+bool input::IsMousePressed(MouseButton key) noexcept { return mouseButtonStatus[key] == KeyState::Pressed; }
+bool input::IsMouseReleased(MouseButton key) noexcept { return mouseButtonStatus[key] == KeyState::Released; }
 //=============================================================================

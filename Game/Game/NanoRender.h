@@ -62,7 +62,12 @@ class Mesh final
 {
 public:
 	Mesh(const std::vector<MeshVertex>& vertices, const std::vector<uint32_t>& indices, std::optional<Material> material);
+	Mesh(const Mesh&) = delete;
+	Mesh(Mesh&& mesh) noexcept;
 	~Mesh();
+
+	Mesh& operator=(const Mesh&) = delete;
+	Mesh& operator=(Mesh&& mesh) noexcept;
 
 	void Draw(GLenum mode = GL_TRIANGLES);
 

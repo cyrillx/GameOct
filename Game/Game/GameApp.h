@@ -5,5 +5,7 @@ void TempAppRun2();
 void TempAppRun3();
 void TempAppRun4();
 
-
+/*
+ - минимальный пример
+*/
 void ExampleApp001();

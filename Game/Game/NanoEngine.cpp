@@ -5,6 +5,14 @@
 #include "NanoRender.h"
 #include "NanoLog.h"
 //=============================================================================
+#if defined(_WIN32)
+extern "C"
+{
+	__declspec(dllexport) unsigned long NvOptimusEnablement = 1;
+	__declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;
+}
+#endif
+//=============================================================================
 namespace
 {
 	// timing
@@ -213,5 +221,10 @@ void engine::DrawFPS()
 		ImGui::Text("Ms  : %.1f", framesPerSecond > 0 ? 1000.0 / framesPerSecond : 0);
 	}
 	ImGui::End();
+}
+//=============================================================================
+float engine::GetDeltaTime()
+{
+	return deltaTime;
 }
 //=============================================================================

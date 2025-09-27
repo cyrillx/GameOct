@@ -196,7 +196,7 @@ void engine::EndFrame()
 	if (drawData->CmdListsCount > 0)
 	{
 		glDisable(GL_FRAMEBUFFER_SRGB);
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		//glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		ImGui_ImplOpenGL3_RenderDrawData(drawData);
 		glEnable(GL_FRAMEBUFFER_SRGB);
 	}

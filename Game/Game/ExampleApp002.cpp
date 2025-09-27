@@ -6,6 +6,8 @@
 #include "NanoOpenGL3.h"
 #include "NanoRender.h"
 #include "NanoScene.h"
+#include "GridAxis.h"
+#include "Scene.h"
 //=============================================================================
 namespace
 {
@@ -21,6 +23,7 @@ layout(location = 4) in vec3 vertexTangent;
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 modelMatrix;
+uniform mat4 normalMatrix;
 
 out vec3 fragColor;
 out vec3 fragNormal;
@@ -31,7 +34,7 @@ void main()
 {
 	gl_Position  = projectionMatrix * viewMatrix * modelMatrix * vec4(vertexPosition, 1.0);
 	fragColor    = vertexColor;
-	fragNormal   = mat3(transpose(inverse(modelMatrix))) * vertexNormal;
+	fragNormal   = mat3(normalMatrix) * vertexNormal;
 	fragTexCoord = vertexTexCoord;
 	fragTangent  = vertexTangent;
 }
@@ -49,15 +52,21 @@ uniform sampler2D diffuseTexture;
 
 layout(location = 0) out vec4 outputColor;
 
+const float alphaTestThreshold = 0.1f;
+
 void main()
 {
-	outputColor = texture(diffuseTexture, fragTexCoord);
+	vec4 albedo = texture(diffuseTexture, fragTexCoord);
+	if (albedo.a <= alphaTestThreshold) discard;
+
+	outputColor = albedo;
 }
 )";
 
-	GLState state;
 	GLuint shader;
-	Camera camera;
+
+	Scene scene;
+
 	Model modelPlane;
 	Model modelBox;
 	Model modelSphere;
@@ -74,21 +83,18 @@ void ExampleApp002()
 		if (!engine::Init(1600, 900, "Game"))
 			return;
 
-		state.depthState.enable = true;
-		state.blendState.enable = true;
-		state.blendState.srcAlpha = BlendFactor::OneMinusSrcAlpha;
+		scene.Init();
+		scene.GetCurrentCamera().SetPosition(glm::vec3(0.0f, 0.5f, 4.5f));
+		scene.SetGridAxis(22);
 
 		shader = CreateShaderProgram(shaderCodeVertex, shaderCodeFragment);
 		glUseProgram(shader);
 		SetUniform(GetUniformLocation(shader, "diffuseTexture"), 0);
 
-		camera.SetPosition(glm::vec3(0.0f, 0.5f, 4.5f));
-
 		modelPlane.Create(GeometryGenerator::CreatePlane(100, 100, 100, 100));
 		modelBox.Create(GeometryGenerator::CreateBox());
 		modelSphere.Create(GeometryGenerator::CreateSphere());
-
-		//modelTest.Load("data/models/simple_scene.glb");
+		modelTest.Load("data/models/school/school.obj");
 
 		texturePlane = textures::GetDefaultDiffuse2D();
 		textureBox = textures::LoadTexture2D("data/textures/temp.png", ColorSpace::sRGB, true);
@@ -97,50 +103,41 @@ void ExampleApp002()
 		{
 			engine::BeginFrame();
 
-			if (input::IsKeyDown(GLFW_KEY_W))
-				camera.ProcessKeyboard(CameraForward, engine::GetDeltaTime());
-			if (input::IsKeyDown(GLFW_KEY_S))
-				camera.ProcessKeyboard(CameraBackward, engine::GetDeltaTime());
-			if (input::IsKeyDown(GLFW_KEY_A))
-				camera.ProcessKeyboard(CameraLeft, engine::GetDeltaTime());
-			if (input::IsKeyDown(GLFW_KEY_D))
-				camera.ProcessKeyboard(CameraRight, engine::GetDeltaTime());
-
-			if (input::IsMouseDown(GLFW_MOUSE_BUTTON_RIGHT))
+			auto& camera = scene.GetCurrentCamera();
 			{
-				input::SetCursorVisible(false);
-				camera.ProcessMouseMovement(input::GetCursorOffset().x, input::GetCursorOffset().y);
+				if (input::IsKeyDown(GLFW_KEY_W)) camera.ProcessKeyboard(CameraForward, engine::GetDeltaTime());
+				if (input::IsKeyDown(GLFW_KEY_S)) camera.ProcessKeyboard(CameraBackward, engine::GetDeltaTime());
+				if (input::IsKeyDown(GLFW_KEY_A)) camera.ProcessKeyboard(CameraLeft, engine::GetDeltaTime());
+				if (input::IsKeyDown(GLFW_KEY_D)) camera.ProcessKeyboard(CameraRight, engine::GetDeltaTime());
+
+				if (input::IsMouseDown(GLFW_MOUSE_BUTTON_RIGHT))
+				{
+					input::SetCursorVisible(false);
+					camera.ProcessMouseMovement(input::GetCursorOffset().x, input::GetCursorOffset().y);
+				}
+				else if (input::IsMouseReleased(GLFW_MOUSE_BUTTON_RIGHT))
+				{
+					input::SetCursorVisible(true);
+				}
 			}
-			else if (input::IsMouseReleased(GLFW_MOUSE_BUTTON_RIGHT))
-			{
-				input::SetCursorVisible(true);
-			}
 
-			BindState(state);
-			glClearColor(0.3f, 0.4f, 0.9f, 1.0f);
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-			glm::mat4 perspective = glm::perspective(glm::radians(60.0f), window::GetAspect(), 0.01f, 1000.0f);
-
-			glActiveTexture(GL_TEXTURE0);
-
-
+			scene.Draw();
+			
 			glUseProgram(shader);
-			SetUniform(GetUniformLocation(shader, "projectionMatrix"), perspective);
-			SetUniform(GetUniformLocation(shader, "viewMatrix"), camera.GetViewMatrix());
+			SetUniform(GetUniformLocation(shader, "projectionMatrix"), scene.GetPerspective());
+			SetUniform(GetUniformLocation(shader, "viewMatrix"), scene.GetCurrentCamera().GetViewMatrix());
 
-			glBindTexture(GL_TEXTURE_2D, texturePlane.id);
-			SetUniform(GetUniformLocation(shader, "modelMatrix"), glm::mat4(1.0f));
-			modelPlane.Draw();
+			BindTexture2D(0, texturePlane.id);
+			//modelPlane.Draw();
 
-			//SetUniform(GetUniformLocation(shader, "modelMatrix"), glm::scale(glm::mat4(1.0f), glm::vec3(0.6f)));
-			//modelTest.Draw();
+			modelTest.SetModelMatrix(glm::scale(glm::mat4(1.0f), glm::vec3(0.2f)));
+			modelTest.Draw(GetUniformLocation(shader, "modelMatrix"), GetUniformLocation(shader, "normalMatrix"));
 
-			glBindTexture(GL_TEXTURE_2D, texturePlane.id);
+			BindTexture2D(0, texturePlane.id);
 			SetUniform(GetUniformLocation(shader, "modelMatrix"), glm::translate(glm::mat4(1.0f), glm::vec3(-3.0f, 1.0f, 0.0f)));
 			modelSphere.Draw();
 
-			glBindTexture(GL_TEXTURE_2D, textureBox.id);
+			BindTexture2D(0, textureBox.id);
 			SetUniform(GetUniformLocation(shader, "modelMatrix"), glm::translate(glm::mat4(1.0f), glm::vec3(3.0f, 0.5f, 0.0f)));
 			modelBox.Draw();
 

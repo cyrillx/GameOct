@@ -1,57 +1,50 @@
-﻿#pragma once
+#pragma once
 
-#include "Mesh.h"
-#include "Shader.h"
-#include "Camera.h"
-#include "Texture.h"
-#include "DirectionalLight.h"
-#include "PointLight.h"
-#include "SpotLight.h"
-#include "Material.h"
-#include "Model.h"
+#include "NanoRender.h"
+#include "NanoScene.h"
+#include "Light.h"
+#include "GridAxis.h"
 
-class Scene
+class ModelObject final
+{
+
+};
+
+class Scene final
 {
 public:
-	std::vector<Mesho2*> meshList;
-	std::vector<Shader> shaderList;
-	Shader directionalShadowShader;
-
-	std::vector<Modelo2> modelList;
-	Materialo2 shinyMaterial, dullMaterial;
-	Modelo2 bishop, king, queen, rook, knight, pawn;
-
-	CameraO2 camera;
-
-	TextureO2 brickTexture;
-	TextureO2 marbleTexture;
-	TextureO2 plainTexture;
-
-	DirectionalLight mainLight;
-	PointLight pointLights[MAX_POINT_LIGHTS];
-	SpotLight spotLights[MAX_SPOT_LIGHTS];
-
-	GLfloat deltaTime;
-	GLfloat lastTime;
-
-	glm::mat4 projection;
-
-	unsigned int pointLightCount, spotLightCount;
-
-	GLuint uniformProjection, uniformModel, uniformView, uniformEyePosition, uniformSpecularIntensity, uniformShininess, uniformFogColour;
-
-	Scene();
 	void Init();
+	void Close();
+	void Draw();
 
-	void calcAverageNormals(unsigned int* indices, unsigned int indiceCount, GLfloat* vertices, unsigned int verticeCount,
-		unsigned int vLength, unsigned int normalOffset);
-	void CreateObjects();
-	void CreateShaders();
+	//-------------------------------------------------------------------------
+	// Camera
+	//-------------------------------------------------------------------------
+#pragma region [ Camera ]
 
-	void TransformAndRenderModel(Modelo2* m, Materialo2* mat, GLfloat transX, GLfloat transY, GLfloat transZ, GLfloat scale, GLfloat rotX, GLfloat rotY, GLfloat rotZ);
-	void TransformAndRenderMesh(Mesho2* m, Materialo2* mat, GLfloat transX, GLfloat transY, GLfloat transZ, GLfloat scale, GLfloat rotX, GLfloat rotY, GLfloat rotZ);
-	void RenderScene();
-	void DirectionalShadowMapPass();
-	void RenderPass(glm::mat4 viewMatrix);
-	void Render();
+	Camera& GetCurrentCamera() { return m_cameras[m_currentCameraId]; }
+	const Camera& GetCurrentCamera() const { return m_cameras[m_currentCameraId]; }
+	void SetCurrentCamera(size_t id) { assert(id < m_cameras.size()); m_currentCameraId = id; }
+	void AddCamera(const Camera& camera) { m_cameras.emplace_back(camera); }
+
+	const glm::mat4& GetPerspective() const { return m_perspective; }
+
+#pragma endregion
+
+	void SetGridAxis(int gridDim);
+
+private:
+	GLState                       m_state;
+
+	glm::mat4                     m_perspective{ 1.0f };
+
+	size_t                        m_currentCameraId{ 0 };
+	std::vector<Camera>           m_cameras{ 1u };
+
+	std::vector<ModelObject>      m_objModel;
+
+	std::vector<DirectionalLight> m_directionalLights;
+	std::vector<SpotLight>        m_spotLights;
+
+	std::unique_ptr<GridAxis>     m_gridAxis;
 };

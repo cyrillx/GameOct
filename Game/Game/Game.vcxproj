@@ -95,18 +95,21 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="DirectionalLight.cpp" />
+    <ClCompile Include="DirectionalLighto2.cpp" />
     <ClCompile Include="ExampleApp001.cpp" />
     <ClCompile Include="ExampleApp002.cpp" />
     <ClCompile Include="Framebuffer.cpp" />
+    <ClCompile Include="GridAxis.cpp" />
+    <ClCompile Include="Light.cpp" />
     <ClCompile Include="NanoCore.cpp" />
     <ClCompile Include="NanoMath.cpp" />
     <ClCompile Include="NanoRender.cpp" />
     <ClCompile Include="NanoScene.cpp" />
+    <ClCompile Include="Scene.cpp" />
     <ClCompile Include="TempApp4.cpp" />
     <ClCompile Include="TempApp2.cpp" />
     <ClCompile Include="TempApp.cpp" />
-    <ClCompile Include="Light.cpp" />
+    <ClCompile Include="Lighto2.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
@@ -117,11 +120,11 @@
     <ClCompile Include="NanoOpenGL3.cpp" />
     <ClCompile Include="NanoOpenGLExt.cpp" />
     <ClCompile Include="NanoWindow.cpp" />
-    <ClCompile Include="PointLight.cpp" />
-    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="PointLighto2.cpp" />
+    <ClCompile Include="Sceneo2.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShadowMap.cpp" />
-    <ClCompile Include="SpotLight.cpp" />
+    <ClCompile Include="SpotLighto2.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -131,10 +134,12 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraOld.h" />
-    <ClInclude Include="DirectionalLight.h" />
+    <ClInclude Include="DirectionalLighto2.h" />
     <ClInclude Include="Framebuffer.h" />
     <ClInclude Include="GameApp.h" />
+    <ClInclude Include="GridAxis.h" />
     <ClInclude Include="Light.h" />
+    <ClInclude Include="Lighto2.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshTemp.h" />
@@ -150,15 +155,20 @@
     <ClInclude Include="NanoRender.h" />
     <ClInclude Include="NanoScene.h" />
     <ClInclude Include="NanoWindow.h" />
-    <ClInclude Include="PointLight.h" />
+    <ClInclude Include="PointLighto2.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="Sceneo2.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShadowMap.h" />
-    <ClInclude Include="SpotLight.h" />
+    <ClInclude Include="SpotLighto2.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Texture.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\..\bin\data\shaders\axis\fragment.glsl" />
+    <None Include="..\..\bin\data\shaders\axis\vertex.glsl" />
+    <None Include="..\..\bin\data\shaders\grid\fragment.glsl" />
+    <None Include="..\..\bin\data\shaders\grid\vertex.glsl" />
     <None Include="..\..\bin\data\shaders\NormalPassShader.fs" />
     <None Include="..\..\bin\data\shaders\NormalPassShader.vs" />
     <None Include="..\..\bin\data\shaders\NormalPassShaderOLD.fs" />

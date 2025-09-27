@@ -72,9 +72,9 @@ private:
 	void updateDepthRenderbufferAttachment(int width, int height, int insertPos);
 	void updateDepthStencilRenderbufferAttachment(int width, int height, int insertPos);
 
-	GLuint fbo{ 0 };
-	bool renderColor;
-	bool multiSample;
-	bool HDR;
-	std::vector<Attachment> attachment;
+	GLuint                  m_fbo{ 0 };
+	bool                    m_renderColor{ false };
+	bool                    m_multiSample{ false };
+	bool                    m_hdr{ false };
+	std::vector<Attachment> m_attachment;
 };

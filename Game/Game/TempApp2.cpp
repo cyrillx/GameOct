@@ -6,7 +6,7 @@
 #include "NanoWindow.h"
 #include "NanoOpenGL3.h"
 #include "NanoIO.h"
-#include "Scene.h"
+#include "Sceneo2.h"
 //=============================================================================
 namespace
 {
@@ -31,7 +31,7 @@ void TempAppRun2()
 		//state.blendState.enable = true;
 		//state.blendState.srcAlpha = BlendFactor::OneMinusSrcAlpha;
 
-		Scene scene = Scene();
+		Sceneo2 scene = Sceneo2();
 
 		scene.Init();
 		

@@ -414,6 +414,12 @@ GLuint CreateTexture2D(GLint internalformat, GLsizei width, GLsizei height, GLen
 	return textureID;
 }
 //=============================================================================
+void BindTexture2D(GLenum id, GLuint texture)
+{
+	glActiveTexture(GL_TEXTURE0 + id);
+	glBindTexture(GL_TEXTURE_2D, texture);
+}
+//=============================================================================
 GLuint CreateSamplerState(const SamplerInfo& info)
 {
 	GLuint sampler;

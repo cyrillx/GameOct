@@ -158,6 +158,8 @@ GLuint LoadTexture2D(std::string_view path, bool gammaCorrection, bool flipVerti
 
 GLuint CreateTexture2D(GLint internalformat, GLsizei width, GLsizei height, GLenum format, GLenum type, const void* pixels = nullptr);
 
+void BindTexture2D(GLenum id, GLuint texture);
+
 //=============================================================================
 // Sampler
 //=============================================================================

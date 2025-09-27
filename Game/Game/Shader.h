@@ -1,7 +1,7 @@
 ﻿#pragma once
 
-#include "DirectionalLight.h"
-#include "SpotLight.h"
+#include "DirectionalLighto2.h"
+#include "SpotLighto2.h"
 
 const int MAX_POINT_LIGHTS = 3;
 const int MAX_SPOT_LIGHTS = 3;
@@ -28,9 +28,9 @@ public:
 	GLuint GetEyePositionLocation();
 	GLuint GetFogColourLocation();
 
-	void SetDirectionalLight(DirectionalLight* dLight);
-	void SetPointLights(PointLight* pLight, unsigned int lightCount);
-	void SetSpotLights(SpotLight* sLight, unsigned int lightCount);
+	void SetDirectionalLight(DirectionalLighto2* dLight);
+	void SetPointLights(PointLighto2* pLight, unsigned int lightCount);
+	void SetSpotLights(SpotLighto2* sLight, unsigned int lightCount);
 	void SetTexture(GLuint textureUnit);
 	void SetDirectionalShadowMap(GLuint textureUnit);
 	void SetDirectionalLightTransform(glm::mat4* lTransform);

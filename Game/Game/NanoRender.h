@@ -19,8 +19,6 @@ namespace textures
 	Texture2D GetDefaultNormal2D();
 	Texture2D GetDefaultSpecular2D();
 	Texture2D LoadTexture2D(const std::string& fileName, ColorSpace colorSpace = ColorSpace::Linear, bool flipVertical = false);
-
-	// REMARK: текстура удаляется при удалении
 	Texture2D CreateTextureFromData(std::string_view name, aiTexture* embTex, ColorSpace colorSpace = ColorSpace::Linear, bool flipVertical = false);
 } // namespace textures
 
@@ -104,7 +102,7 @@ public:
 
 	void DrawSubMesh(size_t id, GLenum mode = GL_TRIANGLES);
 	void Draw(GLenum mode = GL_TRIANGLES);
-	void Draw(int modelMatrixLoc, int normalMatrixLoc, GLenum mode = GL_TRIANGLES);
+	void Draw(int modelMatrixLoc, int normalMatrixLoc, GLenum mode = GL_TRIANGLES);// TODO: не нужно. модель может быть одна, а объектов с ней много. у них своя матрица и она должна умножаться на эту
 
 	size_t GetNumMeshes() const noexcept { return m_meshes.size(); }
 	const std::vector<Mesh>& GetMeshes() const noexcept { return m_meshes; }
@@ -113,6 +111,8 @@ public:
 
 	void SetModelMatrix(const glm::mat4& model) { m_model = model; }
 	const glm::mat4& GetModelMatrix() const noexcept { return m_model; }
+
+	bool Valid() const noexcept { return !m_meshes.empty(); }
 
 private:
 	void processNode(const aiScene* scene, aiNode* node, std::string_view directory);

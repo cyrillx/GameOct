@@ -25,6 +25,20 @@ void Scene::Draw()
 	if (m_gridAxis) m_gridAxis->Draw(m_perspective, GetCurrentCamera().GetViewMatrix());
 }
 //=============================================================================
+Model* Scene::LoadModel(const std::string& fileName)
+{
+	auto it = m_models.find(fileName);
+	if (it != m_models.end())
+	{
+		return &it->second;
+	}
+	else
+	{
+		m_models[fileName] = Model{ .id = textureID, .width = (uint32_t)width, .height = (uint32_t)height };
+		return m_models[fileName];
+	}
+}
+//=============================================================================
 void Scene::SetGridAxis(int gridDim)
 {
 	if (gridDim == 0)

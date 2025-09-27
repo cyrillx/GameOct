@@ -5,9 +5,16 @@
 #include "Light.h"
 #include "GridAxis.h"
 
-class ModelObject final
+struct ModelObject final
 {
+	//void SetModelMatrix(const glm::mat4& m) { model.SetModelMatrix(m); }
+	//const glm::mat4& GetModelMatrix() const noexcept { return model.GetModelMatrix(); }
 
+	const AABB& GetAABB() const noexcept { return model->GetAABB(); }
+
+	Model*    model{ nullptr };
+	glm::mat4 modelMat;
+	bool      visible{ true };
 };
 
 class Scene final
@@ -17,9 +24,13 @@ public:
 	void Close();
 	void Draw();
 
-	//-------------------------------------------------------------------------
-	// Camera
-	//-------------------------------------------------------------------------
+#pragma region [ Model ]
+
+	Model* LoadModel(const std::string& fileName);
+	Model* AddModel(const std::string& name, const MeshCreateInfo& createInfo);
+
+#pragma endregion
+
 #pragma region [ Camera ]
 
 	Camera& GetCurrentCamera() { return m_cameras[m_currentCameraId]; }
@@ -34,17 +45,17 @@ public:
 	void SetGridAxis(int gridDim);
 
 private:
-	GLState                       m_state;
+	GLState                                m_state;
 
-	glm::mat4                     m_perspective{ 1.0f };
+	glm::mat4                              m_perspective{ 1.0f };
+	size_t                                 m_currentCameraId{ 0 };
+	std::vector<Camera>                    m_cameras{ 1u };
 
-	size_t                        m_currentCameraId{ 0 };
-	std::vector<Camera>           m_cameras{ 1u };
+	std::unordered_map<std::string, Model> m_models;
+	std::vector<ModelObject>               m_objModel;
 
-	std::vector<ModelObject>      m_objModel;
+	std::vector<DirectionalLight>          m_directionalLights;
+	std::vector<SpotLight>                 m_spotLights;
 
-	std::vector<DirectionalLight> m_directionalLights;
-	std::vector<SpotLight>        m_spotLights;
-
-	std::unique_ptr<GridAxis>     m_gridAxis;
+	std::unique_ptr<GridAxis>              m_gridAxis;
 };

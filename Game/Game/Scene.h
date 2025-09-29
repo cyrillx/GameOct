@@ -11,47 +11,34 @@ struct Entity final
 
 	Model     model;
 	glm::mat4 modelMat{ glm::mat4(1.0f) };
-	int       modelMatrixId{ -1 };
-	int       normalMatrixId{ -1 };
-
 	bool      visible{ true };
-
-
 };
 
 class Scene final
 {
 public:
-	void Init();
+	bool Init();
 	void Close();
-	void Draw(GLuint shaderId);
+	void Draw();
 
-#pragma region [ Entity ]
 
+	void BindCamera(Camera* camera);
 	void BindEntity(Entity* ent);
-
-#pragma endregion
-
-
-#pragma region [ Camera ]
-
-	Camera& GetCurrentCamera() { return m_cameras[m_currentCameraId]; }
-	const Camera& GetCurrentCamera() const { return m_cameras[m_currentCameraId]; }
-	void SetCurrentCamera(size_t id) { assert(id < m_cameras.size()); m_currentCameraId = id; }
-	void AddCamera(const Camera& camera) { m_cameras.emplace_back(camera); }
-
-	const glm::mat4& GetPerspective() const { return m_perspective; }
-
-#pragma endregion
 
 	void SetGridAxis(int gridDim);
 
 private:
+	bool initMainShader();
+
 	GLState                                m_state;
+	GLuint                                 m_mainShader{ 0 };
+	int                                    m_mainShaderProjectionMatrixId{ -1 };
+	int                                    m_mainShaderViewMatrixId{ -1 };
+	int                                    m_mainShaderModelMatrixId{ -1 };
+	int                                    m_mainShaderNormalMatrixId{ -1 };
 
 	glm::mat4                              m_perspective{ 1.0f };
-	size_t                                 m_currentCameraId{ 0 };
-	std::vector<Camera>                    m_cameras{ 1u };
+	Camera*                                m_camera{ nullptr };
 
 	std::vector<Entity*>                   m_entities;
 	size_t                                 m_maxEnts{ 0 };

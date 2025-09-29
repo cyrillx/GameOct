@@ -11,76 +11,15 @@
 //=============================================================================
 namespace
 {
-	const char* shaderCodeVertex = R"(
-#version 330 core
-
-layout(location = 0) in vec3 vertexPosition;
-layout(location = 1) in vec3 vertexColor;
-layout(location = 2) in vec3 vertexNormal;
-layout(location = 3) in vec2 vertexTexCoord;
-layout(location = 4) in vec3 vertexTangent;
-
-uniform mat4 projectionMatrix;
-uniform mat4 viewMatrix;
-uniform mat4 modelMatrix;
-uniform mat4 normalMatrix;
-
-out vec3 fragColor;
-out vec3 fragNormal;
-out vec2 fragTexCoord;
-out vec3 fragTangent;
-
-void main()
-{
-	gl_Position  = projectionMatrix * viewMatrix * modelMatrix * vec4(vertexPosition, 1.0);
-	fragColor    = vertexColor;
-	fragNormal   = mat3(normalMatrix) * vertexNormal;
-	fragTexCoord = vertexTexCoord;
-	fragTangent  = vertexTangent;
-}
-)";
-
-	const char* shaderCodeFragment = R"(
-#version 330 core
-
-in vec3 fragColor;
-in vec3 fragNormal;
-in vec2 fragTexCoord;
-in vec3 fragTangent;
-
-uniform sampler2D diffuseTexture;
-
-layout(location = 0) out vec4 outputColor;
-
-const float alphaTestThreshold = 0.1f;
-
-void main()
-{
-	vec4 albedo = texture(diffuseTexture, fragTexCoord);
-	if (albedo.a <= alphaTestThreshold) discard;
-
-	outputColor = albedo;
-}
-)";
-
-	GLuint shader;
-
 	Scene scene;
+
+	Camera camera;
 
 	Entity modelPlane;
 	Entity modelBox;
 	Entity modelSphere;
 	Entity modelTest;
 	Entity modelTest2;
-
-	//Model modelPlane;
-	//Model modelBox;
-	//Model modelSphere;
-	//Model modelTest;
-	//Model modelTest2;
-
-	Texture2D texturePlane;
-	Texture2D textureBox;
 }
 //=============================================================================
 void ExampleApp002()
@@ -91,12 +30,8 @@ void ExampleApp002()
 			return;
 
 		scene.Init();
-		scene.GetCurrentCamera().SetPosition(glm::vec3(0.0f, 0.5f, 4.5f));
+		camera.SetPosition(glm::vec3(0.0f, 0.5f, 4.5f));
 		scene.SetGridAxis(22);
-
-		shader = CreateShaderProgram(shaderCodeVertex, shaderCodeFragment);
-		glUseProgram(shader);
-		SetUniform(GetUniformLocation(shader, "diffuseTexture"), 0);
 
 		modelPlane.model.Create(GeometryGenerator::CreatePlane(100, 100, 100, 100));
 		modelBox.model.Create(GeometryGenerator::CreateBox());
@@ -109,18 +44,10 @@ void ExampleApp002()
 		// rotate mat
 		modelTest2.modelMat = glm::scale(modelTest2.modelMat, glm::vec3(0.2f));
 
-
-		modelTest2.modelMatrixId = GetUniformLocation(shader, "modelMatrix");
-		modelTest2.normalMatrixId = GetUniformLocation(shader, "normalMatrix");
-
-		texturePlane = textures::GetDefaultDiffuse2D();
-		textureBox = textures::LoadTexture2D("data/textures/temp.png", ColorSpace::sRGB, true);
-
 		while (!engine::ShouldClose())
 		{
 			engine::BeginFrame();
 
-			auto& camera = scene.GetCurrentCamera();
 			{
 				if (input::IsKeyDown(GLFW_KEY_W)) camera.ProcessKeyboard(CameraForward, engine::GetDeltaTime());
 				if (input::IsKeyDown(GLFW_KEY_S)) camera.ProcessKeyboard(CameraBackward, engine::GetDeltaTime());
@@ -138,8 +65,9 @@ void ExampleApp002()
 				}
 			}
 
+			scene.BindCamera(&camera);
 			scene.BindEntity(&modelTest2);
-			scene.Draw(shader);
+			scene.Draw();
 
 			engine::DrawFPS();
 

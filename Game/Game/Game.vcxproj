@@ -169,6 +169,8 @@
     <None Include="..\..\bin\data\shaders\axis\vertex.glsl" />
     <None Include="..\..\bin\data\shaders\grid\fragment.glsl" />
     <None Include="..\..\bin\data\shaders\grid\vertex.glsl" />
+    <None Include="..\..\bin\data\shaders\Model.frag" />
+    <None Include="..\..\bin\data\shaders\Model.vert" />
     <None Include="..\..\bin\data\shaders\NormalPassShader.fs" />
     <None Include="..\..\bin\data\shaders\NormalPassShader.vs" />
     <None Include="..\..\bin\data\shaders\NormalPassShaderOLD.fs" />

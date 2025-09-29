@@ -1,9 +1,11 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "Scene.h"
 #include "NanoWindow.h"
 //=============================================================================
 void Scene::Init()
 {
+	m_entities.reserve(100000);
+
 	m_state.depthState.enable = true;
 	//m_state.blendState.enable = true;
 	//m_state.blendState.srcAlpha = BlendFactor::OneMinusSrcAlpha;
@@ -11,15 +13,20 @@ void Scene::Init()
 //=============================================================================
 void Scene::Close()
 {
-	for (auto it = m_models.begin(); it != m_models.end(); it++)
-	{
-		it->second.Free();
-	}
-	m_models.clear();
 	m_gridAxis.reset();
 }
 //=============================================================================
-void Scene::Draw()
+void Scene::BindEntity(Entity* ent)
+{
+	if (m_maxEnts >= m_entities.size())
+		m_entities.push_back(ent);
+	else
+		m_entities[m_maxEnts] = ent;
+
+	m_maxEnts++;
+}
+//=============================================================================
+void Scene::Draw(GLuint shaderId)
 {
 	m_perspective = glm::perspective(glm::radians(60.0f), window::GetAspect(), 0.01f, 1000.0f);
 
@@ -27,37 +34,26 @@ void Scene::Draw()
 	glClearColor(0.3f, 0.4f, 0.9f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	glUseProgram(shaderId);
+	SetUniform(GetUniformLocation(shaderId, "projectionMatrix"), GetPerspective());
+	SetUniform(GetUniformLocation(shaderId, "viewMatrix"), GetCurrentCamera().GetViewMatrix());
+
+	ModelDrawInfo drawInfo;
+	drawInfo.bindMaterials = true;
+	drawInfo.mode = GL_TRIANGLES;
+
+	for (size_t i = 0; i < m_maxEnts; i++)
+	{
+		drawInfo.model = &m_entities[i]->modelMat;
+		drawInfo.modelMatrixLoc = m_entities[i]->modelMatrixId;
+		drawInfo.normalMatrixLoc = m_entities[i]->normalMatrixId;
+
+		m_entities[i]->model.Draw(drawInfo);
+	}
+
 	if (m_gridAxis) m_gridAxis->Draw(m_perspective, GetCurrentCamera().GetViewMatrix());
-}
-//=============================================================================
-Model* Scene::LoadModel(const std::string& fileName)
-{
-	auto it = m_models.find(fileName);
-	if (it != m_models.end())
-	{
-		return &it->second;
-	}
-	else
-	{
-		m_models[fileName] = Model();
-		m_models[fileName].Load(fileName);
-		return &m_models[fileName];
-	}
-}
-//=============================================================================
-Model* Scene::AddModel(const std::string& name, const MeshCreateInfo& createInfo)
-{
-	auto it = m_models.find(name);
-	if (it != m_models.end())
-	{
-		return &it->second;
-	}
-	else
-	{
-		m_models[name] = Model();
-		m_models[name].Create(createInfo);
-		return &m_models[name];
-	}
+
+	m_maxEnts = 0;
 }
 //=============================================================================
 void Scene::SetGridAxis(int gridDim)

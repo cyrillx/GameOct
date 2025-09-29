@@ -67,11 +67,17 @@ void main()
 
 	Scene scene;
 
-	Model modelPlane;
-	Model modelBox;
-	Model modelSphere;
-	Model modelTest;
-	Model modelTest2;
+	Entity modelPlane;
+	Entity modelBox;
+	Entity modelSphere;
+	Entity modelTest;
+	Entity modelTest2;
+
+	//Model modelPlane;
+	//Model modelBox;
+	//Model modelSphere;
+	//Model modelTest;
+	//Model modelTest2;
 
 	Texture2D texturePlane;
 	Texture2D textureBox;
@@ -92,12 +98,16 @@ void ExampleApp002()
 		glUseProgram(shader);
 		SetUniform(GetUniformLocation(shader, "diffuseTexture"), 0);
 
-		modelPlane.Create(GeometryGenerator::CreatePlane(100, 100, 100, 100));
-		modelBox.Create(GeometryGenerator::CreateBox());
-		modelSphere.Create(GeometryGenerator::CreateSphere());
-		modelTest.Load("data/models/tree.glb");
-		modelTest2.Load("data/models/cottage/cottage_obj.obj");
-		modelTest2.SetModelMatrix(glm::scale(glm::mat4(1.0f), glm::vec3(0.2f)));
+		modelPlane.model.Create(GeometryGenerator::CreatePlane(100, 100, 100, 100));
+		modelBox.model.Create(GeometryGenerator::CreateBox());
+		modelSphere.model.Create(GeometryGenerator::CreateSphere());
+		modelTest.model.Load("data/models/tree.glb");
+		
+		modelTest2.model.Load("data/models/cottage/cottage_obj.obj");
+		modelTest2.model.SetModelMatrix(glm::scale(glm::mat4(1.0f), glm::vec3(0.2f)));
+		modelTest2.modelMat = glm::translate(glm::mat4(1.0f), glm::vec3(-5.0f, 0.0f, -3.0f));
+		modelTest2.modelMatrixId = GetUniformLocation(shader, "modelMatrix");
+		modelTest2.normalMatrixId = GetUniformLocation(shader, "normalMatrix");
 
 		texturePlane = textures::GetDefaultDiffuse2D();
 		textureBox = textures::LoadTexture2D("data/textures/temp.png", ColorSpace::sRGB, true);
@@ -124,30 +134,8 @@ void ExampleApp002()
 				}
 			}
 
-			scene.Draw();
-			
-			glUseProgram(shader);
-			SetUniform(GetUniformLocation(shader, "projectionMatrix"), scene.GetPerspective());
-			SetUniform(GetUniformLocation(shader, "viewMatrix"), scene.GetCurrentCamera().GetViewMatrix());
-
-			BindTexture2D(0, texturePlane.id);
-			//modelPlane.Draw();
-
-			//modelTest.SetModelMatrix(glm::scale(glm::mat4(1.0f), glm::vec3(0.2f)));
-			modelTest.Draw(GetUniformLocation(shader, "modelMatrix"), GetUniformLocation(shader, "normalMatrix"));
-
-			modelTest2.Draw(
-				glm::translate(glm::mat4(1.0f), glm::vec3(-5.0f, 0.0f, -3.0f)), 
-				GetUniformLocation(shader, "modelMatrix"), 
-				GetUniformLocation(shader, "normalMatrix"));
-
-			BindTexture2D(0, texturePlane.id);
-			SetUniform(GetUniformLocation(shader, "modelMatrix"), glm::translate(glm::mat4(1.0f), glm::vec3(-3.0f, 1.0f, 0.0f)));
-			modelSphere.Draw();
-
-			BindTexture2D(0, textureBox.id);
-			SetUniform(GetUniformLocation(shader, "modelMatrix"), glm::translate(glm::mat4(1.0f), glm::vec3(3.0f, 0.5f, 0.0f)));
-			modelBox.Draw();
+			scene.BindEntity(&modelTest2);
+			scene.Draw(shader);
 
 			engine::DrawFPS();
 

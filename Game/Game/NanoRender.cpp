@@ -388,11 +388,11 @@ Mesh& Mesh::operator=(Mesh&& old) noexcept
 	return *this;
 }
 //=============================================================================
-void Mesh::Draw(GLenum mode, bool instancing, int amount)
+void Mesh::Draw(GLenum mode, bool bindMaterial, bool instancing, int amount)
 {
 	assert(m_vao);
 
-	if (m_material && !m_material->diffuseTextures.empty())
+	if (bindMaterial && m_material && !m_material->diffuseTextures.empty())
 	{
 		BindTexture2D(0, m_material->diffuseTextures[0].id);
 	}
@@ -515,6 +515,33 @@ void Model::Draw(const glm::mat4& modelMat, int modelMatrixLoc, int normalMatrix
 				SetUniform(normalMatrixLoc, glm::transpose(glm::inverse(finalModel)));
 		}
 		m_meshes[i].Draw(mode);
+	}
+}
+//=============================================================================
+void Model::Draw(const ModelDrawInfo& drawInfo)
+{
+	glm::mat4 model = m_model;
+	if (drawInfo.model) model = *drawInfo.model * model;
+
+	size_t currentMesh = 0;
+	size_t endMesh = m_meshes.size();
+	if (drawInfo.subMeshDraw) // only sub mesh
+	{
+		currentMesh = drawInfo.subMeshDraw.value();
+		endMesh = currentMesh + 1;
+	}
+
+	for (; currentMesh < endMesh; currentMesh++)
+	{
+		if (drawInfo.modelMatrixLoc > -1)
+		{
+			glm::mat4 finalModel = model * m_meshes[currentMesh].GetModelMatrix();
+			SetUniform(drawInfo.modelMatrixLoc, finalModel);
+			
+			if (drawInfo.normalMatrixLoc > -1)
+				SetUniform(drawInfo.normalMatrixLoc, glm::transpose(glm::inverse(finalModel)));
+		}
+		m_meshes[currentMesh].Draw(drawInfo.mode, drawInfo.bindMaterials);
 	}
 }
 //=============================================================================

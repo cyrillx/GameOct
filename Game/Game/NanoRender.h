@@ -70,7 +70,7 @@ public:
 	Mesh& operator=(const Mesh&) = delete;
 	Mesh& operator=(Mesh&& mesh) noexcept;
 
-	void Draw(GLenum mode = GL_TRIANGLES, bool instancing = false, int amount = 1);
+	void Draw(GLenum mode = GL_TRIANGLES, bool bindMaterial = true, bool instancing = false, int amount = 1);
 
 	uint32_t GetVertexCount() const noexcept { return m_vertexCount; }
 	uint32_t GetIndexCount() const noexcept { return m_indicesCount; }
@@ -91,6 +91,16 @@ private:
 	AABB                    m_aabb{};
 };
 
+struct ModelDrawInfo final
+{
+	GLenum                mode{ GL_TRIANGLES };
+	int                   modelMatrixLoc{ -1 };
+	int                   normalMatrixLoc{ -1 };
+	glm::mat4*            model{nullptr};
+	bool                  bindMaterials{ true };
+	std::optional<size_t> subMeshDraw{};
+};
+
 class Model final
 {
 public:
@@ -104,6 +114,8 @@ public:
 	void Draw(GLenum mode = GL_TRIANGLES);
 	void Draw(int modelMatrixLoc, int normalMatrixLoc, GLenum mode = GL_TRIANGLES);
 	void Draw(const glm::mat4& modelMat, int modelMatrixLoc, int normalMatrixLoc, GLenum mode = GL_TRIANGLES);
+
+	void Draw(const ModelDrawInfo& drawInfo);
 
 	size_t GetNumMeshes() const noexcept { return m_meshes.size(); }
 	const std::vector<Mesh>& GetMeshes() const noexcept { return m_meshes; }

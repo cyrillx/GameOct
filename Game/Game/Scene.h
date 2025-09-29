@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "NanoRender.h"
 #include "NanoScene.h"
@@ -7,11 +7,16 @@
 
 struct Entity final
 {
-	const AABB& GetAABB() const noexcept { return model->GetAABB(); }
+	const AABB& GetAABB() const noexcept { return model.GetAABB(); }
 
-	Model*    model{ nullptr };
+	Model     model;
 	glm::mat4 modelMat{ glm::mat4(1.0f) };
+	int       modelMatrixId{ -1 };
+	int       normalMatrixId{ -1 };
+
 	bool      visible{ true };
+
+
 };
 
 class Scene final
@@ -19,14 +24,14 @@ class Scene final
 public:
 	void Init();
 	void Close();
-	void Draw();
+	void Draw(GLuint shaderId);
 
-#pragma region [ Model ]
+#pragma region [ Entity ]
 
-	Model* LoadModel(const std::string& fileName);
-	Model* AddModel(const std::string& name, const MeshCreateInfo& createInfo);
+	void BindEntity(Entity* ent);
 
 #pragma endregion
+
 
 #pragma region [ Camera ]
 
@@ -48,8 +53,8 @@ private:
 	size_t                                 m_currentCameraId{ 0 };
 	std::vector<Camera>                    m_cameras{ 1u };
 
-	std::unordered_map<std::string, Model> m_models;
-	std::vector<Entity>                    m_entities;
+	std::vector<Entity*>                   m_entities;
+	size_t                                 m_maxEnts{ 0 };
 
 	std::vector<DirectionalLight>          m_directionalLights;
 	std::vector<SpotLight>                 m_spotLights;

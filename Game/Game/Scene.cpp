@@ -44,9 +44,11 @@ void Scene::Draw(GLuint shaderId)
 
 	for (size_t i = 0; i < m_maxEnts; i++)
 	{
-		drawInfo.model = &m_entities[i]->modelMat;
-		drawInfo.modelMatrixLoc = m_entities[i]->modelMatrixId;
-		drawInfo.normalMatrixLoc = m_entities[i]->normalMatrixId;
+		if (m_entities[i]->modelMatrixId > -1)
+			SetUniform(m_entities[i]->modelMatrixId, m_entities[i]->modelMat);
+
+		if (m_entities[i]->normalMatrixId > -1)
+			SetUniform(m_entities[i]->normalMatrixId, glm::transpose(glm::inverse(m_entities[i]->modelMat)));
 
 		m_entities[i]->model.Draw(drawInfo);
 	}

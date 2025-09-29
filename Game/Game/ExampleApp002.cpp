@@ -104,8 +104,12 @@ void ExampleApp002()
 		modelTest.model.Load("data/models/tree.glb");
 		
 		modelTest2.model.Load("data/models/cottage/cottage_obj.obj");
-		modelTest2.model.SetModelMatrix(glm::scale(glm::mat4(1.0f), glm::vec3(0.2f)));
+		// TRS matrix
 		modelTest2.modelMat = glm::translate(glm::mat4(1.0f), glm::vec3(-5.0f, 0.0f, -3.0f));
+		// rotate mat
+		modelTest2.modelMat = glm::scale(modelTest2.modelMat, glm::vec3(0.2f));
+
+
 		modelTest2.modelMatrixId = GetUniformLocation(shader, "modelMatrix");
 		modelTest2.normalMatrixId = GetUniformLocation(shader, "normalMatrix");
 

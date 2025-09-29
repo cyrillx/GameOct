@@ -62,7 +62,7 @@ struct MeshCreateInfo final
 class Mesh final
 {
 public:
-	Mesh(const std::vector<MeshVertex>& vertices, const std::vector<uint32_t>& indices, std::optional<Material> material, std::optional<glm::mat4> modelMat = std::nullopt);
+	Mesh(const std::vector<MeshVertex>& vertices, const std::vector<uint32_t>& indices, std::optional<Material> material);
 	Mesh(const Mesh&) = delete;
 	Mesh(Mesh&& mesh) noexcept;
 	~Mesh();
@@ -77,28 +77,20 @@ public:
 	std::optional<Material> GetMaterial() noexcept { return m_material; }
 	const AABB& GetAABB() const noexcept { return m_aabb; }
 
-	void SetModelMatrix(const glm::mat4& model) { m_model = model; }
-	const glm::mat4& GetModelMatrix() const noexcept { return m_model; }
-
 private:
 	uint32_t                m_vertexCount{ 0 };
 	uint32_t                m_indicesCount{ 0 };
 	GLuint                  m_vao{ 0 };
 	GLuint                  m_vbo{ 0 };
 	GLuint                  m_ebo{ 0 };
-	glm::mat4               m_model{ glm::mat4(1.0f) }; // TODO: нужно ли?
 	std::optional<Material> m_material{};
 	AABB                    m_aabb{};
 };
 
 struct ModelDrawInfo final
 {
-	GLenum                mode{ GL_TRIANGLES };
-	int                   modelMatrixLoc{ -1 };
-	int                   normalMatrixLoc{ -1 };
-	glm::mat4*            model{nullptr};
-	bool                  bindMaterials{ true };
-	std::optional<size_t> subMeshDraw{};
+	GLenum mode{ GL_TRIANGLES };
+	bool   bindMaterials{ true };
 };
 
 class Model final
@@ -112,18 +104,12 @@ public:
 
 	void DrawSubMesh(size_t id, GLenum mode = GL_TRIANGLES);
 	void Draw(GLenum mode = GL_TRIANGLES);
-	void Draw(int modelMatrixLoc, int normalMatrixLoc, GLenum mode = GL_TRIANGLES);
-	void Draw(const glm::mat4& modelMat, int modelMatrixLoc, int normalMatrixLoc, GLenum mode = GL_TRIANGLES);
-
 	void Draw(const ModelDrawInfo& drawInfo);
 
 	size_t GetNumMeshes() const noexcept { return m_meshes.size(); }
 	const std::vector<Mesh>& GetMeshes() const noexcept { return m_meshes; }
 	const Mesh& GetMesh(size_t id) const noexcept { return m_meshes[id]; }
 	const AABB& GetAABB() const noexcept { return m_aabb; }
-
-	void SetModelMatrix(const glm::mat4& model) { m_model = model; }
-	const glm::mat4& GetModelMatrix() const noexcept { return m_model; }
 
 	bool Valid() const noexcept { return !m_meshes.empty(); }
 
@@ -134,7 +120,6 @@ private:
 	void computeAABB();
 
 	std::vector<Mesh> m_meshes;
-	glm::mat4         m_model{ glm::mat4{1.0f} };
 	AABB              m_aabb;
 	std::string       m_name;
 };

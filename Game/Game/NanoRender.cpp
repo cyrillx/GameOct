@@ -324,7 +324,7 @@ void SetMeshVertexAttributes()
 	SpecifyVertexAttributes(vertexSize, attributes);
 }
 //=============================================================================
-Mesh::Mesh(const std::vector<MeshVertex>& vertices, const std::vector<uint32_t>& indices, std::optional<Material> material, std::optional<glm::mat4> modelMat)
+Mesh::Mesh(const std::vector<MeshVertex>& vertices, const std::vector<uint32_t>& indices, std::optional<Material> material)
 {
 	assert(!vertices.empty());
 
@@ -332,8 +332,6 @@ Mesh::Mesh(const std::vector<MeshVertex>& vertices, const std::vector<uint32_t>&
 	m_indicesCount = indices.size();
 
 	m_material = material;
-
-	if (modelMat) m_model = modelMat.value();
 
 	GLuint currentVBO = GetCurrentBuffer(GL_ARRAY_BUFFER);
 	GLuint currentEBO = GetCurrentBuffer(GL_ELEMENT_ARRAY_BUFFER);
@@ -487,61 +485,11 @@ void Model::Draw(GLenum mode)
 	}
 }
 //=============================================================================
-void Model::Draw(int modelMatrixLoc, int normalMatrixLoc, GLenum mode)
-{
-	for (size_t i = 0; i < m_meshes.size(); i++)
-	{
-		if (modelMatrixLoc > -1)
-		{
-			glm::mat4 finalModel = m_model * m_meshes[i].GetModelMatrix();
-			SetUniform(modelMatrixLoc, finalModel);
-			if (normalMatrixLoc > -1) 
-				SetUniform(normalMatrixLoc, glm::transpose(glm::inverse(finalModel)));
-		}
-		m_meshes[i].Draw(mode);
-	}
-}
-//=============================================================================
-void Model::Draw(const glm::mat4& modelMat, int modelMatrixLoc, int normalMatrixLoc, GLenum mode)
-{
-	glm::mat4 model = modelMat * m_model;
-	for (size_t i = 0; i < m_meshes.size(); i++)
-	{
-		if (modelMatrixLoc > -1)
-		{
-			glm::mat4 finalModel = model * m_meshes[i].GetModelMatrix();
-			SetUniform(modelMatrixLoc, finalModel);
-			if (normalMatrixLoc > -1) 
-				SetUniform(normalMatrixLoc, glm::transpose(glm::inverse(finalModel)));
-		}
-		m_meshes[i].Draw(mode);
-	}
-}
-//=============================================================================
 void Model::Draw(const ModelDrawInfo& drawInfo)
 {
-	glm::mat4 model = m_model;
-	if (drawInfo.model) model = *drawInfo.model * model;
-
-	size_t currentMesh = 0;
-	size_t endMesh = m_meshes.size();
-	if (drawInfo.subMeshDraw) // only sub mesh
+	for (int i = 0; i < m_meshes.size(); i++)
 	{
-		currentMesh = drawInfo.subMeshDraw.value();
-		endMesh = currentMesh + 1;
-	}
-
-	for (; currentMesh < endMesh; currentMesh++)
-	{
-		if (drawInfo.modelMatrixLoc > -1)
-		{
-			glm::mat4 finalModel = model * m_meshes[currentMesh].GetModelMatrix();
-			SetUniform(drawInfo.modelMatrixLoc, finalModel);
-			
-			if (drawInfo.normalMatrixLoc > -1)
-				SetUniform(drawInfo.normalMatrixLoc, glm::transpose(glm::inverse(finalModel)));
-		}
-		m_meshes[currentMesh].Draw(drawInfo.mode, drawInfo.bindMaterials);
+		m_meshes[i].Draw(drawInfo.mode, drawInfo.bindMaterials);
 	}
 }
 //=============================================================================
@@ -550,10 +498,7 @@ void Model::processNode(const aiScene* scene, aiNode* node, std::string_view dir
 	for (unsigned i = 0; i < node->mNumMeshes; i++)
 	{
 		aiMesh* aimesh = scene->mMeshes[node->mMeshes[i]];
-		//glm::mat4 nodeTransform = aiMatrix4x4ToGlm(node->mTransformation);
-		/*auto& mesh =*/ m_meshes.emplace_back(processMesh(scene, aimesh, directory));
-		//mesh.SetModelMatrix(nodeTransform);
-		// TODO: не работает? у каждого меша может быть локальная матрица, ее надо сохранять
+		m_meshes.emplace_back(processMesh(scene, aimesh, directory));
 	}
 
 	for (unsigned i = 0; i < node->mNumChildren; i++)

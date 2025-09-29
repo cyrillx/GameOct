@@ -378,8 +378,8 @@ void Framebuffer::addColorTextureAttachment(int width, int height, int insertPos
 		glGenTextures(1, &buffer.id);
 		glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, buffer.id);
 		glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 4, internalFormat, width, height, GL_TRUE);
-		glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		//glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_MIN_FILTER, GL_LINEAR); // TODO: выдает ошибку
+		//glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_MAG_FILTER, GL_LINEAR); // TODO: выдает ошибку
 		glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, 0);
 
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, buffer.id, 0);

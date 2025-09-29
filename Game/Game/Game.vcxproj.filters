@@ -234,6 +234,18 @@
     <Filter Include="NanoEngine\App">
       <UniqueIdentifier>{39a56dec-9451-4530-aca5-2403c0f563a3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="shaders\blinn_phong">
+      <UniqueIdentifier>{7f12fd78-5b61-4396-90ac-8c12ed495c05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\PBR">
+      <UniqueIdentifier>{e285a240-2336-486f-87b5-baef3602a1fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\post_processing">
+      <UniqueIdentifier>{6f331c69-0905-4ea3-a5db-74c8f4cae25c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\shadowMapping">
+      <UniqueIdentifier>{79e8d4d5-b27f-435c-852d-1dd9b15e499b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\bin\data\shaders\NormalPassShader.fs">
@@ -280,6 +292,30 @@
     </None>
     <None Include="..\..\bin\data\shaders\Model.frag">
       <Filter>Example\tmp</Filter>
+    </None>
+    <None Include="..\..\bin\data\shaders\blinn_phong\fragment.glsl">
+      <Filter>shaders\blinn_phong</Filter>
+    </None>
+    <None Include="..\..\bin\data\shaders\blinn_phong\vertex.glsl">
+      <Filter>shaders\blinn_phong</Filter>
+    </None>
+    <None Include="..\..\bin\data\shaders\PBR\fragment.glsl">
+      <Filter>shaders\PBR</Filter>
+    </None>
+    <None Include="..\..\bin\data\shaders\PBR\vertex.glsl">
+      <Filter>shaders\PBR</Filter>
+    </None>
+    <None Include="..\..\bin\data\shaders\post_processing\fragment.glsl">
+      <Filter>shaders\post_processing</Filter>
+    </None>
+    <None Include="..\..\bin\data\shaders\post_processing\vertex.glsl">
+      <Filter>shaders\post_processing</Filter>
+    </None>
+    <None Include="..\..\bin\data\shaders\shadowMapping\fragment.glsl">
+      <Filter>shaders\shadowMapping</Filter>
+    </None>
+    <None Include="..\..\bin\data\shaders\shadowMapping\vertex.glsl">
+      <Filter>shaders\shadowMapping</Filter>
     </None>
   </ItemGroup>
 </Project>

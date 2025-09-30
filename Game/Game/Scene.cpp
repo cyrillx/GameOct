@@ -101,35 +101,13 @@ void Scene::Draw()
 		// COLOR PASS : multisampling
 		colorMultisamplePass();
 
+		// TEMP blit
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 		glBindFramebuffer(GL_READ_FRAMEBUFFER, m_multisample->GetId());
 		glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0); // 0 = default framebuffer (экран)
 		glBlitFramebuffer(0, 0, m_framebufferWidth, m_framebufferHeight, 0, 0, m_framebufferWidth, m_framebufferHeight, GL_COLOR_BUFFER_BIT, GL_NEAREST);
 
-		// TEMP PASS
-	/*	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		glEnable(GL_DEPTH_TEST);
-		glViewport(0, 0, static_cast<int>(m_framebufferWidth), static_cast<int>(m_framebufferHeight));
-		glClearColor(0.3f, 0.4f, 0.9f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		glUseProgram(m_mainShader);
-		SetUniform(m_mainShaderProjectionMatrixId, m_perspective);
-		SetUniform(m_mainShaderViewMatrixId, m_camera->GetViewMatrix());
-
-		ModelDrawInfo drawInfo;
-		drawInfo.bindMaterials = true;
-		drawInfo.mode = GL_TRIANGLES;
-		for (size_t i = 0; i < m_maxEnts; i++)
-		{
-			if (m_mainShaderModelMatrixId >= 0)
-				SetUniform(m_mainShaderModelMatrixId, m_entities[i]->modelMat);
-			if (m_mainShaderNormalMatrixId >= 0)
-				SetUniform(m_mainShaderNormalMatrixId, glm::transpose(glm::inverse(m_entities[i]->modelMat)));
-
-			m_entities[i]->model.Draw(drawInfo);
-		}*/
 		// blit to normal framebuffer (resolve multisampling)
 
 		// bind to default framebuffer
@@ -141,8 +119,6 @@ void Scene::Draw()
 		
 	}
 	
-	if (m_gridAxis) m_gridAxis->Draw(m_perspective, m_camera->GetViewMatrix());
-
 	m_maxEnts = 0;
 }
 //=============================================================================
@@ -402,6 +378,8 @@ void Scene::colorMultisamplePass()
 	}
 
 	drawScene(drawScenePass::BlinnPhong);
+
+	if (m_gridAxis) m_gridAxis->Draw(m_perspective, m_camera->GetViewMatrix());
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }

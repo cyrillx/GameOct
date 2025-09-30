@@ -24,7 +24,7 @@ namespace textures
 
 struct Material final
 {
-	float     opacity{ 0.0f };
+	float     opacity{ 1.0f };
 	glm::vec3 diffuseColor{ 1.0f };
 	glm::vec3 specularColor{ 1.0f };
 	glm::vec3 ambientColor{ 1.0f };
@@ -49,6 +49,7 @@ struct MeshVertex final
 	glm::vec3 normal{ 0.0f };
 	glm::vec2 texCoord{ 0.0f };
 	glm::vec3 tangent{ 0.0f };
+	//glm::vec3 bitangent{ 0.0f };
 };
 void SetMeshVertexAttributes();
 

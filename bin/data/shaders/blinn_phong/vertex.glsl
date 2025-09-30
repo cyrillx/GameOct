@@ -17,6 +17,17 @@ out vec2 fsTexCoord;
 out vec3 fsFragPos;
 out mat3 fsTBN;
 
+mat3 computeTBN()
+{
+    mat3 worldNormalMatrix = mat3(normalMatrix);
+
+    vec3 T = normalize(worldNormalMatrix * vertexTangent);
+    vec3 N = normalize(worldNormalMatrix * vertexNormal);
+    vec3 B = normalize(cross(N, T)); // правая система => N × T
+
+    return mat3(T, B, N);
+}
+
 void main()
 {
 	gl_Position  = projectionMatrix * viewMatrix * modelMatrix * vec4(vertexPosition, 1.0);
@@ -27,14 +38,5 @@ void main()
 	fsFragPos = vec3(modelMatrix * vec4(vertexPosition, 1.0f));
 
 	// compute TBN matrix
-	// TODO: может bitangent хранить в вершине?
-	vec3 bitangent = cross(vertexNormal, vertexTangent);
-
-	vec3 T = normalize(vec3(modelMatrix * vec4(vertexTangent, 0.0f)));
-	vec3 B = normalize(vec3(modelMatrix * vec4(bitangent, 0.0f)));
-	vec3 N = normalize(vec3(modelMatrix * vec4(vertexNormal, 0.0f)));
-
-	T = normalize(T - dot(T, N) * N);
-	B = cross(N, T);
-	fsTBN = transpose(mat3(T, B, N));
+	fsTBN = computeTBN();
 }

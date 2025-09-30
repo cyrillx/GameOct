@@ -20,7 +20,7 @@ bool Scene::Init()
 	//m_state.blendState.srcAlpha = BlendFactor::OneMinusSrcAlpha;
 
 	m_shadowQuality = SHADOW_QUALITY::ULTRA;
-	m_shadowMethod = SHADOW_METHOD::SECOND_DEPTH;
+	m_shadowMethod = SHADOW_METHOD::LANCE_WILLIAMS;
 	m_bias = 0.0005f;
 	m_show_depth_map = 0;
 	m_orthoDimension = 10.0f;
@@ -170,7 +170,7 @@ bool Scene::initShadowMappingShader()
 
 	glUseProgram(m_shadowMapping);
 	SetUniform(GetUniformLocation(m_shadowMapping, "diffuseTexture"), 0);
-	SetUniform(GetUniformLocation(m_shadowMapping, "hasDiffuse"), 0);
+	SetUniform(GetUniformLocation(m_shadowMapping, "hasDiffuse"), 1);
 	m_shadowMappingShaderProjectionMatrixId = GetUniformLocation(m_shadowMapping, "projectionMatrix");
 	m_shadowMappingShaderViewMatrixId = GetUniformLocation(m_shadowMapping, "viewMatrix");
 	m_shadowMappingShaderModelMatrixId = GetUniformLocation(m_shadowMapping, "modelMatrix");

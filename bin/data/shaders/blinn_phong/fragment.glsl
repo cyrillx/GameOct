@@ -190,12 +190,11 @@ float percentIllumination(int l, vec3 lightDir)
 
 void main()
 {
-	//vec4 startDiffuse = vec4(fsColor, 1.0);
-	vec4 startDiffuse = vec4(1.0);
-	if(material.hasDiffuse > 0)
+	// early discard
+	if(material.nbTextures > 0)
 	{
-		startDiffuse = texture(diffuseTexture, fsTexCoord) * startDiffuse;
-		if (startDiffuse.a <= alphaTestThreshold) discard;
+		if(texture(diffuseTexture, fsTexCoord).a == 0.0f)
+			discard;
 	}
 
 	// start
@@ -242,12 +241,12 @@ void main()
 		if(material.nbTextures > 0)
 		{
 			// ambient
-			vec3 ambient = light[l].ambientStrength * startDiffuse.rgb;
+			vec3 ambient = light[l].ambientStrength * texture(diffuseTexture, fsTexCoord).rgb;
 
 			if(light[l].type == 1 && theta > light[l].outerCutOff)
 			{
 				// diffuse
-				vec3 diffuse = calculateDiffuse(lightDir, light[l].diffuseStrength, startDiffuse.rgb);
+				vec3 diffuse = calculateDiffuse(lightDir, light[l].diffuseStrength, texture(diffuseTexture, fsTexCoord).rgb);
 
 				// specular
 				vec3 specular;
@@ -269,7 +268,7 @@ void main()
 			else
 			{
 				// diffuse
-				vec3 diffuse = calculateDiffuse(lightDir, light[l].diffuseStrength, startDiffuse.rgb) * illumination;
+				vec3 diffuse = calculateDiffuse(lightDir, light[l].diffuseStrength, texture(diffuseTexture, fsTexCoord).rgb) * illumination;
 
 				// specular
 				vec3 specular;
@@ -320,6 +319,6 @@ void main()
 		}
 	}
 
-	float alpha = (material.hasDiffuse == 1) ? startDiffuse.a * material.opacity : material.opacity;
+	float alpha = (material.hasDiffuse == 1) ? texture(diffuseTexture, fsTexCoord).a * material.opacity : material.opacity;
 	fragColor = vec4(color, alpha);
 }

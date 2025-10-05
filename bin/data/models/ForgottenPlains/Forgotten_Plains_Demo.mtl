@@ -1,0 +1,54 @@
+newmtl tiles
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Tr 0.000000
+illum 0
+Ns 0.000000
+map_Kd Forgotten_Plains_tiles.png
+map_d Forgotten_Plains_tiles.png
+newmtl river
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Tr 0.000000
+illum 0
+Ns 0.000000
+map_Kd Forgotten_Plains_river.png
+map_d Forgotten_Plains_river.png
+newmtl river_curves
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Tr 0.000000
+illum 0
+Ns 0.000000
+map_Kd Forgotten_Plains_river_curves.png
+map_d Forgotten_Plains_river_curves.png
+newmtl river_ends
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Tr 0.000000
+illum 0
+Ns 0.000000
+map_Kd Forgotten_Plains_river_ends.png
+map_d Forgotten_Plains_river_ends.png
+newmtl waterfall
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Tr 0.000000
+illum 0
+Ns 0.000000
+map_Kd Forgotten_Plains_waterfall.png
+map_d Forgotten_Plains_waterfall.png
+newmtl props
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Tr 0.000000
+illum 0
+Ns 0.000000
+map_Kd Forgotten_Plains_props.png
+map_d Forgotten_Plains_props.png

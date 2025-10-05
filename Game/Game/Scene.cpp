@@ -14,6 +14,12 @@ bool Scene::Init()
 	m_framebufferHeight = window::GetHeight();
 	m_perspective = glm::perspective(glm::radians(60.0f), window::GetAspect(), 0.01f, 1000.0f);
 
+	SamplerInfo samperCI{};
+	samperCI.minFilter = TextureFilter::Nearest;
+	samperCI.magFilter = TextureFilter::Nearest;
+
+	m_sampler = CreateSamplerState(samperCI);
+
 	m_entities.reserve(100000);
 		
 	//m_state.depthState.enable = true;
@@ -596,6 +602,7 @@ void Scene::drawScene(drawScenePass scenePass)
 		
 		if (modelMatrixId >= 0)  SetUniform(modelMatrixId, m_entities[i]->modelMat);
 		if (normalMatrixId >= 0) SetUniform(normalMatrixId, glm::mat3(glm::transpose(glm::inverse(m_entities[i]->modelMat))));
+		glBindSampler(0, m_sampler);
 		m_entities[i]->model.Draw(drawInfo);
 	}
 }

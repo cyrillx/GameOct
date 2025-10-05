@@ -129,4 +129,6 @@ private:
 	GLuint depthRenderbuffer;
 	GLuint vao;
 
+	GLuint m_sampler{ 0 };
+
 };

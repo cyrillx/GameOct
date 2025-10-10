@@ -98,11 +98,17 @@
     <ClCompile Include="ExampleApp002.cpp" />
     <ClCompile Include="Framebuffer.cpp" />
     <ClCompile Include="GameApp.cpp" />
+    <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="GridAxis.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="NanoCore.cpp" />
     <ClCompile Include="NanoMath.cpp" />
     <ClCompile Include="NanoRender.cpp" />
+    <ClCompile Include="NanoRenderGeometryGen.cpp" />
+    <ClCompile Include="NanoRenderMaterial.cpp" />
+    <ClCompile Include="NanoRenderMesh.cpp" />
+    <ClCompile Include="NanoRenderModel.cpp" />
+    <ClCompile Include="NanoRenderTextures.cpp" />
     <ClCompile Include="NanoScene.cpp" />
     <ClCompile Include="Region.cpp" />
     <ClCompile Include="Scene.cpp" />
@@ -125,6 +131,7 @@
   <ItemGroup>
     <ClInclude Include="Framebuffer.h" />
     <ClInclude Include="GameApp.h" />
+    <ClInclude Include="GameScene.h" />
     <ClInclude Include="GridAxis.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="NanoCore.h" />
@@ -135,6 +142,11 @@
     <ClInclude Include="NanoOpenGL3.h" />
     <ClInclude Include="NanoOpenGLExt.h" />
     <ClInclude Include="NanoRender.h" />
+    <ClInclude Include="NanoRenderGeometryGen.h" />
+    <ClInclude Include="NanoRenderMaterial.h" />
+    <ClInclude Include="NanoRenderMesh.h" />
+    <ClInclude Include="NanoRenderModel.h" />
+    <ClInclude Include="NanoRenderTextures.h" />
     <ClInclude Include="NanoScene.h" />
     <ClInclude Include="NanoWindow.h" />
     <ClInclude Include="Region.h" />

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "Scene.h"
 
@@ -8,7 +8,7 @@ public:
 	void Init();
 	void Close();
 
-	Entity model;
+	Entity2 model;
 };
 
 extern Region gRegion;

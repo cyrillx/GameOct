@@ -16,11 +16,11 @@ namespace
 
 	Camera camera;
 
-	Entity modelPlane;
-	Entity modelBox;
-	Entity modelSphere;
-	Entity modelTest;
-	Entity modelTest2;
+	Entity2 modelPlane;
+	Entity2 modelBox;
+	Entity2 modelSphere;
+	Entity2 modelTest;
+	Entity2 modelTest2;
 }
 //=============================================================================
 void ExampleApp002()

@@ -7,12 +7,11 @@
 #include "NanoRender.h"
 #include "NanoScene.h"
 #include "GridAxis.h"
-#include "Scene.h"
-#include "Region.h"
+#include "GameScene.h"
 //=============================================================================
 namespace
 {
-	Scene scene;
+	GameScene scene;
 
 	Camera camera;
 
@@ -57,8 +56,6 @@ void GameApp()
 
 			scene.BindCamera(&camera);
 			scene.BindEntity(&modelTest);
-
-			scene.BindEntity(&gRegion.model);
 
 			scene.Draw();
 

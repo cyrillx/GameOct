@@ -7,7 +7,7 @@
 #include "Framebuffer.h"
 #include "SceneRenderPass.h"
 
-enum class SHADOW_QUALITY
+enum class ShadowQuality
 {
 	OFF = 0,
 	TINY = 256,
@@ -17,7 +17,7 @@ enum class SHADOW_QUALITY
 	ULTRA = 4096
 };
 
-struct Entity2 final
+struct Entity final
 {
 	const AABB& GetAABB() const noexcept { return model.GetAABB(); }
 
@@ -26,7 +26,7 @@ struct Entity2 final
 	bool      visible{ true };
 };
 
-class Scene final
+class GameScene final
 {
 public:
 	bool Init();
@@ -34,14 +34,14 @@ public:
 	void Draw();
 
 	void BindCamera(Camera* camera);
-	void BindEntity(Entity2* ent);
+	void BindEntity(Entity* ent);
 
 	std::vector<DirectionalLight>& GetDirectionalLights() { return m_directionalLights; }
 	std::vector<SpotLight>& GetSpotLight() { return m_spotLights; }
 
 	void SetGridAxis(int gridDim);
 
-	void SetShadowQuality(SHADOW_QUALITY quality);
+	void SetShadowQuality(ShadowQuality quality);
 
 private:
 	enum class drawScenePass : uint8_t
@@ -76,9 +76,9 @@ private:
 	glm::mat4                     m_perspective{ 1.0f };
 	uint16_t                      m_framebufferWidth{ 0 };
 	uint16_t                      m_framebufferHeight{ 0 };
-	Camera*                       m_camera{ nullptr };
+	Camera* m_camera{ nullptr };
 
-	std::vector<Entity2*>         m_entities;
+	std::vector<Entity*>          m_entities;
 	size_t                        m_maxEnts{ 0 };
 
 	std::vector<DirectionalLight> m_directionalLights;
@@ -91,7 +91,7 @@ private:
 	std::array<std::unique_ptr<Framebuffer>, 10> m_stdDepth; // for directional and spotlight shadow mapping
 
 	float m_orthoDimension;
-	SHADOW_QUALITY m_shadowQuality;
+	ShadowQuality m_shadowQuality;
 	float m_bias;
 	int m_show_depth_map;
 	glm::mat4 m_orthoProjection; // for directional lights

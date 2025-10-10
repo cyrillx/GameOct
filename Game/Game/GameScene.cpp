@@ -1,10 +1,10 @@
 ﻿#include "stdafx.h"
-#include "Scene.h"
+#include "GameScene.h"
 #include "NanoWindow.h"
 #include "NanoIO.h"
 #include "NanoLog.h"
 //=============================================================================
-bool Scene::Init()
+bool GameScene::Init()
 {
 	m_framebufferWidth = window::GetWidth();
 	m_framebufferHeight = window::GetHeight();
@@ -17,12 +17,12 @@ bool Scene::Init()
 	m_sampler = CreateSamplerState(samperCI);
 
 	m_entities.reserve(100000);
-		
+
 	//m_state.depthState.enable = true;
 	//m_state.blendState.enable = true;
 	//m_state.blendState.srcAlpha = BlendFactor::OneMinusSrcAlpha;
 
-	m_shadowQuality = SHADOW_QUALITY::ULTRA;
+	m_shadowQuality = ShadowQuality::ULTRA;
 	m_bias = 0.0005f;
 	m_show_depth_map = 0;
 	m_orthoDimension = 10.0f;
@@ -30,7 +30,7 @@ bool Scene::Init()
 
 	//m_pbr = CreateShaderProgram(io::ReadShaderCode("data/shaders/PBR/vertex.glsl"), io::ReadShaderCode("data/shaders/PBR/fragment.glsl"));
 	//m_postProcessing = CreateShaderProgram(io::ReadShaderCode("data/shaders/post_processing/vertex.glsl"), io::ReadShaderCode("data/shaders/post_processing/fragment.glsl"));
-	
+
 	if (!initShadowMappingShader())
 		return false;
 	if (!initBlinnPhongShader())
@@ -56,7 +56,7 @@ bool Scene::Init()
 	m_multisample->AddAttachment(AttachmentType::RenderBuffer, AttachmentTarget::DepthStencil, m_framebufferWidth, m_framebufferHeight);
 	m_normal->AddAttachment(AttachmentType::Texture, AttachmentTarget::Color, m_framebufferWidth, m_framebufferHeight);
 
-	if (m_shadowQuality != SHADOW_QUALITY::OFF)
+	if (m_shadowQuality != ShadowQuality::OFF)
 	{
 		for (int i{ 0 }; i < 10; ++i)
 		{
@@ -66,17 +66,17 @@ bool Scene::Init()
 	return true;
 }
 //=============================================================================
-void Scene::Close()
+void GameScene::Close()
 {
 	m_gridAxis.reset();
 }
 //=============================================================================
-void Scene::BindCamera(Camera* camera)
+void GameScene::BindCamera(Camera* camera)
 {
 	m_camera = camera;
 }
 //=============================================================================
-void Scene::BindEntity(Entity2* ent)
+void GameScene::BindEntity(Entity* ent)
 {
 	if (m_maxEnts >= m_entities.size())
 		m_entities.push_back(ent);
@@ -86,14 +86,14 @@ void Scene::BindEntity(Entity2* ent)
 	m_maxEnts++;
 }
 //=============================================================================
-void Scene::Draw()
+void GameScene::Draw()
 {
 	updateSize();
 
 	{
 		glEnable(GL_DEPTH_TEST);
 
-		if (m_shadowQuality != SHADOW_QUALITY::OFF)
+		if (m_shadowQuality != ShadowQuality::OFF)
 		{
 			// SHADOW PASS : directional & spot light sources
 			directionalShadowPass();
@@ -122,7 +122,7 @@ void Scene::Draw()
 	m_maxEnts = 0;
 }
 //=============================================================================
-void Scene::SetGridAxis(int gridDim)
+void GameScene::SetGridAxis(int gridDim)
 {
 	if (gridDim == 0)
 		m_gridAxis.reset();
@@ -130,17 +130,17 @@ void Scene::SetGridAxis(int gridDim)
 		m_gridAxis = std::make_unique<GridAxis>(gridDim);
 }
 //=============================================================================
-void Scene::SetShadowQuality(SHADOW_QUALITY quality)
+void GameScene::SetShadowQuality(ShadowQuality quality)
 {
 	m_shadowQuality = quality;
-	if (m_shadowQuality != SHADOW_QUALITY::OFF)
+	if (m_shadowQuality != ShadowQuality::OFF)
 	{
 		for (int i{ 0 }; i < 10; ++i)
 			m_stdDepth.at(i)->UpdateAttachment(AttachmentType::Texture, AttachmentTarget::Depth, static_cast<int>(m_shadowQuality), static_cast<int>(m_shadowQuality));
 	}
 }
 //=============================================================================
-bool Scene::initShadowMappingShader()
+bool GameScene::initShadowMappingShader()
 {
 	m_shadowMapping = CreateShaderProgram(io::ReadShaderCode("data/shaders/shadowMapping/vertex.glsl"), io::ReadShaderCode("data/shaders/shadowMapping/fragment.glsl"));
 	if (!m_shadowMapping)
@@ -159,7 +159,7 @@ bool Scene::initShadowMappingShader()
 	return true;
 }
 //=============================================================================
-bool Scene::initBlinnPhongShader()
+bool GameScene::initBlinnPhongShader()
 {
 	m_blinnPhong = CreateShaderProgram(io::ReadShaderCode("data/shaders/blinn_phong/vertex.glsl"), io::ReadShaderCode("data/shaders/blinn_phong/fragment.glsl"));
 	if (!m_blinnPhong)
@@ -174,7 +174,7 @@ bool Scene::initBlinnPhongShader()
 	SetUniform(GetUniformLocation(m_blinnPhong, "normalTexture"), 2);
 	for (size_t i = 0; i < 10; i++)
 	{
-		SetUniform(GetUniformLocation(m_blinnPhong, "depthMap[" + std::to_string(i) + "]"), 4+(int)i);
+		SetUniform(GetUniformLocation(m_blinnPhong, "depthMap[" + std::to_string(i) + "]"), 4 + (int)i);
 	}
 
 	m_blinnPhongMatrixUBO = CreateBuffer(GL_UNIFORM_BUFFER, BufferUsage::Dynamic, sizeof(SceneBlinnPhongMatrices), nullptr);
@@ -188,7 +188,7 @@ bool Scene::initBlinnPhongShader()
 	return true;
 }
 //=============================================================================
-void Scene::updateSize()
+void GameScene::updateSize()
 {
 	if (m_framebufferWidth != window::GetWidth() || m_framebufferHeight != window::GetHeight())
 	{
@@ -202,7 +202,7 @@ void Scene::updateSize()
 	}
 }
 //=============================================================================
-void Scene::directionalShadowPass()
+void GameScene::directionalShadowPass()
 {
 	glViewport(0, 0, static_cast<int>(m_shadowQuality), static_cast<int>(m_shadowQuality));
 
@@ -261,7 +261,7 @@ void Scene::directionalShadowPass()
 	glDisable(GL_CULL_FACE);
 }
 //=============================================================================
-void Scene::colorMultisamplePass()
+void GameScene::colorMultisamplePass()
 {
 	m_multisample->Bind();
 	glViewport(0, 0, static_cast<int>(m_framebufferWidth), static_cast<int>(m_framebufferHeight));
@@ -328,7 +328,7 @@ void Scene::colorMultisamplePass()
 
 	int textureOffset{ 4 };
 	int depthMapIndex{ 0 };
-	
+
 	for (int i{ 0 }; i < m_directionalLights.size(); ++i)
 	{
 		glm::vec3 lightPosition = m_directionalLights[i].GetPosition();
@@ -370,7 +370,7 @@ void Scene::colorMultisamplePass()
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 //=============================================================================
-void Scene::drawScene(drawScenePass scenePass)
+void GameScene::drawScene(drawScenePass scenePass)
 {
 	GLuint shader = 0;
 	int modelMatrixId = -1;
@@ -397,7 +397,7 @@ void Scene::drawScene(drawScenePass scenePass)
 			drawInfo.shaderProgram = m_blinnPhong;
 			SetUniform(GetUniformLocation(m_blinnPhong, "solid"), 1);
 		}
-		
+
 		if (modelMatrixId >= 0)  SetUniform(modelMatrixId, m_entities[i]->modelMat);
 		if (normalMatrixId >= 0) SetUniform(normalMatrixId, glm::mat3(glm::transpose(glm::inverse(m_entities[i]->modelMat))));
 		glBindSampler(0, m_sampler);

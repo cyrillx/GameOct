@@ -67,6 +67,24 @@
       <Filter>Example</Filter>
     </ClCompile>
     <ClCompile Include="GameApp.cpp" />
+    <ClCompile Include="GameScene.cpp">
+      <Filter>GameApp\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="NanoRenderTextures.cpp">
+      <Filter>NanoEngine\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="NanoRenderMaterial.cpp">
+      <Filter>NanoEngine\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="NanoRenderMesh.cpp">
+      <Filter>NanoEngine\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="NanoRenderModel.cpp">
+      <Filter>NanoEngine\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="NanoRenderGeometryGen.cpp">
+      <Filter>NanoEngine\Render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -124,6 +142,24 @@
     </ClInclude>
     <ClInclude Include="SceneShadowMap.h">
       <Filter>Example\tmp</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene.h">
+      <Filter>GameApp\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="NanoRenderTextures.h">
+      <Filter>NanoEngine\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="NanoRenderMaterial.h">
+      <Filter>NanoEngine\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="NanoRenderMesh.h">
+      <Filter>NanoEngine\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="NanoRenderModel.h">
+      <Filter>NanoEngine\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="NanoRenderGeometryGen.h">
+      <Filter>NanoEngine\Render</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

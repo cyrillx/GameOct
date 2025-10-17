@@ -89,21 +89,16 @@ vec3 calculateSpecular(vec3 viewPos, vec3 fragPos, vec3 lightDir, vec3 specularS
 	return spec * specularStrength * objColor;
 }
 
-// Функция вычисления тени с PCF
 float calculateShadow(vec4 fragPosLightSpace, int l)
 {
-	// Переводим из clip space в NDC, затем в [0,1] (texture coordinates)
 	vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
-	projCoords = projCoords * 0.5 + 0.5; // из [-1,1] в [0,1]
-	// Проверяем, находится ли фрагмент в пределах теневой карты
+	projCoords = projCoords * 0.5 + 0.5;
 	if (projCoords.z > 1.0 || projCoords.x < 0.0 || projCoords.x > 1.0 || projCoords.y < 0.0 || projCoords.y > 1.0)
 		return 0.0;
 
-    // Получаем размер одного пикселя теневой карты
 	float texelSize = 1.0 / textureSize(depthMap[l], 0).x;
 	
 	float shadow = 0.0;
-	// PCF: усредняем результаты в 3x3 сетке
 	for(int x = -1; x <= 1; ++x)
 	{
 		for(int y = -1; y <= 1; ++y)
@@ -113,25 +108,23 @@ float calculateShadow(vec4 fragPosLightSpace, int l)
 		}
 	}
 	
-	return shadow / 9.0; // усредняем
+	return shadow / 9.0;
 }
 
 void main()
 {
-	vec4 rawDiffuse = 
-		((material.hasDiffuse == 1) ? texture(diffuseTexture, fsTexCoord) : vec4(material.color_diffuse, 1.0)) 
-		* vec4(fsColor, 1.0);
+	vec4 rawDiffuse = (material.hasDiffuse == 1)
+		? texture(diffuseTexture, fsTexCoord)
+		: vec4(material.color_diffuse, 1.0);
+
+	rawDiffuse *= vec4(fsColor, 1.0);
 
 	// early discard
 	if(rawDiffuse.a == alphaTestThreshold) discard;
 
-{
-	//fragColor = texture(diffuseTexture, fsTexCoord);
-	//return;
-}
-
-
-	vec4 rawSpecular = ((material.hasSpecular == 1) ? texture(specularTexture, fsTexCoord) : vec4(material.color_specular, 1.0));
+	vec4 rawSpecular = (material.hasSpecular == 1) 
+		? texture(specularTexture, fsTexCoord)
+		: vec4(material.color_specular, 1.0);
 
 	calculateNormal();
 
@@ -151,28 +144,28 @@ void main()
 		// ambient
 		vec3 ambient = light[l].ambientStrength * rawDiffuse.rgb;
 		
-		if(light[l].type == 0)
+		if(light[l].type == 0) // 0 => directional
 		{
-			// diffuse
-			vec3 lightDir = (material.hasNormal == 1) ? normalize(fsTBN * light[l].direction) : normalize(light[l].direction);	
-			vec3 diffuse = calculateDiffuse(lightDir, light[l].diffuseStrength, rawDiffuse.rgb);
+			// calculate shadow
+			float illumination = (shadowOn == 1)
+				? (1.0 - calculateShadow(light[l].lightSpaceMatrix * vec4(fragPos, 1.0), l))
+				: 1.0;
 
-			// specular
+			vec3 lightDir = (material.hasNormal == 1) 
+				? normalize(fsTBN * light[l].direction) 
+				: normalize(light[l].direction);
+				
+			vec3 diffuse = calculateDiffuse(lightDir, light[l].diffuseStrength, rawDiffuse.rgb);
 			vec3 specular = calculateSpecular(viewPos, fragPos, lightDir, light[l].specularStrength, rawSpecular.rgb);
 
-			// calculate shadow
-			float illumination = 1.0;
-			if(shadowOn == 1)
-				illumination = 1.0 - calculateShadow(light[l].lightSpaceMatrix * vec4(fragPos, 1.0), l);
-
 			// result
-			currentColor += (ambient + illumination * (diffuse + specular)) * rawDiffuse.rgb;
+			//currentColor += (ambient + illumination * (diffuse + specular)) * rawDiffuse.rgb; // darkness
+			currentColor += (ambient + illumination * (diffuse + specular));
 		}
 		else if(light[l].type == 1)
 		{
 		}
 	}
 
-	float alpha = rawDiffuse.a * material.opacity;
-	fragColor = vec4(currentColor, alpha);
+	fragColor = vec4(currentColor, rawDiffuse.a * material.opacity);
 }

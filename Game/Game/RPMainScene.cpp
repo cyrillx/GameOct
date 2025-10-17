@@ -115,6 +115,7 @@ void RPMainScene::drawScene(const std::vector<Entity*>& entites, size_t numEntit
 	ModelDrawInfo drawInfo;
 	drawInfo.bindMaterials = true;
 	drawInfo.mode = GL_TRIANGLES;
+	drawInfo.shaderProgram = m_program;
 	for (size_t i = 0; i < numEntities; i++)
 	{
 		SetUniform(m_modelMatrixId, entites[i]->modelMat);

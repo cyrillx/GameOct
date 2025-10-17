@@ -32,8 +32,8 @@ void GameApp()
 		modelTest.model.Load("data/models/ForgottenPlains/Forgotten_Plains_Demo.obj");
 		modelTest.modelMat = glm::translate(glm::mat4(1.0f), glm::vec3(-30.0f, 0.0f, 15.0f));
 
-		dirLight.position = glm::vec3(-6.0f, 10.0f, 2.0f);
-		dirLight.direction = glm::vec3(0.5f, -1.5f, -0.25f);
+		dirLight.position = glm::vec3(0.0f, 10.0f, 0.0f);
+		dirLight.direction = glm::vec3(0.0f, 9.0f, -10.0f);
 		dirLight.ambientStrength = glm::vec3(0.25f);
 		dirLight.diffuseStrength = glm::vec3(1.0f);
 		dirLight.specularStrength = glm::vec3(1.0f);

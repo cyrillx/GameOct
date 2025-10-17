@@ -113,6 +113,7 @@
     <ClCompile Include="Region.cpp" />
     <ClCompile Include="RPDirShadowMap.cpp" />
     <ClCompile Include="RPMainScene.cpp" />
+    <ClCompile Include="RPPostFrame.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneRenderPass.cpp" />
     <ClCompile Include="SceneShadowMap.cpp" />
@@ -154,6 +155,7 @@
     <ClInclude Include="Region.h" />
     <ClInclude Include="RPDirShadowMap.h" />
     <ClInclude Include="RPMainScene.h" />
+    <ClInclude Include="RPPostFrame.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneRenderPass.h" />
     <ClInclude Include="SceneShadowMap.h" />

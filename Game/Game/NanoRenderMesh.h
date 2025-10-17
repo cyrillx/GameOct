@@ -3,6 +3,13 @@
 #include "NanoRenderMaterial.h"
 #include "NanoMath.h"
 
+struct QuadVertex final
+{
+	glm::vec2 position{ 0.0f };
+	glm::vec2 texCoord{ 0.0f };
+};
+void SetQuadVertexAttributes();
+
 struct MeshVertex final
 {
 	glm::vec3 position{ 0.0f };

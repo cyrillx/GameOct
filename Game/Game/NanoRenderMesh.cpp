@@ -1,6 +1,17 @@
 ﻿#include "stdafx.h"
 #include "NanoRenderMesh.h"
 //=============================================================================
+void SetQuadVertexAttributes()
+{
+	const size_t vertexSize = sizeof(QuadVertex);
+	const VertexAttribute attributes[] =
+	{
+		{.type = GL_FLOAT, .size = 2, .offset = (void*)offsetof(QuadVertex, position)},
+		{.type = GL_FLOAT, .size = 2, .offset = (void*)offsetof(QuadVertex, texCoord)},
+	};
+	SpecifyVertexAttributes(vertexSize, attributes);
+}
+//=============================================================================
 void SetMeshVertexAttributes()
 {
 	const size_t vertexSize = sizeof(MeshVertex);

@@ -4,6 +4,7 @@
 #include "NanoScene.h"
 #include "RPDirShadowMap.h"
 #include "RPMainScene.h"
+#include "RPPostFrame.h"
 
 struct Entity final
 {
@@ -40,4 +41,5 @@ private:
 
 	RPDirShadowMap                 m_rpDirShadowMap;
 	RPMainScene                    m_rpMainScene;
+	RPPostFrame                    m_rpPostFrame;
 };

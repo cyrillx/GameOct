@@ -20,6 +20,7 @@ public:
 		const std::vector<Entity*>& entites, size_t numEntities, 
 		Camera* camera);
 
+	Framebuffer* GetFBO() const { return m_fbo.get(); }
 	GLuint GetFBOId() const { return m_fbo->GetId(); }
 	uint16_t GetWidth() const { return m_framebufferWidth; }
 	uint16_t GetHeight() const { return m_framebufferHeight; }

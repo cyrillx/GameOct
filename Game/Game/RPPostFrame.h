@@ -23,4 +23,5 @@ private:
 	GLuint                       m_vbo{ 0 };
 	uint16_t                     m_framebufferWidth{ 0 };
 	uint16_t                     m_framebufferHeight{ 0 };
+	GLuint                       m_sampler{ 0 };
 };

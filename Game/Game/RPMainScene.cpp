@@ -29,7 +29,7 @@ bool RPMainScene::Init(uint16_t framebufferWidth, uint16_t framebufferHeight)
 
 	glUseProgram(0); // TODO: возможно вернуть прошлую
 
-	m_fbo = { std::make_unique<Framebuffer>(true, true, true) };
+	m_fbo = { std::make_unique<Framebuffer>(true, false, true) };
 
 	m_fbo->AddAttachment(AttachmentType::Texture, AttachmentTarget::Color, m_framebufferWidth, m_framebufferHeight);
 	m_fbo->AddAttachment(AttachmentType::RenderBuffer, AttachmentTarget::DepthStencil, m_framebufferWidth, m_framebufferHeight);

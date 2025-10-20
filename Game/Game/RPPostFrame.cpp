@@ -24,12 +24,12 @@ bool RPPostFrame::Init(uint16_t framebufferWidth, uint16_t framebufferHeight)
 	m_fbo->AddAttachment(AttachmentType::Texture, AttachmentTarget::Color, m_framebufferWidth, m_framebufferHeight);
 
 	std::vector<QuadVertex> vertices = {
-		{glm::vec2(-1.0f,  1.0f), glm::vec2(0.0f, 0.0f)},
-		{glm::vec2(-1.0f, -1.0f), glm::vec2(0.0f, 1.0f)},
-		{glm::vec2( 1.0f, -1.0f), glm::vec2(1.0f, 1.0f)},
-		{glm::vec2( 1.0f, -1.0f), glm::vec2(1.0f, 1.0f)},
-		{glm::vec2( 1.0f,  1.0f), glm::vec2(1.0f, 0.0f)},
-		{glm::vec2(-1.0f,  1.0f), glm::vec2(0.0f, 0.0f)},
+		{glm::vec2(-1.0f,  1.0f), glm::vec2(0.0f, 1.0f)},
+		{glm::vec2(-1.0f, -1.0f), glm::vec2(0.0f, 0.0f)},
+		{glm::vec2( 1.0f, -1.0f), glm::vec2(1.0f, 0.0f)},
+		{glm::vec2( 1.0f, -1.0f), glm::vec2(1.0f, 0.0f)},
+		{glm::vec2( 1.0f,  1.0f), glm::vec2(1.0f, 1.0f)},
+		{glm::vec2(-1.0f,  1.0f), glm::vec2(0.0f, 1.0f)},
 	};
 
 	GLuint currentVBO = GetCurrentBuffer(GL_ARRAY_BUFFER);
@@ -42,6 +42,12 @@ bool RPPostFrame::Init(uint16_t framebufferWidth, uint16_t framebufferHeight)
 	glBindBuffer(GL_ARRAY_BUFFER, currentVBO);
 
 	glUseProgram(0);
+
+	SamplerInfo samperCI{};
+	samperCI.minFilter = TextureFilter::Nearest;
+	samperCI.magFilter = TextureFilter::Nearest;
+	m_sampler = CreateSamplerState(samperCI);
+
 	return true;
 }
 //=============================================================================
@@ -69,7 +75,9 @@ void RPPostFrame::Draw(Framebuffer* preFBO)
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glUseProgram(m_program);
-	BindTexture2D(0, preFBO->GetAttachments()[0].id);
+	glBindSampler(0, m_sampler);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, preFBO->GetAttachments()[0].id);
 	glBindVertexArray(m_vao);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
 }

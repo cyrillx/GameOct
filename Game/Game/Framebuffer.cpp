@@ -371,6 +371,7 @@ void Framebuffer::addColorTextureAttachment(int width, int height, int insertPos
 	if (m_multiSample)
 	{
 		glGenTextures(1, &buffer.id);
+		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D_MULTISAMPLE, buffer.id);
 		glTexImage2DMultisample(GL_TEXTURE_2D_MULTISAMPLE, 4, internalFormat, width, height, GL_TRUE);
 		//glTexParameteri(GL_TEXTURE_2D_MULTISAMPLE, GL_TEXTURE_MIN_FILTER, GL_LINEAR); // TODO: выдает ошибку
@@ -382,6 +383,7 @@ void Framebuffer::addColorTextureAttachment(int width, int height, int insertPos
 	else
 	{
 		glGenTextures(1, &buffer.id);
+		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, buffer.id);
 		glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, GL_RGBA, type, nullptr);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);

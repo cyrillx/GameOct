@@ -85,7 +85,6 @@ void GameScene::draw()
 {
 	m_rpDirShadowMap.Draw(m_dirLights, m_numDirLights, m_entities, m_numEntities);
 	m_rpMainScene.Draw(m_rpDirShadowMap, m_dirLights, m_numDirLights, m_entities, m_numEntities, m_camera);
-
 	m_rpPostFrame.Draw(m_rpMainScene.GetFBO());
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);

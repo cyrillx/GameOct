@@ -54,7 +54,7 @@ void RPDirShadowMap::Close()
 void RPDirShadowMap::Draw(const std::vector<DirectionalLight*>& dirLights, size_t numDirLights, const std::vector<Entity*>& entites, size_t numEntities)
 {
 	if (m_shadowQuality == ShadowQuality::Off) return;
-	if (dirLights.empty()) return;
+	if (dirLights.empty() || numDirLights == 0) return;
 
 	glEnable(GL_DEPTH_TEST);
 	glUseProgram(m_program);
@@ -62,13 +62,22 @@ void RPDirShadowMap::Draw(const std::vector<DirectionalLight*>& dirLights, size_
 
 	for (size_t i = 0; i < numDirLights; i++)
 	{
-		auto& light = dirLights[i];
+		if (numDirLights >= m_depthFBO.size())
+		{
+			Warning("Num Dir Light bigger num");
+			break;
+		}
+
+		const auto& light = dirLights[i];
 
 		m_depthFBO[i]->Bind();
 		glClear(GL_DEPTH_BUFFER_BIT);
-		glClearDepth(1.0f);
 
-		glm::mat4 lightView = glm::lookAt(light->position, light->position + light->direction, glm::vec3(0.0f, 1.0f, 0.0f));
+		constexpr glm::vec3 worldUp(0.0f, 1.0f, 0.0f);
+		glm::vec3 right = glm::normalize(glm::cross(light->direction, worldUp));
+		glm::vec3 up = glm::normalize(glm::cross(right, light->direction));
+
+		glm::mat4 lightView = glm::lookAt(light->position, light->position + light->direction, up);
 		SetUniform(m_viewMatrixId, lightView);
 
 		drawScene(entites, numEntities);

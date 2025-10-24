@@ -91,6 +91,9 @@
     <ClCompile Include="RPPostFrame.cpp">
       <Filter>GameApp\Render\SceneRenderPass</Filter>
     </ClCompile>
+    <ClCompile Include="RPGeometry.cpp">
+      <Filter>GameApp\Render\SceneRenderPass</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -174,6 +177,9 @@
       <Filter>GameApp\Render\SceneRenderPass</Filter>
     </ClInclude>
     <ClInclude Include="GameConfig.h" />
+    <ClInclude Include="RPGeometry.h">
+      <Filter>GameApp\Render\SceneRenderPass</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Example">

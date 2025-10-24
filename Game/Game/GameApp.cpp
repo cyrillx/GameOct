@@ -16,7 +16,7 @@ namespace
 	Camera camera;
 	Entity modelTest;
 	DirectionalLight dirLight;
-	//DirectionalLight dirLight2;
+	DirectionalLight dirLight2;
 
 	Entity sphereEntity;
 	Entity box1Entity;
@@ -51,17 +51,21 @@ void GameApp()
 		box4Entity.model.Create(GeometryGenerator::CreateBox());
 		box4Entity.modelMat = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
+
+
 		dirLight.position = glm::vec3(-6.0f, 10.0f, 2.0f);
-		dirLight.direction = glm::vec3(0.5f, -1.5f, -0.25f);
+		//dirLight.direction = glm::vec3(0.5f, -1.5f, -0.25f);
+		dirLight.direction = glm::normalize(-dirLight.position);
 		dirLight.ambientStrength = glm::vec3(0.25f);
 		dirLight.diffuseStrength = glm::vec3(1.0f);
 		dirLight.specularStrength = glm::vec3(1.0f);
 
-		/*dirLight2.position = glm::vec3(0.0f, 10.0f, 0.0f);
-		dirLight2.direction = glm::vec3(0.0f, 9.0f, 10.0f);
+		dirLight2.position = glm::vec3(-0.0f, 10.0f, 2.0f);
+		//dirLight2.direction = glm::vec3(-6.5f, -1.5f, -0.25f);
+		dirLight2.direction = glm::normalize(-dirLight2.position);
 		dirLight2.ambientStrength = glm::vec3(0.25f);
 		dirLight2.diffuseStrength = glm::vec3(1.0f);
-		dirLight2.specularStrength = glm::vec3(1.0f);*/
+		dirLight2.specularStrength = glm::vec3(1.0f);
 
 		while (!engine::ShouldClose())
 		{
@@ -94,7 +98,7 @@ void GameApp()
 			scene.BindEntity(&box4Entity);
 
 			scene.BindLight(&dirLight);
-			//scene.BindLight(&dirLight2);
+			scene.BindLight(&dirLight2);
 			scene.Draw();
 
 			engine::DrawFPS();

@@ -112,6 +112,7 @@
     <ClCompile Include="NanoScene.cpp" />
     <ClCompile Include="Region.cpp" />
     <ClCompile Include="RPDirShadowMap.cpp" />
+    <ClCompile Include="RPGeometry.cpp" />
     <ClCompile Include="RPMainScene.cpp" />
     <ClCompile Include="RPPostFrame.cpp" />
     <ClCompile Include="Scene.cpp" />
@@ -153,6 +154,7 @@
     <ClInclude Include="NanoWindow.h" />
     <ClInclude Include="Region.h" />
     <ClInclude Include="RPDirShadowMap.h" />
+    <ClInclude Include="RPGeometry.h" />
     <ClInclude Include="RPMainScene.h" />
     <ClInclude Include="RPPostFrame.h" />
     <ClInclude Include="Scene.h" />

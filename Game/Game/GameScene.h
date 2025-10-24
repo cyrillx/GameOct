@@ -3,8 +3,10 @@
 #include "NanoRender.h"
 #include "NanoScene.h"
 #include "RPDirShadowMap.h"
+#include "RPGeometry.h"
 #include "RPMainScene.h"
 #include "RPPostFrame.h"
+
 
 struct Entity final
 {
@@ -40,6 +42,7 @@ private:
 	size_t                         m_numDirLights{ 0 };
 
 	RPDirShadowMap                 m_rpDirShadowMap;
+	RPGeometry                     m_rpGeometry;
 	RPMainScene                    m_rpMainScene;
 	RPPostFrame                    m_rpPostFrame;
 };

@@ -21,8 +21,8 @@ int main(
 	//MinimalAppRun();
 	//ExampleApp001();
 	//ExampleApp002();
-	ExampleApp003();
+	//ExampleApp003();
 
-	//GameApp();
+	GameApp();
 }
 //=============================================================================

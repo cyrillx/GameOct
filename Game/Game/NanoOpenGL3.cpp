@@ -78,6 +78,90 @@
 	}
 }
 //=============================================================================
+std::string preprocessShaderCode(const std::string& line, const std::string& directory, unsigned int level)
+{
+	static const std::regex re("^[ ]*#[ ]*include[ ]+[\"<](.*)[\">].*");
+	std::smatch matches;
+
+	if (regex_search(line, matches, re))
+	{
+		std::string path = matches[1].str();
+		std::string loadShaderCode(const std::string&, unsigned int);
+		return loadShaderCode(directory + "/" + path, level);
+	}
+	else
+	{
+		return line;
+	}
+}
+//=============================================================================
+std::string loadShaderCode(const std::string& path, unsigned int level)
+{
+	Debug("Load Shader file: " + path);
+
+	if (level > 32)
+	{
+		Error("Header inclusion depth limit reached, might be caused by cyclic header inclusion");
+		return {};
+	}
+
+	std::stringstream shaderStream;
+	std::string directory = path.substr(0, path.find_last_of('/'));
+
+	std::ifstream shaderFile(path);
+	if (!shaderFile.is_open())
+	{
+		Error("Fail to open file: " + path);
+		return {};
+	}
+
+	std::string line;
+	while (std::getline(shaderFile, line))
+	{
+		shaderStream << preprocessShaderCode(line, directory, level + 1) << std::endl;
+	}
+
+	return shaderStream.str();
+}
+//=============================================================================
+std::string loadShaderCode(const std::string& path, const std::vector<std::string>& defines)
+{
+	Debug("Load Shader file: " + path);
+
+	std::stringstream shaderStream;
+	std::string directory = path.substr(0, path.find_last_of('/'));
+
+	std::ifstream shaderFile(path);
+	if (!shaderFile.is_open())
+	{
+		Error("Fail to open file: " + path);
+		return {};
+	}
+
+	std::string line;
+	unsigned int lineNumber = 0;
+	while (std::getline(shaderFile, line))
+	{
+		if (lineNumber == 1)
+		{
+			for (auto itr = defines.begin(); itr != defines.end(); itr++)
+			{
+				shaderStream << "#define " << *itr << std::endl;
+			}
+		}
+
+		shaderStream << preprocessShaderCode(line, directory, 1) << std::endl;
+		lineNumber++;
+	}
+
+	return shaderStream.str();
+}
+//=============================================================================
+std::string ReadShaderCode(const std::string& filename, const std::vector<std::string>& defines)
+{
+	return loadShaderCode(filename, defines);
+}
+//=============================================================================
 [[nodiscard]] inline std::string shaderStageToString(GLenum stage)
 {
 	switch (stage)
@@ -170,25 +254,25 @@ GLuint CreateShaderProgram(std::string_view vertexShader, std::string_view fragm
 //=============================================================================
 GLuint CreateShaderProgram(std::string_view vertexShader, std::string_view geometryShader, std::string_view fragmentShader)
 {
-	struct shader final
+	struct LocalShader final
 	{
-		~shader() { if (id) glDeleteShader(id); }
+		~LocalShader() { if (id) glDeleteShader(id); }
 		GLuint id{ 0 };
 	};
 
-	shader vs;
+	LocalShader vs;
 	if (!vertexShader.empty())
 	{
 		vs.id = compileShaderGLSL(GL_VERTEX_SHADER, vertexShader);
 		if (!vs.id) return 0;
 	}
-	shader gs;
+	LocalShader gs;
 	if (!geometryShader.empty())
 	{
 		gs.id = compileShaderGLSL(GL_GEOMETRY_SHADER, geometryShader);
 		if (!gs.id) return 0;
 	}
-	shader fs;
+	LocalShader fs;
 	if (!fragmentShader.empty())
 	{
 		fs.id = compileShaderGLSL(GL_FRAGMENT_SHADER, fragmentShader);

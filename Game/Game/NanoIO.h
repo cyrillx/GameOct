@@ -13,6 +13,4 @@ namespace io
 
 	std::string LoadFile(const std::filesystem::path& path);
 	std::vector<char> LoadBinaryFile(const std::filesystem::path& path);
-
-	std::string ReadShaderCode(const std::string& filename, const std::vector<std::string>& defines = {});
 } // namespace io

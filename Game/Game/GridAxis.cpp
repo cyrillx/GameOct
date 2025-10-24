@@ -1,15 +1,15 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 #include "GridAxis.h"
 #include "NanoIO.h"
-// TODO: сырые буферы заменить на Model
+// TODO: СЃС‹СЂС‹Рµ Р±СѓС„РµСЂС‹ Р·Р°РјРµРЅРёС‚СЊ РЅР° Model
 //=============================================================================
 GridAxis::GridAxis(int gridDim)
 {
 	m_dim = gridDim;
 	m_nbPoints = (m_dim + 1) * (m_dim + 1);
 	m_nbIndices = 2 * (m_dim + 1) * (2 * m_dim);
-	m_gridShader = CreateShaderProgram(io::ReadShaderCode("data/shaders/grid/vertex.glsl"), io::ReadShaderCode("data/shaders/grid/fragment.glsl"));
-	m_axisShader = CreateShaderProgram(io::ReadShaderCode("data/shaders/axis/vertex.glsl"), io::ReadShaderCode("data/shaders/axis/fragment.glsl"));
+	m_gridShader = CreateShaderProgram(ReadShaderCode("data/shaders/grid/vertex.glsl"), ReadShaderCode("data/shaders/grid/fragment.glsl"));
+	m_axisShader = CreateShaderProgram(ReadShaderCode("data/shaders/axis/vertex.glsl"), ReadShaderCode("data/shaders/axis/fragment.glsl"));
 
 	m_grid = new float[m_nbPoints * 3];
 	m_indices = new int[m_nbIndices];

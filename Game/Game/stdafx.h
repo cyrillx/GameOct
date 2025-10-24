@@ -28,6 +28,7 @@
 #include <iostream>
 #include <filesystem>
 #include <optional>
+#include <regex>
 #include <string>
 #include <string_view>
 #include <span>

@@ -3,6 +3,7 @@
 #include "NanoLog.h"
 // TODO: отрефакторить
 // после создания текстуры вернуть бинд старой
+// TODO: в updateColorTextureAttachment отцепляется только GL_COLOR_ATTACHMENT0, если несколько текстур то проблема
 //=============================================================================
 Framebuffer::Framebuffer(bool color, bool ms, bool hdr)
 	: m_renderColor(color)
@@ -337,6 +338,32 @@ std::vector<Attachment>& Framebuffer::GetAttachments()
 void Framebuffer::Bind()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, m_fbo);
+
+	if (m_rawColor)
+	{
+		size_t colorsNum = 0;
+		for (size_t i = 0; i < m_attachment.size(); i++)
+		{
+			if (m_attachment[i].type == AttachmentType::Texture && m_attachment[i].target == AttachmentTarget::Color)
+			{
+				colorsNum++;
+			}
+		}
+		if (colorsNum > 1)
+		{
+			std::vector<GLuint> attachments(colorsNum);
+			for (size_t i = 0; i < attachments.size(); i++)
+			{
+				attachments[i] = GL_COLOR_ATTACHMENT0 + i;
+			}
+			glDrawBuffers(colorsNum, attachments.data());
+		}
+		
+		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+			Error("framebuffer is not complete !");
+
+		m_rawColor = false;
+	}
 }
 //=============================================================================
 void Framebuffer::Unbind()
@@ -368,6 +395,12 @@ void Framebuffer::addColorTextureAttachment(int width, int height, int insertPos
 	GLint internalFormat = (m_hdr) ? GL_RGBA16F : GL_RGBA;
 	GLenum type = (m_hdr) ? GL_FLOAT : GL_UNSIGNED_BYTE;
 
+	int id = 0;
+	if (insertPos == -1)
+		id = m_attachment.size();
+	else
+		id = insertPos;
+
 	if (m_multiSample)
 	{
 		glGenTextures(1, &buffer.id);
@@ -390,18 +423,15 @@ void Framebuffer::addColorTextureAttachment(int width, int height, int insertPos
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glBindTexture(GL_TEXTURE_2D, 0);
 
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, buffer.id, 0);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0 + id, GL_TEXTURE_2D, buffer.id, 0);
 	}
 
-	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-		Error("framebuffer is not complete !");
+	if (insertPos == -1)
+		m_attachment.push_back(buffer);
 	else
-	{
-		if (insertPos == -1)
-			m_attachment.push_back(buffer);
-		else
-			m_attachment.insert(m_attachment.begin() + insertPos, buffer);
-	}
+		m_attachment.insert(m_attachment.begin() + insertPos, buffer);
+
+	m_rawColor = true;
 }
 //=============================================================================
 void Framebuffer::addDepthTextureAttachment(int width, int height, int insertPos)

@@ -70,17 +70,17 @@ namespace
 }
 #endif
 //=============================================================================
-[[nodiscard]] inline GLenum GetGLEnum(CompareFunc func)
+[[nodiscard]] inline GLenum GetGLEnum(ComparisonFunc func)
 {
 	switch (func) {
-	case CompareFunc::Never:        return GL_NEVER;
-	case CompareFunc::Less:         return GL_LESS;
-	case CompareFunc::Equal:        return GL_EQUAL;
-	case CompareFunc::LessEqual:    return GL_LEQUAL;
-	case CompareFunc::Greater:      return GL_GREATER;
-	case CompareFunc::NotEqual:     return GL_NOTEQUAL;
-	case CompareFunc::GreaterEqual: return GL_GEQUAL;
-	case CompareFunc::Always:       return GL_ALWAYS;
+	case ComparisonFunc::Never:        return GL_NEVER;
+	case ComparisonFunc::Less:         return GL_LESS;
+	case ComparisonFunc::Equal:        return GL_EQUAL;
+	case ComparisonFunc::LessEqual:    return GL_LEQUAL;
+	case ComparisonFunc::Greater:      return GL_GREATER;
+	case ComparisonFunc::NotEqual:     return GL_NOTEQUAL;
+	case ComparisonFunc::GreaterEqual: return GL_GEQUAL;
+	case ComparisonFunc::Always:       return GL_ALWAYS;
 	default: std::unreachable();
 	}
 }
@@ -609,9 +609,9 @@ std::size_t std::hash<SamplerStateInfo>::operator()(const SamplerStateInfo& k) c
 		k.maxAnisotropy,
 		k.minLod,
 		k.maxLod,
-		k.lodBias,
+		k.mipLodBias,
 		k.compareEnabled,
-		k.compareFunc,
+		k.comparisonFunc,
 		k.borderColor[0],
 		k.borderColor[1],
 		k.borderColor[2],
@@ -644,17 +644,18 @@ GLuint CreateSamplerState(const SamplerStateInfo& info)
 
 	if (info.maxAnisotropy > 1.0f && (GLAD_GL_ARB_texture_filter_anisotropic == 1))
 	{
+		// TODO: clamp maxAnisotropy(1, getCapabilities().maximumAnisotropy)
 		glSamplerParameterf(sampler, GL_TEXTURE_MAX_ANISOTROPY, info.maxAnisotropy);
 	}
 
 	glSamplerParameterf(sampler, GL_TEXTURE_MIN_LOD, info.minLod);
 	glSamplerParameterf(sampler, GL_TEXTURE_MAX_LOD, info.maxLod);
-	glSamplerParameterf(sampler, GL_TEXTURE_LOD_BIAS, info.lodBias);
+	glSamplerParameterf(sampler, GL_TEXTURE_LOD_BIAS, info.mipLodBias);
 
 	if (info.compareEnabled)
 	{
 		glSamplerParameteri(sampler, GL_TEXTURE_COMPARE_MODE, GL_COMPARE_REF_TO_TEXTURE);
-		glSamplerParameteri(sampler, GL_TEXTURE_COMPARE_FUNC, GetGLEnum(info.compareFunc));
+		glSamplerParameteri(sampler, GL_TEXTURE_COMPARE_FUNC, GetGLEnum(info.comparisonFunc));
 	}
 	else
 	{
@@ -699,12 +700,12 @@ struct CachedState final
 	bool restorePolygonState{ true };
 
 	bool depthTestEnabled{ false };
-	CompareFunc depthFunc{ CompareFunc::Less };
+	ComparisonFunc depthFunc{ ComparisonFunc::Less };
 	bool depthMask{ true };
 
 	bool stencilEnabled{ false };
-	CompareFunc frontFunc{ CompareFunc::Always };
-	CompareFunc backFunc{ CompareFunc::Always };
+	ComparisonFunc frontFunc{ ComparisonFunc::Always };
+	ComparisonFunc backFunc{ ComparisonFunc::Always };
 	int frontRef{ 0 };
 	int backRef{ 0 };
 	unsigned int frontMask{ 0xFF };

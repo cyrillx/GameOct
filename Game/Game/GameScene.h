@@ -4,6 +4,7 @@
 #include "NanoScene.h"
 #include "RPDirShadowMap.h"
 #include "RPGeometry.h"
+#include "RPSSAO.h"
 #include "RPMainScene.h"
 #include "RPPostFrame.h"
 
@@ -45,6 +46,7 @@ private:
 
 	RPDirShadowMap                 m_rpDirShadowMap;
 	RPGeometry                     m_rpGeometry;
+	RPSSAO                         m_rpSSAO;
 	RPMainScene                    m_rpMainScene;
 	RPPostFrame                    m_rpPostFrame;
 };

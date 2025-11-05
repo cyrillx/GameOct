@@ -10,32 +10,32 @@ layout(location = 5) in vec3 vertexBitangent;
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 modelMatrix;
-uniform mat3 normalMatrix;
 
-out vec3 fsColor;
-out vec3 fsNormal;
-out vec2 fsTexCoord;
-out vec3 fsFragPos;
-out mat3 fsTBN;
+out VS_OUT {
+	vec3 FragPos;
+	vec2 TexCoords;
+	mat3 TBN;
+	vec3 Normal;
+} vs_out;
 
 mat3 computeTBN()
 {
-	vec3 T = normalize(mat3(modelMatrix) * vertexTangent);
-	vec3 N = normalize(mat3(modelMatrix) * vertexNormal);
-	vec3 B = normalize(mat3(modelMatrix) * vertexBitangent);
-	return transpose(mat3(T, B, N));
+	vec3 T = normalize(vec3(viewMatrix * modelMatrix * vec4(vertexTangent,   0.0)));
+	vec3 B = normalize(vec3(viewMatrix * modelMatrix * vec4(vertexBitangent, 0.0)));
+	vec3 N = normalize(vec3(viewMatrix * modelMatrix * vec4(vertexNormal,    0.0)));
+
+	return mat3(T, B, N);
 }
 
 void main()
 {
-	gl_Position  = projectionMatrix * viewMatrix * modelMatrix * vec4(vertexPosition, 1.0);
-	fsColor      = vertexColor;
-	//fsNormal     = normalMatrix * vertexNormal;
-	fsNormal     = mat3(transpose(inverse(modelMatrix))) * vertexNormal;
-
-	fsTexCoord   = vertexTexCoord;
-	fsFragPos    = vec3(modelMatrix * vec4(vertexPosition, 1.0f));
-
+	vs_out.FragPos = vec3(viewMatrix * modelMatrix * vec4(vertexPosition, 1.0f));
+	vs_out.TexCoords = vertexTexCoord;
+	
 	// compute TBN matrix
-	fsTBN = computeTBN();
+	vs_out.TBN = computeTBN();
+
+	vs_out.Normal = mat3(transpose(inverse(viewMatrix * modelMatrix))) * vertexNormal;
+
+	gl_Position  = projectionMatrix * viewMatrix * modelMatrix * vec4(vertexPosition, 1.0);
 }

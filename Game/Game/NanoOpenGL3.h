@@ -4,7 +4,7 @@
 // Enums
 //=============================================================================
 
-enum class CompareFunc : uint8_t
+enum class ComparisonFunc : uint8_t
 {
 	Never,
 	Less,
@@ -160,20 +160,20 @@ struct SamplerStateInfo final
 {
 	bool operator==(const SamplerStateInfo&) const noexcept = default;
 
-	float         maxAnisotropy{ 1.0f };
-	float         minLod{ -1000.0f };
-	float         maxLod{ 1000.0f };
-	float         lodBias{ 0.0f };
-	bool          compareEnabled{ false };
-	CompareFunc   compareFunc{ CompareFunc::Less };
-	float         borderColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	float          maxAnisotropy{ 1.0f };
+	float          minLod{ -1000.0f };
+	float          maxLod{ 1000.0f };
+	float          mipLodBias{ 0.0f };
+	bool           compareEnabled{ false };
+	ComparisonFunc comparisonFunc{ ComparisonFunc::Less };
+	float          borderColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
 
-	TextureFilter minFilter{ TextureFilter::Linear };
-	TextureFilter magFilter{ TextureFilter::Linear };
+	TextureFilter  minFilter{ TextureFilter::Linear };
+	TextureFilter  magFilter{ TextureFilter::Linear };
 
-	TextureWrap   wrapS{ TextureWrap::Repeat };
-	TextureWrap   wrapT{ TextureWrap::Repeat };
-	TextureWrap   wrapR{ TextureWrap::Repeat };
+	TextureWrap    wrapS{ TextureWrap::Repeat };
+	TextureWrap    wrapT{ TextureWrap::Repeat };
+	TextureWrap    wrapR{ TextureWrap::Repeat };
 };
 
 template<>
@@ -198,15 +198,15 @@ struct GLState final
 	struct
 	{
 		bool enable{ true };
-		CompareFunc depthFunc{ CompareFunc::Less };
+		ComparisonFunc depthFunc{ ComparisonFunc::Less };
 		bool depthMask{ true };
 	} depthState;
 
 	struct
 	{
 		bool enable{ false };
-		CompareFunc frontFunc{ CompareFunc::Always };
-		CompareFunc backFunc{ CompareFunc::Always };
+		ComparisonFunc frontFunc{ ComparisonFunc::Always };
+		ComparisonFunc backFunc{ ComparisonFunc::Always };
 		int frontRef{ 0 };
 		int backRef{ 0 };
 		unsigned int frontMask{ 0xFF };

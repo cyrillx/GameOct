@@ -77,4 +77,5 @@ private:
 	bool                    m_multiSample{ false };
 	bool                    m_hdr{ false };
 	std::vector<Attachment> m_attachment;
+	bool                    m_rawColor{ true };
 };

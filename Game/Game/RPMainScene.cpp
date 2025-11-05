@@ -49,6 +49,7 @@ void RPMainScene::Close()
 void RPMainScene::Draw(const RPDirShadowMap& rpShadowMap, const std::vector<DirectionalLight*>& dirLights, size_t numDirLights, const std::vector<Entity*>& entites, size_t numEntities, Camera* camera)
 {
 	m_fbo->Bind();
+	glEnable(GL_DEPTH_TEST);
 	glViewport(0, 0, static_cast<int>(m_framebufferWidth), static_cast<int>(m_framebufferHeight));
 	glClearColor(0.3f, 0.4f, 0.9f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT/* | GL_STENCIL_BUFFER_BIT*/);

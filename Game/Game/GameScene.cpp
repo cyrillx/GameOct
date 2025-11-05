@@ -16,6 +16,8 @@ bool GameScene::Init()
 		return false;
 	if (!m_rpGeometry.Init(wndWidth, wndHeight))
 		return false;
+	if (!m_rpSSAO.Init(wndWidth, wndHeight))
+		return false;
 	if (!m_rpMainScene.Init(wndWidth, wndHeight))
 		return false;
 	if (!m_rpPostFrame.Init(wndWidth, wndHeight))
@@ -28,6 +30,7 @@ void GameScene::Close()
 {
 	m_rpMainScene.Close();
 	m_rpPostFrame.Close();
+	m_rpSSAO.Close();
 	m_rpGeometry.Close();
 	m_rpDirShadowMap.Close();
 }
@@ -87,6 +90,7 @@ void GameScene::beginDraw()
 	const auto wndHeight = window::GetHeight();
 
 	m_rpGeometry.Resize(wndWidth, wndHeight);
+	m_rpSSAO.Resize(wndWidth, wndHeight);
 	m_rpMainScene.Resize(wndWidth, wndHeight);
 	m_rpPostFrame.Resize(wndWidth, wndHeight);
 }
@@ -98,19 +102,29 @@ void GameScene::draw()
 	//		Set state: glEnable(GL_DEPTH_TEST);
 	m_rpDirShadowMap.Draw(m_dirLights, m_numDirLights, m_entities, m_numEntities);
 
+	//================================================================================
+	// 2 Render Pass: geometry
+	// TODO: m_rpGeometry можно не рендерить если отключено SSAO
+	m_rpGeometry.Draw(m_entities, m_numEntities, m_camera);
 
+	//================================================================================
+	// 3 Render Pass: SSAO
+	//		Set state: glDisable(GL_DEPTH_TEST);
+	// TODO: m_rpSSAO можно не рендерить если отключено SSAO
+	m_rpSSAO.Draw(m_rpGeometry.GetFBO());
 	
 	//================================================================================
-	// 2 Render Pass: main scenes
+	// 4 Render Pass: main scenes
+	//		Set state: glEnable(GL_DEPTH_TEST);
 	m_rpMainScene.Draw(m_rpDirShadowMap, m_dirLights, m_numDirLights, m_entities, m_numEntities, m_camera);
 	
 	//================================================================================
-	// 3 Render Pass: post frame
+	// 5 Render Pass: post frame
 	//		Set state: glDisable(GL_DEPTH_TEST);
 	m_rpPostFrame.Draw(m_rpMainScene.GetFBO());
 
 	//================================================================================
-	// 4 Render Pass: blitting main fbo
+	// 6 Render Pass: blitting main fbo
 	blittingToScreen(m_rpPostFrame.GetFBOId(), m_rpPostFrame.GetWidth(), m_rpPostFrame.GetHeight());
 }
 //=============================================================================

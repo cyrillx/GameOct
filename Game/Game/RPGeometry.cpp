@@ -22,12 +22,12 @@ bool RPGeometry::Init(uint16_t framebufferWidth, uint16_t framebufferHeight)
 	m_projectionMatrixId = GetUniformLocation(m_program, "projectionMatrix");
 	m_viewMatrixId = GetUniformLocation(m_program, "viewMatrix");
 	m_modelMatrixId = GetUniformLocation(m_program, "modelMatrix");
-	m_normalMatrixId = GetUniformLocation(m_program, "normalMatrix");
 
 	glUseProgram(0); // TODO: возможно вернуть прошлую версию шейдера
 
-	m_fbo = { std::make_unique<Framebuffer>(true, false, true) };
+	m_fbo = { std::make_unique<Framebuffer>(true, false, false) };
 
+	m_fbo->AddAttachment(AttachmentType::Texture, AttachmentTarget::Color, m_framebufferWidth, m_framebufferHeight);
 	m_fbo->AddAttachment(AttachmentType::Texture, AttachmentTarget::Color, m_framebufferWidth, m_framebufferHeight);
 	m_fbo->AddAttachment(AttachmentType::RenderBuffer, AttachmentTarget::DepthStencil, m_framebufferWidth, m_framebufferHeight);
 
@@ -63,7 +63,7 @@ void RPGeometry::Draw(const std::vector<Entity*>& entites, size_t numEntities, C
 {
 	m_fbo->Bind();
 	glViewport(0, 0, static_cast<int>(m_framebufferWidth), static_cast<int>(m_framebufferHeight));
-	glClearColor(0.3f, 0.4f, 0.9f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT/* | GL_STENCIL_BUFFER_BIT*/);
 
 	glUseProgram(m_program);

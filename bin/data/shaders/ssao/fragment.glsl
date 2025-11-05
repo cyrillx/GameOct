@@ -16,7 +16,7 @@ float bias = 0.025;
 uniform vec2 noiseScale;
 uniform mat4 projection;
 
-layout(location = 0) out vec3 FragColor;
+layout(location = 0) out float FragColor;
 
 void main()
 {

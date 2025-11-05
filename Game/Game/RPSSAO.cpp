@@ -3,7 +3,8 @@
 #include "NanoWindow.h"
 #include "NanoLog.h"
 #include "GameScene.h"
-shadow - swan
+//shadow - swan
+текстура фреймбуфера из одного float
 // TODO: в каждом renderpass создается свой квад, а нужно сделать общий
 //=============================================================================
 bool RPSSAO::Init(uint16_t framebufferWidth, uint16_t framebufferHeight)

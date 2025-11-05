@@ -5,8 +5,9 @@
 #include "RPDirShadowMap.h"
 #include "RPGeometry.h"
 #include "RPSSAO.h"
+#include "RPSSAOBlur.h"
 #include "RPMainScene.h"
-#include "RPPostFrame.h"
+#include "RPComposite.h"
 
 
 struct Entity final
@@ -47,6 +48,7 @@ private:
 	RPDirShadowMap                 m_rpDirShadowMap;
 	RPGeometry                     m_rpGeometry;
 	RPSSAO                         m_rpSSAO;
+	RPSSAOBlur                     m_rpSSAOBlur;
 	RPMainScene                    m_rpMainScene;
-	RPPostFrame                    m_rpPostFrame;
+	RPComposite                    m_rpPostFrame;
 };

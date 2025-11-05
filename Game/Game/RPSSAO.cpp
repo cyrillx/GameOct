@@ -3,8 +3,6 @@
 #include "NanoWindow.h"
 #include "NanoLog.h"
 #include "GameScene.h"
-//shadow - swan
-текстура фреймбуфера из одного float
 // TODO: в каждом renderpass создается свой квад, а нужно сделать общий
 //=============================================================================
 bool RPSSAO::Init(uint16_t framebufferWidth, uint16_t framebufferHeight)
@@ -47,14 +45,9 @@ bool RPSSAO::Init(uint16_t framebufferWidth, uint16_t framebufferHeight)
 
 	glUseProgram(0); // TODO: возможно вернуть прошлую версию шейдера
 
-	m_fbo = { std::make_unique<Framebuffer>(true, false, false) };
+	m_fbo = { std::make_unique<Framebuffer>(true, false, true) };
 
-	m_fbo->AddAttachment(AttachmentType::Texture, AttachmentTarget::Color, m_framebufferWidth, m_framebufferHeight);
-
-	SamplerStateInfo samperCI{};
-	samperCI.minFilter = TextureFilter::Nearest;
-	samperCI.magFilter = TextureFilter::Nearest;
-	m_sampler = CreateSamplerState(samperCI);
+	m_fbo->AddAttachment(AttachmentType::Texture, AttachmentTarget::ColorRed, m_framebufferWidth, m_framebufferHeight);
 
 	std::uniform_real_distribution<GLfloat> randomFloats(0.0, 1.0); // random floats between 0.0 - 1.0
 	std::default_random_engine generator;
@@ -101,7 +94,6 @@ void RPSSAO::Close()
 {
 	m_fbo.reset();
 	glDeleteProgram(m_program);
-	glDeleteSamplers(1, &m_sampler);
 }
 //=============================================================================
 void RPSSAO::Resize(uint16_t framebufferWidth, uint16_t framebufferHeight)
@@ -115,7 +107,7 @@ void RPSSAO::Resize(uint16_t framebufferWidth, uint16_t framebufferHeight)
 	glm::vec2 size((float)m_framebufferWidth, (float)m_framebufferHeight);
 	m_noiseScale = size / 4.0f;
 
-	m_fbo->UpdateAttachment(AttachmentType::Texture, AttachmentTarget::Color, m_framebufferWidth, m_framebufferHeight);
+	m_fbo->UpdateAttachment(AttachmentType::Texture, AttachmentTarget::ColorRed, m_framebufferWidth, m_framebufferHeight);
 }
 //=============================================================================
 void RPSSAO::Draw(Framebuffer* preFBO)
@@ -131,8 +123,6 @@ void RPSSAO::Draw(Framebuffer* preFBO)
 	SetUniform(GetUniformLocation(m_program, "noiseScale"), m_noiseScale);
 	SetUniform(GetUniformLocation(m_program, "projection"), m_perspective);
 
-	glBindSampler(0, m_sampler);
-
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, preFBO->GetAttachments()[0].id);
 	glActiveTexture(GL_TEXTURE1);
@@ -142,6 +132,5 @@ void RPSSAO::Draw(Framebuffer* preFBO)
 
 	glBindVertexArray(m_vao);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
-	glBindSampler(0, 0);
 }
 //=============================================================================

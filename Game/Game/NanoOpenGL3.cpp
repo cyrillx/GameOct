@@ -370,19 +370,19 @@ GLuint CreateShaderProgram(std::string_view vertexShader, std::string_view geome
 	return program;
 }
 //=============================================================================
-GLuint LoadShaderProgram(const std::string& vsFile)
+GLuint LoadShaderProgram(const std::string& vsFile, const std::vector<std::string>& defines)
 {
-	return CreateShaderProgram(LoadShaderCode(vsFile));
+	return CreateShaderProgram(LoadShaderCode(vsFile, defines));
 }
 //=============================================================================
-GLuint LoadShaderProgram(const std::string& vsFile, const std::string& fsFile)
+GLuint LoadShaderProgram(const std::string& vsFile, const std::string& fsFile, const std::vector<std::string>& defines)
 {
-	return CreateShaderProgram(LoadShaderCode(vsFile), LoadShaderCode(fsFile));
+	return CreateShaderProgram(LoadShaderCode(vsFile, defines), LoadShaderCode(fsFile, defines));
 }
 //=============================================================================
-GLuint LoadShaderProgram(const std::string& vsFile, const std::string& gsFile, const std::string& fsFile)
+GLuint LoadShaderProgram(const std::string& vsFile, const std::string& gsFile, const std::string& fsFile, const std::vector<std::string>& defines)
 {
-	return CreateShaderProgram(LoadShaderCode(vsFile), LoadShaderCode(gsFile), LoadShaderCode(fsFile));
+	return CreateShaderProgram(LoadShaderCode(vsFile, defines), LoadShaderCode(gsFile, defines), LoadShaderCode(fsFile, defines));
 }
 //=============================================================================
 int GetUniformLocation(GLuint program, std::string_view name)

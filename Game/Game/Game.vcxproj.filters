@@ -88,13 +88,16 @@
     <ClCompile Include="RPMainScene.cpp">
       <Filter>GameApp\Render\SceneRenderPass</Filter>
     </ClCompile>
-    <ClCompile Include="RPPostFrame.cpp">
+    <ClCompile Include="RPComposite.cpp">
       <Filter>GameApp\Render\SceneRenderPass</Filter>
     </ClCompile>
     <ClCompile Include="RPGeometry.cpp">
       <Filter>GameApp\Render\SceneRenderPass</Filter>
     </ClCompile>
     <ClCompile Include="RPSSAO.cpp">
+      <Filter>GameApp\Render\SceneRenderPass</Filter>
+    </ClCompile>
+    <ClCompile Include="RPSSAOBlur.cpp">
       <Filter>GameApp\Render\SceneRenderPass</Filter>
     </ClCompile>
   </ItemGroup>
@@ -176,7 +179,7 @@
     <ClInclude Include="RPMainScene.h">
       <Filter>GameApp\Render\SceneRenderPass</Filter>
     </ClInclude>
-    <ClInclude Include="RPPostFrame.h">
+    <ClInclude Include="RPComposite.h">
       <Filter>GameApp\Render\SceneRenderPass</Filter>
     </ClInclude>
     <ClInclude Include="GameConfig.h" />
@@ -184,6 +187,9 @@
       <Filter>GameApp\Render\SceneRenderPass</Filter>
     </ClInclude>
     <ClInclude Include="RPSSAO.h">
+      <Filter>GameApp\Render\SceneRenderPass</Filter>
+    </ClInclude>
+    <ClInclude Include="RPSSAOBlur.h">
       <Filter>GameApp\Render\SceneRenderPass</Filter>
     </ClInclude>
   </ItemGroup>

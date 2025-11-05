@@ -9,7 +9,10 @@ enum class AttachmentType : uint8_t
 
 enum class AttachmentTarget : uint8_t
 {
-	Color,
+	ColorRed,
+	ColorRG,
+	ColorRGB,
+	ColorRGBA,
 	Depth,
 	Stencil,
 	DepthStencil
@@ -52,23 +55,23 @@ public:
 	GLuint GetId() const { return m_fbo; }
 
 private:
-	void addColorTextureAttachment(int width, int height, int insertPos);
+	void addColorTextureAttachment(int width, int height, AttachmentTarget target, int insertPos);
 	void addDepthTextureAttachment(int width, int height, int insertPos);
 
 	void addColorTextureCubemapAttachment(int width, int height, int insertPos);
 	void addDepthTextureCubemapAttachment(int width, int height, int insertPos);
 
-	void addColorRenderbufferAttachment(int width, int height, int insertPos);
+	void addColorRenderbufferAttachment(int width, int height, AttachmentTarget target, int insertPos);
 	void addDepthRenderbufferAttachment(int width, int height, int insertPos);
 	void addDepthStencilRenderbufferAttachment(int width, int height, int insertPos);
 
-	void updateColorTextureAttachment(int width, int height, int insertPos);
+	void updateColorTextureAttachment(int width, int height, AttachmentTarget target, int insertPos);
 	void updateDepthTextureAttachment(int width, int height, int insertPos);
 
 	void updateColorTextureCubemapAttachment(int width, int height, int insertPos);
 	void updateDepthTextureCubemapAttachment(int width, int height, int insertPos);
 
-	void updateColorRenderbufferAttachment(int width, int height, int insertPos);
+	void updateColorRenderbufferAttachment(int width, int height, AttachmentTarget target, int insertPos);
 	void updateDepthRenderbufferAttachment(int width, int height, int insertPos);
 	void updateDepthStencilRenderbufferAttachment(int width, int height, int insertPos);
 

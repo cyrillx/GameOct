@@ -1,27 +1,32 @@
 ﻿#include "stdafx.h"
-#include "RPPostFrame.h"
+#include "RPComposite.h"
 #include "NanoIO.h"
 #include "NanoOpenGL3.h"
 #include "NanoLog.h"
 #include "NanoRenderMesh.h"
 //=============================================================================
-bool RPPostFrame::Init(uint16_t framebufferWidth, uint16_t framebufferHeight)
+bool RPComposite::Init(uint16_t framebufferWidth, uint16_t framebufferHeight)
 {
 	m_framebufferWidth = framebufferWidth;
 	m_framebufferHeight = framebufferHeight;
 
-	m_program = LoadShaderProgram("data/shaders/postFrame/vertex.glsl", "data/shaders/postFrame/fragment.glsl");
+	m_program = LoadShaderProgram("data/shaders/composite/vertex.glsl", "data/shaders/composite/fragment.glsl"/*, std::vector<std::string>{"GAMMA_CORRECT"}*/);
 	if (!m_program)
 	{
-		Fatal("Scene Main RenderPass Shader failed!");
+		Fatal("Scene Composite RenderPass Shader failed!");
 		return false;
 	}
 
 	glUseProgram(m_program);
-	SetUniform(GetUniformLocation(m_program, "frameTexture"), 0);
+	SetUniform(GetUniformLocation(m_program, "colorInput"), 0);
+	SetUniform(GetUniformLocation(m_program, "brightInput"), 1);
+	SetUniform(GetUniformLocation(m_program, "ssaoSampler"), 2);
+	SetUniform(GetUniformLocation(m_program, "bloom"), false);
+	SetUniform(GetUniformLocation(m_program, "useSSAO"), true);
+
 
 	m_fbo = { std::make_unique<Framebuffer>(true, false, true) };
-	m_fbo->AddAttachment(AttachmentType::Texture, AttachmentTarget::Color, m_framebufferWidth, m_framebufferHeight);
+	m_fbo->AddAttachment(AttachmentType::Texture, AttachmentTarget::ColorRGBA, m_framebufferWidth, m_framebufferHeight);
 
 	std::vector<QuadVertex> vertices = {
 		{glm::vec2(-1.0f,  1.0f), glm::vec2(0.0f, 1.0f)},
@@ -43,31 +48,26 @@ bool RPPostFrame::Init(uint16_t framebufferWidth, uint16_t framebufferHeight)
 
 	glUseProgram(0);
 
-	SamplerStateInfo samperCI{};
-	samperCI.minFilter = TextureFilter::Nearest;
-	samperCI.magFilter = TextureFilter::Nearest;
-	m_sampler = CreateSamplerState(samperCI);
-
 	return true;
 }
 //=============================================================================
-void RPPostFrame::Close()
+void RPComposite::Close()
 {
 	glDeleteProgram(m_program);
 	m_fbo.reset();
 }
 //=============================================================================
-void RPPostFrame::Resize(uint16_t framebufferWidth, uint16_t framebufferHeight)
+void RPComposite::Resize(uint16_t framebufferWidth, uint16_t framebufferHeight)
 {
 	if (m_framebufferWidth == framebufferWidth && m_framebufferHeight == framebufferHeight)
 		return;
 
 	m_framebufferWidth = framebufferWidth;
 	m_framebufferHeight = framebufferHeight;
-	m_fbo->UpdateAttachment(AttachmentType::Texture, AttachmentTarget::Color, m_framebufferWidth, m_framebufferHeight);
+	m_fbo->UpdateAttachment(AttachmentType::Texture, AttachmentTarget::ColorRGBA, m_framebufferWidth, m_framebufferHeight);
 }
 //=============================================================================
-void RPPostFrame::Draw(Framebuffer* preFBO)
+void RPComposite::Draw(Framebuffer* colorFBO, Framebuffer* SSAOFBO)
 {
 	m_fbo->Bind();
 	glDisable(GL_DEPTH_TEST);
@@ -75,11 +75,17 @@ void RPPostFrame::Draw(Framebuffer* preFBO)
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 	glUseProgram(m_program);
-	glBindSampler(0, m_sampler);
+	
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, preFBO->GetAttachments()[0].id);
+	glBindTexture(GL_TEXTURE_2D, colorFBO->GetAttachments()[0].id);
+	
+	//glActiveTexture(GL_TEXTURE1);
+	//glBindTexture(GL_TEXTURE_2D, blurFBO->GetAttachments()[0].id);
+
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, SSAOFBO->GetAttachments()[0].id);
+
 	glBindVertexArray(m_vao);
 	glDrawArrays(GL_TRIANGLES, 0, 6);
-	glBindSampler(0, 0);
 }
 //=============================================================================

@@ -18,6 +18,8 @@ bool GameScene::Init()
 		return false;
 	if (!m_rpSSAO.Init(wndWidth, wndHeight))
 		return false;
+	if (!m_rpSSAOBlur.Init(wndWidth, wndHeight))
+		return false;
 	if (!m_rpMainScene.Init(wndWidth, wndHeight))
 		return false;
 	if (!m_rpPostFrame.Init(wndWidth, wndHeight))
@@ -30,6 +32,7 @@ void GameScene::Close()
 {
 	m_rpMainScene.Close();
 	m_rpPostFrame.Close();
+	m_rpSSAOBlur.Close();
 	m_rpSSAO.Close();
 	m_rpGeometry.Close();
 	m_rpDirShadowMap.Close();
@@ -91,6 +94,7 @@ void GameScene::beginDraw()
 
 	m_rpGeometry.Resize(wndWidth, wndHeight);
 	m_rpSSAO.Resize(wndWidth, wndHeight);
+	m_rpSSAOBlur.Resize(wndWidth, wndHeight);
 	m_rpMainScene.Resize(wndWidth, wndHeight);
 	m_rpPostFrame.Resize(wndWidth, wndHeight);
 }
@@ -112,19 +116,25 @@ void GameScene::draw()
 	//		Set state: glDisable(GL_DEPTH_TEST);
 	// TODO: m_rpSSAO можно не рендерить если отключено SSAO
 	m_rpSSAO.Draw(m_rpGeometry.GetFBO());
-	
+
 	//================================================================================
-	// 4 Render Pass: main scenes
+	// 4 Render Pass: SSAO Blur
+	// TODO: m_rpSSAO можно не рендерить если отключено SSAO
+	m_rpSSAOBlur.Draw(m_rpSSAO.GetFBO());
+		
+	//================================================================================
+	// 5 Render Pass: main scenes
 	//		Set state: glEnable(GL_DEPTH_TEST);
 	m_rpMainScene.Draw(m_rpDirShadowMap, m_dirLights, m_numDirLights, m_entities, m_numEntities, m_camera);
 	
 	//================================================================================
-	// 5 Render Pass: post frame
+	// 6 Render Pass: post frame
 	//		Set state: glDisable(GL_DEPTH_TEST);
-	m_rpPostFrame.Draw(m_rpMainScene.GetFBO());
+	// TODO: m_rpSSAO можно не рендерить если отключено SSAO
+	m_rpPostFrame.Draw(m_rpMainScene.GetFBO(), m_rpSSAOBlur.GetFBO());
 
 	//================================================================================
-	// 6 Render Pass: blitting main fbo
+	// 7 Render Pass: blitting main fbo
 	blittingToScreen(m_rpPostFrame.GetFBOId(), m_rpPostFrame.GetWidth(), m_rpPostFrame.GetHeight());
 }
 //=============================================================================

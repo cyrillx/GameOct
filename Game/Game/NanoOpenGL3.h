@@ -77,9 +77,9 @@ GLuint CreateShaderProgram(std::string_view vertexShader);
 GLuint CreateShaderProgram(std::string_view vertexShader, std::string_view fragmentShader);
 GLuint CreateShaderProgram(std::string_view vertexShader, std::string_view geometryShader, std::string_view fragmentShader);
 
-GLuint LoadShaderProgram(const std::string& vsFile);
-GLuint LoadShaderProgram(const std::string& vsFile, const std::string& fsFile);
-GLuint LoadShaderProgram(const std::string& vsFile, const std::string& gsFile, const std::string& fsFile);
+GLuint LoadShaderProgram(const std::string& vsFile, const std::vector<std::string>& defines = {});
+GLuint LoadShaderProgram(const std::string& vsFile, const std::string& fsFile, const std::vector<std::string>& defines = {});
+GLuint LoadShaderProgram(const std::string& vsFile, const std::string& gsFile, const std::string& fsFile, const std::vector<std::string>& defines = {});
 
 //=============================================================================
 // Shader Uniforms

@@ -114,8 +114,9 @@
     <ClCompile Include="RPDirShadowMap.cpp" />
     <ClCompile Include="RPGeometry.cpp" />
     <ClCompile Include="RPMainScene.cpp" />
-    <ClCompile Include="RPPostFrame.cpp" />
+    <ClCompile Include="RPComposite.cpp" />
     <ClCompile Include="RPSSAO.cpp" />
+    <ClCompile Include="RPSSAOBlur.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneRenderPass.cpp" />
     <ClCompile Include="SceneShadowMap.cpp" />
@@ -157,8 +158,9 @@
     <ClInclude Include="RPDirShadowMap.h" />
     <ClInclude Include="RPGeometry.h" />
     <ClInclude Include="RPMainScene.h" />
-    <ClInclude Include="RPPostFrame.h" />
+    <ClInclude Include="RPComposite.h" />
     <ClInclude Include="RPSSAO.h" />
+    <ClInclude Include="RPSSAOBlur.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneRenderPass.h" />
     <ClInclude Include="SceneShadowMap.h" />

@@ -3,7 +3,7 @@
 #include "NanoLog.h"
 // TODO: отрефакторить
 // после создания текстуры вернуть бинд старой
-// TODO: в updateColorTextureAttachment отцепляется только GL_COLOR_ATTACHMENT0, если несколько текстур то проблема
+// TODO: в updateColorTextureAttachment и деструкторе отцепляется только GL_COLOR_ATTACHMENT0, если несколько текстур то проблема
 //=============================================================================
 Framebuffer::Framebuffer(bool color, bool ms, bool hdr)
 	: m_renderColor(color)
@@ -22,7 +22,10 @@ Framebuffer::~Framebuffer()
 		{
 			switch (m_attachment.at(i).target)
 			{
-			case AttachmentTarget::Color:
+			case AttachmentTarget::ColorRed:
+			case AttachmentTarget::ColorRG:
+			case AttachmentTarget::ColorRGB:
+			case AttachmentTarget::ColorRGBA:
 				if (m_multiSample)
 					glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, 0, 0);
 				else
@@ -49,7 +52,10 @@ Framebuffer::~Framebuffer()
 		{
 			switch (m_attachment.at(i).target)
 			{
-			case AttachmentTarget::Color:
+			case AttachmentTarget::ColorRed:
+			case AttachmentTarget::ColorRG:
+			case AttachmentTarget::ColorRGB:
+			case AttachmentTarget::ColorRGBA:
 				glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, 0, 0);
 				break;
 			case AttachmentTarget::Depth:
@@ -64,7 +70,10 @@ Framebuffer::~Framebuffer()
 		{
 			switch (m_attachment.at(i).target)
 			{
-			case AttachmentTarget::Color:
+			case AttachmentTarget::ColorRed:
+			case AttachmentTarget::ColorRG:
+			case AttachmentTarget::ColorRGB:
+			case AttachmentTarget::ColorRGBA:
 				glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, 0);
 				break;
 			case AttachmentTarget::Depth:
@@ -94,8 +103,15 @@ void Framebuffer::AddAttachment(AttachmentType type, AttachmentTarget target, in
 	{
 		switch (target)
 		{
-		case AttachmentTarget::Color: addColorTextureAttachment(width, height, insertPos); break;
-		case AttachmentTarget::Depth: addDepthTextureAttachment(width, height, insertPos); break;
+		case AttachmentTarget::ColorRed:
+		case AttachmentTarget::ColorRG:
+		case AttachmentTarget::ColorRGB:
+		case AttachmentTarget::ColorRGBA:
+			addColorTextureAttachment(width, height, target, insertPos);
+			break;
+		case AttachmentTarget::Depth:
+			addDepthTextureAttachment(width, height, insertPos);
+			break;
 		default: break;
 		}
 	}
@@ -103,8 +119,15 @@ void Framebuffer::AddAttachment(AttachmentType type, AttachmentTarget target, in
 	{
 		switch (target)
 		{
-		case AttachmentTarget::Color: addColorTextureCubemapAttachment(width, height, insertPos); break;
-		case AttachmentTarget::Depth: addDepthTextureCubemapAttachment(width, height, insertPos); break;
+		case AttachmentTarget::ColorRed:
+		case AttachmentTarget::ColorRG:
+		case AttachmentTarget::ColorRGB:
+		case AttachmentTarget::ColorRGBA:
+			addColorTextureCubemapAttachment(width, height, insertPos);
+			break;
+		case AttachmentTarget::Depth: 
+			addDepthTextureCubemapAttachment(width, height, insertPos);
+			break;
 		default: break;
 		}
 	}
@@ -112,9 +135,18 @@ void Framebuffer::AddAttachment(AttachmentType type, AttachmentTarget target, in
 	{
 		switch (target)
 		{
-		case AttachmentTarget::Color: addColorRenderbufferAttachment(width, height, insertPos); break;
-		case AttachmentTarget::Depth: addDepthRenderbufferAttachment(width, height, insertPos); break;
-		case AttachmentTarget::DepthStencil: addDepthStencilRenderbufferAttachment(width, height, insertPos); break;
+		case AttachmentTarget::ColorRed:
+		case AttachmentTarget::ColorRG:
+		case AttachmentTarget::ColorRGB:
+		case AttachmentTarget::ColorRGBA:
+			addColorRenderbufferAttachment(width, height, target, insertPos);
+			break;
+		case AttachmentTarget::Depth:
+			addDepthRenderbufferAttachment(width, height, insertPos);
+			break;
+		case AttachmentTarget::DepthStencil:
+			addDepthStencilRenderbufferAttachment(width, height, insertPos);
+			break;
 		default: break;
 		}
 	}
@@ -133,8 +165,15 @@ void Framebuffer::UpdateAttachment(AttachmentType type, AttachmentTarget target,
 			{
 				switch (target)
 				{
-				case AttachmentTarget::Color: updateColorTextureAttachment(width, height, i); break;
-				case AttachmentTarget::Depth: updateDepthTextureAttachment(width, height, i); break;
+				case AttachmentTarget::ColorRed:
+				case AttachmentTarget::ColorRG:
+				case AttachmentTarget::ColorRGB:
+				case AttachmentTarget::ColorRGBA:
+					updateColorTextureAttachment(width, height, target, i);
+					break;
+				case AttachmentTarget::Depth:
+					updateDepthTextureAttachment(width, height, i);
+					break;
 				default: break;
 				}
 			}
@@ -142,8 +181,15 @@ void Framebuffer::UpdateAttachment(AttachmentType type, AttachmentTarget target,
 			{
 				switch (target)
 				{
-				case AttachmentTarget::Color: updateColorTextureCubemapAttachment(width, height, i); break;
-				case AttachmentTarget::Depth: updateDepthTextureCubemapAttachment(width, height, i); break;
+				case AttachmentTarget::ColorRed:
+				case AttachmentTarget::ColorRG:
+				case AttachmentTarget::ColorRGB:
+				case AttachmentTarget::ColorRGBA:
+					updateColorTextureCubemapAttachment(width, height, i);
+					break;
+				case AttachmentTarget::Depth:
+					updateDepthTextureCubemapAttachment(width, height, i);
+					break;
 				default: break;
 				}
 			}
@@ -151,9 +197,18 @@ void Framebuffer::UpdateAttachment(AttachmentType type, AttachmentTarget target,
 			{
 				switch (target)
 				{
-				case AttachmentTarget::Color: updateColorRenderbufferAttachment(width, height, i); break;
-				case AttachmentTarget::Depth: updateDepthRenderbufferAttachment(width, height, i); break;
-				case AttachmentTarget::DepthStencil: updateDepthStencilRenderbufferAttachment(width, height, i); break;
+				case AttachmentTarget::ColorRed:
+				case AttachmentTarget::ColorRG:
+				case AttachmentTarget::ColorRGB:
+				case AttachmentTarget::ColorRGBA:
+					updateColorRenderbufferAttachment(width, height, target, i);
+					break;
+				case AttachmentTarget::Depth:
+					updateDepthRenderbufferAttachment(width, height, i);
+					break;
+				case AttachmentTarget::DepthStencil:
+					updateDepthStencilRenderbufferAttachment(width, height, i);
+					break;
 				default: break;
 				}
 			}
@@ -232,7 +287,7 @@ void Framebuffer::CreateMultisampledFBO(int width, int height)
 	m_renderColor = true;
 	struct Attachment bufferColor;
 	bufferColor.type = AttachmentType::Texture;
-	bufferColor.target = AttachmentTarget::Color;
+	bufferColor.target = AttachmentTarget::ColorRGBA;
 
 	Attachment bufferDS;
 	bufferDS.type = AttachmentType::RenderBuffer;
@@ -270,7 +325,7 @@ void Framebuffer::CreateResolveFBO(int width, int height)
 	
 	Attachment buffer;
 	buffer.type = AttachmentType::Texture;
-	buffer.target = AttachmentTarget::Color;
+	buffer.target = AttachmentTarget::ColorRGBA;
 
 	glGenTextures(1, &buffer.id);
 	glBindTexture(GL_TEXTURE_2D, buffer.id);
@@ -344,7 +399,7 @@ void Framebuffer::Bind()
 		size_t colorsNum = 0;
 		for (size_t i = 0; i < m_attachment.size(); i++)
 		{
-			if (m_attachment[i].type == AttachmentType::Texture && m_attachment[i].target == AttachmentTarget::Color)
+			if (m_attachment[i].type == AttachmentType::Texture && (m_attachment[i].target == AttachmentTarget::ColorRed || m_attachment[i].target == AttachmentTarget::ColorRG || m_attachment[i].target == AttachmentTarget::ColorRGB || m_attachment[i].target == AttachmentTarget::ColorRGBA))
 			{
 				colorsNum++;
 			}
@@ -385,14 +440,31 @@ void Framebuffer::BlitFramebuffer(std::unique_ptr<Framebuffer>& writeFBO, int wi
 	glBlitFramebuffer(0, 0, width, height, 0, 0, width, height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
 }
 //=============================================================================
-void Framebuffer::addColorTextureAttachment(int width, int height, int insertPos)
+void Framebuffer::addColorTextureAttachment(int width, int height, AttachmentTarget target, int insertPos)
 {
 	float borderColor[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 
 	Attachment buffer;
 	buffer.type = AttachmentType::Texture;
-	buffer.target = AttachmentTarget::Color;
+	buffer.target = target;
 	GLint internalFormat = (m_hdr) ? GL_RGBA16F : GL_RGBA;
+	GLenum format = GL_RGBA;
+	if (target == AttachmentTarget::ColorRed)
+	{
+		internalFormat = GL_RED; // TODO: hdr?
+		format = GL_RED;
+	}
+	else if (target == AttachmentTarget::ColorRG)
+	{
+		internalFormat = (m_hdr) ? GL_RG16F : GL_RG;
+		format = GL_RG;
+	}
+	else if (target == AttachmentTarget::ColorRGB)
+	{
+		internalFormat = (m_hdr) ? GL_RGB16F : GL_RGB;
+		format = GL_RGB;
+	}
+
 	GLenum type = (m_hdr) ? GL_FLOAT : GL_UNSIGNED_BYTE;
 
 	int id = 0;
@@ -418,7 +490,7 @@ void Framebuffer::addColorTextureAttachment(int width, int height, int insertPos
 		glGenTextures(1, &buffer.id);
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, buffer.id);
-		glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, GL_RGBA, type, nullptr);
+		glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, format, type, nullptr);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glBindTexture(GL_TEXTURE_2D, 0);
@@ -473,7 +545,7 @@ void Framebuffer::addColorTextureCubemapAttachment(int width, int height, int in
 
 	Attachment buffer;
 	buffer.type = AttachmentType::TextureCubeMap;
-	buffer.target = AttachmentTarget::Color;
+	buffer.target = AttachmentTarget::ColorRGBA;
 	GLint internalFormat = (m_hdr) ? GL_RGBA16F : GL_RGBA;
 	GLenum type = (m_hdr) ? GL_FLOAT : GL_UNSIGNED_BYTE;
 
@@ -534,12 +606,24 @@ void Framebuffer::addDepthTextureCubemapAttachment(int width, int height, int in
 	}
 }
 //=============================================================================
-void Framebuffer::addColorRenderbufferAttachment(int width, int height, int insertPos)
+void Framebuffer::addColorRenderbufferAttachment(int width, int height, AttachmentTarget target, int insertPos)
 {
 	Attachment buffer;
 	buffer.type = AttachmentType::RenderBuffer;
-	buffer.target = AttachmentTarget::Color;
+	buffer.target = target;
 	GLint internalFormat = (m_hdr) ? GL_RGBA16F : GL_RGBA8;
+	if (target == AttachmentTarget::ColorRed)
+	{
+		internalFormat = GL_RED; // TODO: hdr?
+	}
+	else if (target == AttachmentTarget::ColorRG)
+	{
+		internalFormat = (m_hdr) ? GL_RG16F : GL_RG8;
+	}
+	else if (target == AttachmentTarget::ColorRGB)
+	{
+		internalFormat = (m_hdr) ? GL_RGB16F : GL_RGB8;
+	}
 
 	glGenRenderbuffers(1, &buffer.id);
 	glBindRenderbuffer(GL_RENDERBUFFER, buffer.id);
@@ -613,7 +697,7 @@ void Framebuffer::addDepthStencilRenderbufferAttachment(int width, int height, i
 	}
 }
 //=============================================================================
-void Framebuffer::updateColorTextureAttachment(int width, int height, int insertPos)
+void Framebuffer::updateColorTextureAttachment(int width, int height, AttachmentTarget target, int insertPos)
 {
 	if (m_multiSample)
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D_MULTISAMPLE, 0, 0);
@@ -623,10 +707,7 @@ void Framebuffer::updateColorTextureAttachment(int width, int height, int insert
 
 	m_attachment.erase(m_attachment.begin() + insertPos);
 
-	if (insertPos == m_attachment.size())
-		addColorTextureAttachment(width, height, -1);
-	else
-		addColorTextureAttachment(width, height, insertPos);
+	addColorTextureAttachment(width, height, target, (insertPos == m_attachment.size() ? -1 : insertPos));
 }
 //=============================================================================
 void Framebuffer::updateDepthTextureAttachment(int width, int height, int insertPos)
@@ -671,17 +752,14 @@ void Framebuffer::updateDepthTextureCubemapAttachment(int width, int height, int
 		addDepthTextureCubemapAttachment(width, height, insertPos);
 }
 //=============================================================================
-void Framebuffer::updateColorRenderbufferAttachment(int width, int height, int insertPos)
+void Framebuffer::updateColorRenderbufferAttachment(int width, int height, AttachmentTarget target, int insertPos)
 {
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, 0);
 	glDeleteRenderbuffers(1, &m_attachment.at(insertPos).id);
 
 	m_attachment.erase(m_attachment.begin() + insertPos);
 
-	if (insertPos == m_attachment.size())
-		addColorRenderbufferAttachment(width, height, -1);
-	else
-		addColorRenderbufferAttachment(width, height, insertPos);
+	addColorRenderbufferAttachment(width, height, target, (insertPos == m_attachment.size() ? -1 : insertPos));
 }
 //=============================================================================
 void Framebuffer::updateDepthRenderbufferAttachment(int width, int height, int insertPos)

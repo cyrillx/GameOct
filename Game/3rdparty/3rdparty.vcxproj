@@ -206,7 +206,6 @@
     <ClInclude Include="glm\detail\type_vec2.hpp" />
     <ClInclude Include="glm\detail\type_vec3.hpp" />
     <ClInclude Include="glm\detail\type_vec4.hpp" />
-    <ClInclude Include="glm\detail\_features.hpp" />
     <ClInclude Include="glm\detail\_fixes.hpp" />
     <ClInclude Include="glm\detail\_noise.hpp" />
     <ClInclude Include="glm\detail\_swizzle.hpp" />
@@ -406,6 +405,7 @@
     <ClInclude Include="glm\gtx\integer.hpp" />
     <ClInclude Include="glm\gtx\intersect.hpp" />
     <ClInclude Include="glm\gtx\io.hpp" />
+    <ClInclude Include="glm\gtx\iteration.hpp" />
     <ClInclude Include="glm\gtx\log_base.hpp" />
     <ClInclude Include="glm\gtx\matrix_cross_product.hpp" />
     <ClInclude Include="glm\gtx\matrix_decompose.hpp" />
@@ -601,6 +601,7 @@
     <None Include="glm\gtx\integer.inl" />
     <None Include="glm\gtx\intersect.inl" />
     <None Include="glm\gtx\io.inl" />
+    <None Include="glm\gtx\iteration.inl" />
     <None Include="glm\gtx\log_base.inl" />
     <None Include="glm\gtx\matrix_cross_product.inl" />
     <None Include="glm\gtx\matrix_decompose.inl" />

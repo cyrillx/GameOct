@@ -81,21 +81,280 @@
     <ClInclude Include="stb\stb_truetype.h">
       <Filter>stb</Filter>
     </ClInclude>
-    <ClInclude Include="glm\common.hpp">
-      <Filter>glm</Filter>
+    <ClInclude Include="glfw\glfw3.h">
+      <Filter>glfw</Filter>
     </ClInclude>
-    <ClInclude Include="glm\exponential.hpp">
-      <Filter>glm</Filter>
+    <ClInclude Include="assimp\ZipArchiveIOSystem.h">
+      <Filter>assimp</Filter>
     </ClInclude>
-    <ClInclude Include="glm\ext.hpp">
-      <Filter>glm</Filter>
+    <ClInclude Include="assimp\aabb.h">
+      <Filter>assimp</Filter>
     </ClInclude>
-    <ClInclude Include="glm\fwd.hpp">
-      <Filter>glm</Filter>
+    <ClInclude Include="assimp\ai_assert.h">
+      <Filter>assimp</Filter>
     </ClInclude>
-    <ClInclude Include="glm\geometric.hpp">
-      <Filter>glm</Filter>
+    <ClInclude Include="assimp\anim.h">
+      <Filter>assimp</Filter>
     </ClInclude>
+    <ClInclude Include="assimp\AssertHandler.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\Base64.hpp">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\BaseImporter.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\Bitmap.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\BlobIOSystem.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\ByteSwapper.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\camera.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\cexport.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\cfileio.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\cimport.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\ColladaMetaData.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\color4.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\commonMetaData.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\config.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\CreateAnimMesh.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\DefaultIOStream.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\DefaultIOSystem.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\DefaultLogger.hpp">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\defs.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\Exceptional.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\Exporter.hpp">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\fast_atof.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\GenericProperty.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\GltfMaterial.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\Hash.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\Importer.hpp">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\importerdesc.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\IOStream.hpp">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\IOStreamBuffer.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\IOSystem.hpp">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\light.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\LineSplitter.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\LogAux.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\Logger.hpp">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\LogStream.hpp">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\material.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\MathFunctions.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\matrix3x3.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\matrix4x4.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\MemoryIOWrapper.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\mesh.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\metadata.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\NullLogger.hpp">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\ObjMaterial.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\ParsingUtils.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\pbrmaterial.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\postprocess.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\Profiler.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\ProgressHandler.hpp">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\qnan.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\quaternion.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\RemoveComments.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\revision.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\scene.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\SceneCombiner.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\SGSpatialSort.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\SkeletonMeshBuilder.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\SmallVector.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\SmoothingGroups.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\SpatialSort.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\StandardShapes.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\StreamReader.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\StreamWriter.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\StringComparison.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\StringUtils.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\Subdivision.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\texture.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\TinyFormatter.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\types.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\vector2.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\vector3.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\version.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\Vertex.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\XmlParser.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="assimp\XMLTools.h">
+      <Filter>assimp</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imconfig.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_impl_glfw.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_impl_opengl3.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_impl_opengl3_loader.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_internal.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_rectpack.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_textedit.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imstb_truetype.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="KHR\khrplatform.h">
+      <Filter>glad</Filter>
+    </ClInclude>
+    <ClInclude Include="glad\gl.h">
+      <Filter>glad</Filter>
+    </ClInclude>
+    <ClInclude Include="3rdpartyConfig.h" />
     <ClInclude Include="glm\glm.hpp">
       <Filter>glm</Filter>
     </ClInclude>
@@ -150,32 +409,20 @@
     <ClInclude Include="glm\vector_relational.hpp">
       <Filter>glm</Filter>
     </ClInclude>
-    <ClInclude Include="glm\detail\_features.hpp">
-      <Filter>glm\detail</Filter>
+    <ClInclude Include="glm\common.hpp">
+      <Filter>glm</Filter>
     </ClInclude>
-    <ClInclude Include="glm\detail\_fixes.hpp">
-      <Filter>glm\detail</Filter>
+    <ClInclude Include="glm\exponential.hpp">
+      <Filter>glm</Filter>
     </ClInclude>
-    <ClInclude Include="glm\detail\_noise.hpp">
-      <Filter>glm\detail</Filter>
+    <ClInclude Include="glm\ext.hpp">
+      <Filter>glm</Filter>
     </ClInclude>
-    <ClInclude Include="glm\detail\_swizzle.hpp">
-      <Filter>glm\detail</Filter>
+    <ClInclude Include="glm\fwd.hpp">
+      <Filter>glm</Filter>
     </ClInclude>
-    <ClInclude Include="glm\detail\_swizzle_func.hpp">
-      <Filter>glm\detail</Filter>
-    </ClInclude>
-    <ClInclude Include="glm\detail\_vectorize.hpp">
-      <Filter>glm\detail</Filter>
-    </ClInclude>
-    <ClInclude Include="glm\detail\compute_common.hpp">
-      <Filter>glm\detail</Filter>
-    </ClInclude>
-    <ClInclude Include="glm\detail\compute_vector_decl.hpp">
-      <Filter>glm\detail</Filter>
-    </ClInclude>
-    <ClInclude Include="glm\detail\compute_vector_relational.hpp">
-      <Filter>glm\detail</Filter>
+    <ClInclude Include="glm\geometric.hpp">
+      <Filter>glm</Filter>
     </ClInclude>
     <ClInclude Include="glm\detail\qualifier.hpp">
       <Filter>glm\detail</Filter>
@@ -231,14 +478,29 @@
     <ClInclude Include="glm\detail\type_vec4.hpp">
       <Filter>glm\detail</Filter>
     </ClInclude>
-    <ClInclude Include="glm\ext\_matrix_vectorize.hpp">
-      <Filter>glm\ext</Filter>
+    <ClInclude Include="glm\detail\_fixes.hpp">
+      <Filter>glm\detail</Filter>
     </ClInclude>
-    <ClInclude Include="glm\ext\matrix_clip_space.hpp">
-      <Filter>glm\ext</Filter>
+    <ClInclude Include="glm\detail\_noise.hpp">
+      <Filter>glm\detail</Filter>
     </ClInclude>
-    <ClInclude Include="glm\ext\matrix_common.hpp">
-      <Filter>glm\ext</Filter>
+    <ClInclude Include="glm\detail\_swizzle.hpp">
+      <Filter>glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="glm\detail\_swizzle_func.hpp">
+      <Filter>glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="glm\detail\_vectorize.hpp">
+      <Filter>glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="glm\detail\compute_common.hpp">
+      <Filter>glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="glm\detail\compute_vector_decl.hpp">
+      <Filter>glm\detail</Filter>
+    </ClInclude>
+    <ClInclude Include="glm\detail\compute_vector_relational.hpp">
+      <Filter>glm\detail</Filter>
     </ClInclude>
     <ClInclude Include="glm\ext\matrix_double2x2.hpp">
       <Filter>glm\ext</Filter>
@@ -663,11 +925,14 @@
     <ClInclude Include="glm\ext\vector_ulp.hpp">
       <Filter>glm\ext</Filter>
     </ClInclude>
-    <ClInclude Include="glm\gtc\bitfield.hpp">
-      <Filter>glm\gtc</Filter>
+    <ClInclude Include="glm\ext\_matrix_vectorize.hpp">
+      <Filter>glm\ext</Filter>
     </ClInclude>
-    <ClInclude Include="glm\gtc\color_space.hpp">
-      <Filter>glm\gtc</Filter>
+    <ClInclude Include="glm\ext\matrix_clip_space.hpp">
+      <Filter>glm\ext</Filter>
+    </ClInclude>
+    <ClInclude Include="glm\ext\matrix_common.hpp">
+      <Filter>glm\ext</Filter>
     </ClInclude>
     <ClInclude Include="glm\gtc\constants.hpp">
       <Filter>glm\gtc</Filter>
@@ -723,14 +988,11 @@
     <ClInclude Include="glm\gtc\vec1.hpp">
       <Filter>glm\gtc</Filter>
     </ClInclude>
-    <ClInclude Include="glm\gtx\associated_min_max.hpp">
-      <Filter>glm\gtx</Filter>
+    <ClInclude Include="glm\gtc\bitfield.hpp">
+      <Filter>glm\gtc</Filter>
     </ClInclude>
-    <ClInclude Include="glm\gtx\bit.hpp">
-      <Filter>glm\gtx</Filter>
-    </ClInclude>
-    <ClInclude Include="glm\gtx\closest_point.hpp">
-      <Filter>glm\gtx</Filter>
+    <ClInclude Include="glm\gtc\color_space.hpp">
+      <Filter>glm\gtc</Filter>
     </ClInclude>
     <ClInclude Include="glm\gtx\color_encoding.hpp">
       <Filter>glm\gtx</Filter>
@@ -796,6 +1058,9 @@
       <Filter>glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="glm\gtx\io.hpp">
+      <Filter>glm\gtx</Filter>
+    </ClInclude>
+    <ClInclude Include="glm\gtx\iteration.hpp">
       <Filter>glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="glm\gtx\log_base.hpp">
@@ -918,17 +1183,14 @@
     <ClInclude Include="glm\gtx\wrap.hpp">
       <Filter>glm\gtx</Filter>
     </ClInclude>
-    <ClInclude Include="glm\simd\common.h">
-      <Filter>glm\simd</Filter>
+    <ClInclude Include="glm\gtx\associated_min_max.hpp">
+      <Filter>glm\gtx</Filter>
     </ClInclude>
-    <ClInclude Include="glm\simd\exponential.h">
-      <Filter>glm\simd</Filter>
+    <ClInclude Include="glm\gtx\bit.hpp">
+      <Filter>glm\gtx</Filter>
     </ClInclude>
-    <ClInclude Include="glm\simd\geometric.h">
-      <Filter>glm\simd</Filter>
-    </ClInclude>
-    <ClInclude Include="glm\simd\integer.h">
-      <Filter>glm\simd</Filter>
+    <ClInclude Include="glm\gtx\closest_point.hpp">
+      <Filter>glm\gtx</Filter>
     </ClInclude>
     <ClInclude Include="glm\simd\matrix.h">
       <Filter>glm\simd</Filter>
@@ -948,296 +1210,46 @@
     <ClInclude Include="glm\simd\vector_relational.h">
       <Filter>glm\simd</Filter>
     </ClInclude>
-    <ClInclude Include="glfw\glfw3.h">
-      <Filter>glfw</Filter>
+    <ClInclude Include="glm\simd\common.h">
+      <Filter>glm\simd</Filter>
     </ClInclude>
-    <ClInclude Include="assimp\ZipArchiveIOSystem.h">
-      <Filter>assimp</Filter>
+    <ClInclude Include="glm\simd\exponential.h">
+      <Filter>glm\simd</Filter>
     </ClInclude>
-    <ClInclude Include="assimp\aabb.h">
-      <Filter>assimp</Filter>
+    <ClInclude Include="glm\simd\geometric.h">
+      <Filter>glm\simd</Filter>
     </ClInclude>
-    <ClInclude Include="assimp\ai_assert.h">
-      <Filter>assimp</Filter>
+    <ClInclude Include="glm\simd\integer.h">
+      <Filter>glm\simd</Filter>
     </ClInclude>
-    <ClInclude Include="assimp\anim.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\AssertHandler.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\Base64.hpp">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\BaseImporter.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\Bitmap.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\BlobIOSystem.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\ByteSwapper.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\camera.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\cexport.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\cfileio.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\cimport.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\ColladaMetaData.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\color4.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\commonMetaData.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\config.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\CreateAnimMesh.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\DefaultIOStream.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\DefaultIOSystem.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\DefaultLogger.hpp">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\defs.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\Exceptional.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\Exporter.hpp">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\fast_atof.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\GenericProperty.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\GltfMaterial.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\Hash.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\Importer.hpp">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\importerdesc.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\IOStream.hpp">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\IOStreamBuffer.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\IOSystem.hpp">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\light.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\LineSplitter.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\LogAux.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\Logger.hpp">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\LogStream.hpp">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\material.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\MathFunctions.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\matrix3x3.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\matrix4x4.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\MemoryIOWrapper.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\mesh.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\metadata.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\NullLogger.hpp">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\ObjMaterial.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\ParsingUtils.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\pbrmaterial.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\postprocess.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\Profiler.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\ProgressHandler.hpp">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\qnan.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\quaternion.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\RemoveComments.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\revision.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\scene.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\SceneCombiner.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\SGSpatialSort.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\SkeletonMeshBuilder.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\SmallVector.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\SmoothingGroups.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\SpatialSort.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\StandardShapes.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\StreamReader.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\StreamWriter.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\StringComparison.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\StringUtils.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\Subdivision.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\texture.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\TinyFormatter.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\types.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\vector2.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\vector3.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\version.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\Vertex.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\XmlParser.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="assimp\XMLTools.h">
-      <Filter>assimp</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\imconfig.h">
-      <Filter>imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\imgui.h">
-      <Filter>imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\imgui_impl_glfw.h">
-      <Filter>imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\imgui_impl_opengl3.h">
-      <Filter>imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\imgui_impl_opengl3_loader.h">
-      <Filter>imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\imgui_internal.h">
-      <Filter>imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\imstb_rectpack.h">
-      <Filter>imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\imstb_textedit.h">
-      <Filter>imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\imstb_truetype.h">
-      <Filter>imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="KHR\khrplatform.h">
-      <Filter>glad</Filter>
-    </ClInclude>
-    <ClInclude Include="glad\gl.h">
-      <Filter>glad</Filter>
-    </ClInclude>
-    <ClInclude Include="3rdpartyConfig.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="glm\detail\func_common.inl">
-      <Filter>glm\detail</Filter>
+    <None Include="assimp\color4.inl">
+      <Filter>assimp</Filter>
     </None>
-    <None Include="glm\detail\func_common_simd.inl">
-      <Filter>glm\detail</Filter>
+    <None Include="assimp\material.inl">
+      <Filter>assimp</Filter>
     </None>
-    <None Include="glm\detail\func_exponential.inl">
-      <Filter>glm\detail</Filter>
+    <None Include="assimp\matrix3x3.inl">
+      <Filter>assimp</Filter>
     </None>
-    <None Include="glm\detail\func_exponential_simd.inl">
-      <Filter>glm\detail</Filter>
+    <None Include="assimp\matrix4x4.inl">
+      <Filter>assimp</Filter>
     </None>
-    <None Include="glm\detail\func_geometric.inl">
-      <Filter>glm\detail</Filter>
+    <None Include="assimp\quaternion.inl">
+      <Filter>assimp</Filter>
+    </None>
+    <None Include="assimp\SmoothingGroups.inl">
+      <Filter>assimp</Filter>
+    </None>
+    <None Include="assimp\vector2.inl">
+      <Filter>assimp</Filter>
+    </None>
+    <None Include="assimp\vector3.inl">
+      <Filter>assimp</Filter>
+    </None>
+    <None Include="lib\assimp-vc145-mt.exp">
+      <Filter>assimp</Filter>
     </None>
     <None Include="glm\detail\func_geometric_simd.inl">
       <Filter>glm\detail</Filter>
@@ -1326,8 +1338,20 @@
     <None Include="glm\detail\type_vec4.inl">
       <Filter>glm\detail</Filter>
     </None>
-    <None Include="glm\ext\matrix_clip_space.inl">
-      <Filter>glm\ext</Filter>
+    <None Include="glm\detail\func_common.inl">
+      <Filter>glm\detail</Filter>
+    </None>
+    <None Include="glm\detail\func_common_simd.inl">
+      <Filter>glm\detail</Filter>
+    </None>
+    <None Include="glm\detail\func_exponential.inl">
+      <Filter>glm\detail</Filter>
+    </None>
+    <None Include="glm\detail\func_exponential_simd.inl">
+      <Filter>glm\detail</Filter>
+    </None>
+    <None Include="glm\detail\func_geometric.inl">
+      <Filter>glm\detail</Filter>
     </None>
     <None Include="glm\ext\matrix_common.inl">
       <Filter>glm\ext</Filter>
@@ -1404,11 +1428,8 @@
     <None Include="glm\ext\vector_ulp.inl">
       <Filter>glm\ext</Filter>
     </None>
-    <None Include="glm\gtc\bitfield.inl">
-      <Filter>glm\gtc</Filter>
-    </None>
-    <None Include="glm\gtc\color_space.inl">
-      <Filter>glm\gtc</Filter>
+    <None Include="glm\ext\matrix_clip_space.inl">
+      <Filter>glm\ext</Filter>
     </None>
     <None Include="glm\gtc\constants.inl">
       <Filter>glm\gtc</Filter>
@@ -1455,14 +1476,11 @@
     <None Include="glm\gtc\ulp.inl">
       <Filter>glm\gtc</Filter>
     </None>
-    <None Include="glm\gtx\associated_min_max.inl">
-      <Filter>glm\gtx</Filter>
+    <None Include="glm\gtc\bitfield.inl">
+      <Filter>glm\gtc</Filter>
     </None>
-    <None Include="glm\gtx\bit.inl">
-      <Filter>glm\gtx</Filter>
-    </None>
-    <None Include="glm\gtx\closest_point.inl">
-      <Filter>glm\gtx</Filter>
+    <None Include="glm\gtc\color_space.inl">
+      <Filter>glm\gtc</Filter>
     </None>
     <None Include="glm\gtx\color_encoding.inl">
       <Filter>glm\gtx</Filter>
@@ -1531,6 +1549,9 @@
       <Filter>glm\gtx</Filter>
     </None>
     <None Include="glm\gtx\io.inl">
+      <Filter>glm\gtx</Filter>
+    </None>
+    <None Include="glm\gtx\iteration.inl">
       <Filter>glm\gtx</Filter>
     </None>
     <None Include="glm\gtx\log_base.inl">
@@ -1641,32 +1662,14 @@
     <None Include="glm\gtx\wrap.inl">
       <Filter>glm\gtx</Filter>
     </None>
-    <None Include="assimp\color4.inl">
-      <Filter>assimp</Filter>
+    <None Include="glm\gtx\associated_min_max.inl">
+      <Filter>glm\gtx</Filter>
     </None>
-    <None Include="assimp\material.inl">
-      <Filter>assimp</Filter>
+    <None Include="glm\gtx\bit.inl">
+      <Filter>glm\gtx</Filter>
     </None>
-    <None Include="assimp\matrix3x3.inl">
-      <Filter>assimp</Filter>
-    </None>
-    <None Include="assimp\matrix4x4.inl">
-      <Filter>assimp</Filter>
-    </None>
-    <None Include="assimp\quaternion.inl">
-      <Filter>assimp</Filter>
-    </None>
-    <None Include="assimp\SmoothingGroups.inl">
-      <Filter>assimp</Filter>
-    </None>
-    <None Include="assimp\vector2.inl">
-      <Filter>assimp</Filter>
-    </None>
-    <None Include="assimp\vector3.inl">
-      <Filter>assimp</Filter>
-    </None>
-    <None Include="lib\assimp-vc145-mt.exp">
-      <Filter>assimp</Filter>
+    <None Include="glm\gtx\closest_point.inl">
+      <Filter>glm\gtx</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

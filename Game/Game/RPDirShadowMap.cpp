@@ -51,7 +51,7 @@ void RPDirShadowMap::Close()
 	}
 }
 //=============================================================================
-void RPDirShadowMap::Draw(const std::vector<DirectionalLight*>& dirLights, size_t numDirLights, const std::vector<Entity*>& entites, size_t numEntities)
+void RPDirShadowMap::Draw(const std::vector<DirectionalLight*>& dirLights, size_t numDirLights, const std::vector<GameObject*>& gameObject, size_t numGameObject)
 {
 	if (m_shadowQuality == ShadowQuality::Off) return;
 	if (dirLights.empty() || numDirLights == 0) return;
@@ -80,7 +80,7 @@ void RPDirShadowMap::Draw(const std::vector<DirectionalLight*>& dirLights, size_
 		glm::mat4 lightView = glm::lookAt(light->position, light->position + light->direction, up);
 		SetUniform(m_viewMatrixId, lightView);
 
-		drawScene(entites, numEntities);
+		drawScene(gameObject, numGameObject);
 	}
 }
 //=============================================================================
@@ -96,15 +96,15 @@ void RPDirShadowMap::SetShadowQuality(ShadowQuality quality)
 	}
 }
 //=============================================================================
-void RPDirShadowMap::drawScene(const std::vector<Entity*>& entites, size_t numEntities)
+void RPDirShadowMap::drawScene(const std::vector<GameObject*>& gameObject, size_t numGameObject)
 {
 	ModelDrawInfo drawInfo;
 	drawInfo.bindMaterials = false;
 	drawInfo.mode = GL_TRIANGLES;
-	for (size_t i = 0; i < numEntities; i++)
+	for (size_t i = 0; i < numGameObject; i++)
 	{
-		SetUniform(m_modelMatrixId, entites[i]->modelMat);
-		entites[i]->model.Draw(drawInfo);
+		SetUniform(m_modelMatrixId, gameObject[i]->modelMat);
+		gameObject[i]->model.tDraw(drawInfo);
 	}
 }
 //=============================================================================

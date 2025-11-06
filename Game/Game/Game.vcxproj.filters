@@ -100,6 +100,9 @@
     <ClCompile Include="RPSSAOBlur.cpp">
       <Filter>GameApp\Render\SceneRenderPass</Filter>
     </ClCompile>
+    <ClCompile Include="NanoRenderVertex.cpp">
+      <Filter>NanoEngine\Render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -192,6 +195,9 @@
     <ClInclude Include="RPSSAOBlur.h">
       <Filter>GameApp\Render\SceneRenderPass</Filter>
     </ClInclude>
+    <ClInclude Include="NanoRenderVertex.h">
+      <Filter>NanoEngine\Render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Example">
@@ -227,9 +233,6 @@
     <Filter Include="GameApp\Render">
       <UniqueIdentifier>{6119cb67-3adb-4f87-b97c-8425a8204a48}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameApp\shader">
-      <UniqueIdentifier>{c2717875-67cb-4e3f-a4db-67fe9f33c53f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Example\shaders">
       <UniqueIdentifier>{0ccbfeab-b651-4032-ac9d-4d4c35564eba}</UniqueIdentifier>
     </Filter>
@@ -244,12 +247,6 @@
     </Filter>
     <Filter Include="GameApp\Render\SceneRenderPass">
       <UniqueIdentifier>{dc214a13-b723-4b6c-b7f3-c9790647173a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameApp\shader\shadowMapping">
-      <UniqueIdentifier>{79e8d4d5-b27f-435c-852d-1dd9b15e499b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameApp\shader\main">
-      <UniqueIdentifier>{b7559b57-bee7-4e96-8cce-996e3c8dbf9b}</UniqueIdentifier>
     </Filter>
     <Filter Include="TempPhysics">
       <UniqueIdentifier>{c7007c31-eb29-4fd4-896f-b25981d8333f}</UniqueIdentifier>
@@ -273,18 +270,6 @@
     </None>
     <None Include="..\..\bin\data\shaders\blinn_phong\vertex.glsl">
       <Filter>Example\shaders\blinn_phong</Filter>
-    </None>
-    <None Include="..\..\bin\data\shaders\shadowMapping\fragment.glsl">
-      <Filter>GameApp\shader\shadowMapping</Filter>
-    </None>
-    <None Include="..\..\bin\data\shaders\shadowMapping\vertex.glsl">
-      <Filter>GameApp\shader\shadowMapping</Filter>
-    </None>
-    <None Include="..\..\bin\data\shaders\main\fragment.glsl">
-      <Filter>GameApp\shader\main</Filter>
-    </None>
-    <None Include="..\..\bin\data\shaders\main\vertex.glsl">
-      <Filter>GameApp\shader\main</Filter>
     </None>
   </ItemGroup>
 </Project>

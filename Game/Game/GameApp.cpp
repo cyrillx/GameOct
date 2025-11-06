@@ -14,15 +14,15 @@ namespace
 	GameScene scene;
 
 	Camera camera;
-	Entity modelTest;
+	GameObject modelTest;
 	DirectionalLight dirLight;
 	DirectionalLight dirLight2;
 
-	Entity sphereEntity;
-	Entity box1Entity;
-	Entity box2Entity;
-	Entity box3Entity;
-	Entity box4Entity;
+	GameObject sphereEntity;
+	GameObject box1Entity;
+	GameObject box2Entity;
+	GameObject box3Entity;
+	GameObject box4Entity;
 }
 //=============================================================================
 void GameApp()
@@ -90,12 +90,12 @@ void GameApp()
 			}
 
 			scene.BindCamera(&camera);
-			scene.BindEntity(&modelTest);
-			scene.BindEntity(&sphereEntity);
-			scene.BindEntity(&box1Entity);
-			scene.BindEntity(&box2Entity);
-			scene.BindEntity(&box3Entity);
-			scene.BindEntity(&box4Entity);
+			scene.BindGameObject(&modelTest);
+			scene.BindGameObject(&sphereEntity);
+			scene.BindGameObject(&box1Entity);
+			scene.BindGameObject(&box2Entity);
+			scene.BindGameObject(&box3Entity);
+			scene.BindGameObject(&box4Entity);
 
 			scene.BindLight(&dirLight);
 			scene.BindLight(&dirLight2);

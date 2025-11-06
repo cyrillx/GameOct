@@ -1,9 +1,9 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 #include "RPSSAOBlur.h"
 #include "NanoWindow.h"
 #include "NanoLog.h"
 #include "GameScene.h"
-// TODO: в каждом renderpass создается свой квад, а нужно сделать общий
+// TODO: РІ РєР°Р¶РґРѕРј renderpass СЃРѕР·РґР°РµС‚СЃСЏ СЃРІРѕР№ РєРІР°Рґ, Р° РЅСѓР¶РЅРѕ СЃРґРµР»Р°С‚СЊ РѕР±С‰РёР№
 //=============================================================================
 bool RPSSAOBlur::Init(uint16_t framebufferWidth, uint16_t framebufferHeight)
 {
@@ -34,11 +34,11 @@ bool RPSSAOBlur::Init(uint16_t framebufferWidth, uint16_t framebufferHeight)
 	glGenVertexArrays(1, &m_vao);
 	glBindVertexArray(m_vao);
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-	SetQuadVertexAttributes();
+	QuadVertex::SetVertexAttributes();
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, currentVBO);
 
-	glUseProgram(0); // TODO: возможно вернуть прошлую версию шейдера
+	glUseProgram(0); // TODO: РІРѕР·РјРѕР¶РЅРѕ РІРµСЂРЅСѓС‚СЊ РїСЂРѕС€Р»СѓСЋ РІРµСЂСЃРёСЋ С€РµР№РґРµСЂР°
 
 	m_fbo = { std::make_unique<Framebuffer>(true, false, true) };
 

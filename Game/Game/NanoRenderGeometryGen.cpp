@@ -2,9 +2,9 @@
 #include "NanoRenderGeometryGen.h"
 #include "NanoRenderTextures.h"
 //=============================================================================
-MeshCreateInfo GeometryGenerator::CreatePlane(float width, float height, float wSegment, float hSegment)
+MeshInfo GeometryGenerator::CreatePlane(float width, float height, float wSegment, float hSegment)
 {
-	MeshCreateInfo meshInfo;
+	MeshInfo meshInfo;
 
 	float width_half = width / 2.0f;
 	float height_half = height / 2.0f;
@@ -58,11 +58,11 @@ MeshCreateInfo GeometryGenerator::CreatePlane(float width, float height, float w
 	return meshInfo;
 }
 //=============================================================================
-MeshCreateInfo GeometryGenerator::CreateQuad(const glm::vec2& size)
+MeshInfo GeometryGenerator::CreateQuad(const glm::vec2& size)
 {
 	glm::vec2 s2 = size / 2.0f;
 
-	MeshCreateInfo meshInfo;
+	MeshInfo meshInfo;
 
 	meshInfo.vertices.resize(4);
 	meshInfo.vertices[0].position = { -s2.x, -s2.y, 0.0f };
@@ -89,7 +89,7 @@ MeshCreateInfo GeometryGenerator::CreateQuad(const glm::vec2& size)
 	return meshInfo;
 }
 //=============================================================================
-inline void buildBoxPlane(MeshCreateInfo& meshInfo, int& numberOfVertices, int u, int v, int w, float udir, float vdir, float width, float height, float depth, float gridX, float gridY)
+inline void buildBoxPlane(MeshInfo& meshInfo, int& numberOfVertices, int u, int v, int w, float udir, float vdir, float width, float height, float depth, float gridX, float gridY)
 {
 	float segmentWidth = width / gridX;
 	float segmentHeight = height / gridY;
@@ -149,9 +149,9 @@ inline void buildBoxPlane(MeshCreateInfo& meshInfo, int& numberOfVertices, int u
 	numberOfVertices += static_cast<int>(gridX1 * gridY1);
 }
 //=============================================================================
-MeshCreateInfo GeometryGenerator::CreateBox(float width, float height, float depth, float widthSeg, float heightSeg, float depthSeg)
+MeshInfo GeometryGenerator::CreateBox(float width, float height, float depth, float widthSeg, float heightSeg, float depthSeg)
 {
-	MeshCreateInfo meshInfo;
+	MeshInfo meshInfo;
 
 	float widthSegments = static_cast<float>(std::max(1, static_cast<int>(std::floor(widthSeg))));
 	float heightSegments = static_cast<float>(std::max(1, static_cast<int>(std::floor(heightSeg))));
@@ -176,9 +176,9 @@ MeshCreateInfo GeometryGenerator::CreateBox(float width, float height, float dep
 	return meshInfo;
 }
 //=============================================================================
-MeshCreateInfo GeometryGenerator::CreateSphere(float radius, float widthSeg, float heightSeg, float phiStart, float phiLength, float thetaStart, float thetaLength)
+MeshInfo GeometryGenerator::CreateSphere(float radius, float widthSeg, float heightSeg, float phiStart, float phiLength, float thetaStart, float thetaLength)
 {
-	MeshCreateInfo meshInfo;
+	MeshInfo meshInfo;
 
 	constexpr const float PI = glm::pi<float>();
 	const float thetaEnd = glm::min(thetaStart + thetaLength, PI);
@@ -261,7 +261,7 @@ MeshCreateInfo GeometryGenerator::CreateSphere(float radius, float widthSeg, flo
 	return meshInfo;
 }
 //=============================================================================
-void GeometryGenerator::ComputeNormals(MeshCreateInfo& meshInfo)
+void GeometryGenerator::ComputeNormals(MeshInfo& meshInfo)
 {
 	for (auto& vertex : meshInfo.vertices)
 	{
@@ -291,7 +291,7 @@ void GeometryGenerator::ComputeNormals(MeshCreateInfo& meshInfo)
 	}
 }
 //=============================================================================
-void GeometryGenerator::ComputeTangents(MeshCreateInfo& meshInfo)
+void GeometryGenerator::ComputeTangents(MeshInfo& meshInfo)
 {
 	for (auto& vertex : meshInfo.vertices)
 	{

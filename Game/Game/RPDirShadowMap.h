@@ -16,7 +16,7 @@ enum class ShadowQuality
 	Mega = 8192
 };
 
-struct Entity;
+struct GameObject;
 
 class RPDirShadowMap final
 {
@@ -26,7 +26,7 @@ public:
 
 	void Draw(
 		const std::vector<DirectionalLight*>& dirLights, size_t numDirLights,
-		const std::vector<Entity*>& entites, size_t numEntities);
+		const std::vector<GameObject*>& gameObject, size_t numGameObject);
 
 	void SetShadowQuality(ShadowQuality quality);
 	float GetBias() const { return m_bias; }
@@ -35,7 +35,7 @@ public:
 	const auto& GetProjection() const { return m_orthoProjection; }
 
 private:
-	void drawScene(const std::vector<Entity*>& entites, size_t numEntities);
+	void drawScene(const std::vector<GameObject*>& gameObject, size_t numGameObject);
 	GLuint        m_program{ 0 };
 	int           m_projectionMatrixId{ -1 };
 	int           m_viewMatrixId{ -1 };

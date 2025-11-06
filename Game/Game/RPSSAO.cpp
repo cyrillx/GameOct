@@ -39,7 +39,7 @@ bool RPSSAO::Init(uint16_t framebufferWidth, uint16_t framebufferHeight)
 	glGenVertexArrays(1, &m_vao);
 	glBindVertexArray(m_vao);
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-	SetQuadVertexAttributes();
+	QuadVertex::SetVertexAttributes();
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, currentVBO);
 

@@ -1,27 +1,27 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 #include "Region.h"
 Region gRegion;
 //=============================================================================
-MeshCreateInfo CreateHorizontalQuad(float width = 1.0f, float height = 1.0f)
+MeshInfo CreateHorizontalQuad(float width = 1.0f, float height = 1.0f)
 {
-	MeshCreateInfo meshCI{};
+	MeshInfo meshCI{};
 
 
 	float halfWidth = width / 2.0f;
 	float halfHeight = height / 2.0f;
 
-	// 4 вершины прямоугольника (четырехугольник в XZ-плоскости, Y = 0)
+	// 4 РІРµСЂС€РёРЅС‹ РїСЂСЏРјРѕСѓРіРѕР»СЊРЅРёРєР° (С‡РµС‚С‹СЂРµС…СѓРіРѕР»СЊРЅРёРє РІ XZ-РїР»РѕСЃРєРѕСЃС‚Рё, Y = 0)
 	meshCI.vertices = {
-		// Вершина 0 - левый нижний
+		// Р’РµСЂС€РёРЅР° 0 - Р»РµРІС‹Р№ РЅРёР¶РЅРёР№
 		{
-		.position = glm::vec3(-halfWidth, 0.0f, -halfHeight),  // позиция
-		.color = glm::vec3(1.0f, 1.0f, 1.0f),                 // цвет
-		.normal = glm::vec3(0.0f, 1.0f, 0.0f),                // нормаль вверх
-		.texCoord = glm::vec2(0.0f, 0.0f),                    // текстурные координаты
-		.tangent = glm::vec3(1.0f, 0.0f, 0.0f),               // тангент
-		.bitangent = glm::vec3(0.0f, 0.0f, 1.0f)              // битангент
+		.position = glm::vec3(-halfWidth, 0.0f, -halfHeight),  // РїРѕР·РёС†РёСЏ
+		.color = glm::vec3(1.0f, 1.0f, 1.0f),                 // С†РІРµС‚
+		.normal = glm::vec3(0.0f, 1.0f, 0.0f),                // РЅРѕСЂРјР°Р»СЊ РІРІРµСЂС…
+		.texCoord = glm::vec2(0.0f, 0.0f),                    // С‚РµРєСЃС‚СѓСЂРЅС‹Рµ РєРѕРѕСЂРґРёРЅР°С‚С‹
+		.tangent = glm::vec3(1.0f, 0.0f, 0.0f),               // С‚Р°РЅРіРµРЅС‚
+		.bitangent = glm::vec3(0.0f, 0.0f, 1.0f)              // Р±РёС‚Р°РЅРіРµРЅС‚
 		},
-		// Вершина 1 - правый нижний
+		// Р’РµСЂС€РёРЅР° 1 - РїСЂР°РІС‹Р№ РЅРёР¶РЅРёР№
 		{
 		.position = glm::vec3(halfWidth, 0.0f, -halfHeight),
 		.color = glm::vec3(1.0f, 1.0f, 1.0f),
@@ -30,7 +30,7 @@ MeshCreateInfo CreateHorizontalQuad(float width = 1.0f, float height = 1.0f)
 		.tangent = glm::vec3(1.0f, 0.0f, 0.0f),
 		.bitangent = glm::vec3(0.0f, 0.0f, 1.0f)
 		},
-		// Вершина 2 - правый верхний
+		// Р’РµСЂС€РёРЅР° 2 - РїСЂР°РІС‹Р№ РІРµСЂС…РЅРёР№
 		{
 		.position = glm::vec3(halfWidth, 0.0f, halfHeight),
 		.color = glm::vec3(1.0f, 1.0f, 1.0f),
@@ -39,7 +39,7 @@ MeshCreateInfo CreateHorizontalQuad(float width = 1.0f, float height = 1.0f)
 		.tangent = glm::vec3(1.0f, 0.0f, 0.0f),
 		.bitangent = glm::vec3(0.0f, 0.0f, 1.0f)
 		},
-		// Вершина 3 - левый верхний
+		// Р’РµСЂС€РёРЅР° 3 - Р»РµРІС‹Р№ РІРµСЂС…РЅРёР№
 		{
 		.position = glm::vec3(-halfWidth, 0.0f, halfHeight),
 		.color = glm::vec3(1.0f, 1.0f, 1.0f),
@@ -50,10 +50,10 @@ MeshCreateInfo CreateHorizontalQuad(float width = 1.0f, float height = 1.0f)
 		}
 	};
 
-	// Индексы для отрисовки двух треугольников
+	// РРЅРґРµРєСЃС‹ РґР»СЏ РѕС‚СЂРёСЃРѕРІРєРё РґРІСѓС… С‚СЂРµСѓРіРѕР»СЊРЅРёРєРѕРІ
 	meshCI.indices = {
-	0, 1, 2,  // первый треугольник
-	2, 3, 0   // второй треугольник
+	0, 1, 2,  // РїРµСЂРІС‹Р№ С‚СЂРµСѓРіРѕР»СЊРЅРёРє
+	2, 3, 0   // РІС‚РѕСЂРѕР№ С‚СЂРµСѓРіРѕР»СЊРЅРёРє
 	};
 
 	meshCI.material = Material{};
@@ -64,7 +64,7 @@ MeshCreateInfo CreateHorizontalQuad(float width = 1.0f, float height = 1.0f)
 //=============================================================================
 void Region::Init()
 {
-	std::vector<MeshCreateInfo> meshCI(1);
+	std::vector<MeshInfo> meshCI(1);
 
 	meshCI[0] = CreateHorizontalQuad();
 

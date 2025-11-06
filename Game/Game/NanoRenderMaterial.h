@@ -31,3 +31,27 @@ struct Material final
 
 	bool noLighing{ false };
 };
+
+struct PBRMaterial final
+{
+	Texture2D albedoTexture;
+	Texture2D normalTexture;
+	Texture2D metallicRoughnessTexture;
+	Texture2D AOTexture;
+	Texture2D emissiveTexture;
+};
+
+struct PBRMaterialShaderSlot final
+{
+	int albedoTexture{ -1 };
+	int normalTexture{ -1 };
+	int metallicRoughnessTexture{ -1 };
+	int AOTexture{ -1 };
+	int emissiveTexture{ -1 };
+
+	int hasAlbedo{ -1 };
+	int hasNormal{ -1 };
+	int hasMetallicRoughness{ -1 };
+	int hasAO{ -1 };
+	int hasEmissive{ -1 };
+};

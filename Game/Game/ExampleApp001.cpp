@@ -131,18 +131,18 @@ void ExampleApp001()
 
 			glBindTexture(GL_TEXTURE_2D, texturePlane.id);
 			SetUniform(GetUniformLocation(shader, "modelMatrix"), glm::mat4(1.0f));
-			modelPlane.Draw();
+			modelPlane.tDraw();
 
 			//SetUniform(GetUniformLocation(shader, "modelMatrix"), glm::scale(glm::mat4(1.0f), glm::vec3(0.6f)));
 			//modelTest.Draw();
 
 			glBindTexture(GL_TEXTURE_2D, texturePlane.id);
 			SetUniform(GetUniformLocation(shader, "modelMatrix"), glm::translate(glm::mat4(1.0f), glm::vec3(-3.0f, 1.0f, 0.0f)));
-			modelSphere.Draw();
+			modelSphere.tDraw();
 
 			glBindTexture(GL_TEXTURE_2D, textureBox.id);
 			SetUniform(GetUniformLocation(shader, "modelMatrix"), glm::translate(glm::mat4(1.0f), glm::vec3(3.0f, 0.5f, 0.0f)));
-			modelBox.Draw();
+			modelBox.tDraw();
 
 			engine::DrawFPS();
 

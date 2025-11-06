@@ -17,7 +17,8 @@ bool Model::Load(const std::string& fileName)
                            aiProcess_GenUVCoords |              \
                            aiProcess_FlipUVs |                  \
                            aiProcess_CalcTangentSpace |         \
-                           aiProcess_SortByPType)
+                           aiProcess_SortByPType |              \
+                           aiProcess_OptimizeMeshes)
 
 	Free();
 
@@ -41,7 +42,7 @@ bool Model::Load(const std::string& fileName)
 	return true;
 }
 //=============================================================================
-void Model::Create(const MeshCreateInfo& ci)
+void Model::Create(const MeshInfo& ci)
 {
 	Free();
 	m_meshes.emplace_back(Mesh{ ci.vertices, ci.indices, ci.material });
@@ -50,7 +51,7 @@ void Model::Create(const MeshCreateInfo& ci)
 	// TODO: центрировать модель, так как бывают не от центра
 }
 //=============================================================================
-void Model::Create(const std::vector<MeshCreateInfo>& meshes)
+void Model::Create(const std::vector<MeshInfo>& meshes)
 {
 	Free();
 	for (size_t i = 0; i < meshes.size(); i++)
@@ -73,7 +74,7 @@ void Model::DrawSubMesh(size_t id, GLenum mode)
 		m_meshes[id].tDraw(mode);
 }
 //=============================================================================
-void Model::Draw(GLenum mode)
+void Model::tDraw(GLenum mode)
 {
 	for (size_t i = 0; i < m_meshes.size(); i++)
 	{
@@ -81,7 +82,7 @@ void Model::Draw(GLenum mode)
 	}
 }
 //=============================================================================
-void Model::Draw(const ModelDrawInfo& drawInfo)
+void Model::tDraw(const ModelDrawInfo& drawInfo)
 {
 	for (int i = 0; i < m_meshes.size(); i++)
 	{
@@ -152,10 +153,12 @@ Mesh Model::processMesh(const aiScene* scene, struct aiMesh* mesh, std::string_v
 	indices.reserve(mesh->mNumFaces * 3);
 	for (size_t i = 0; i < mesh->mNumFaces; i++)
 	{
+		const aiFace& face = mesh->mFaces[i];
+
 		// Assume the model has only triangles.
-		indices.emplace_back(mesh->mFaces[i].mIndices[0]);
-		indices.emplace_back(mesh->mFaces[i].mIndices[1]);
-		indices.emplace_back(mesh->mFaces[i].mIndices[2]);
+		indices.emplace_back(face.mIndices[0]);
+		indices.emplace_back(face.mIndices[1]);
+		indices.emplace_back(face.mIndices[2]);
 	}
 
 	// Process material

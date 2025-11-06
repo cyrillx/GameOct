@@ -46,7 +46,7 @@ void RPBlinnPhong::Close()
 	glDeleteSamplers(1, &m_sampler);
 }
 //=============================================================================
-void RPBlinnPhong::Draw(const RPDirShadowMap& rpShadowMap, const std::vector<DirectionalLight*>& dirLights, size_t numDirLights, const std::vector<Entity*>& entites, size_t numEntities, Camera* camera)
+void RPBlinnPhong::Draw(const RPDirShadowMap& rpShadowMap, const std::vector<DirectionalLight*>& dirLights, size_t numDirLights, const std::vector<GameObject*>& gameObject, size_t numGameObject, Camera* camera)
 {
 	m_fbo->Bind();
 	glEnable(GL_DEPTH_TEST);
@@ -92,7 +92,7 @@ void RPBlinnPhong::Draw(const RPDirShadowMap& rpShadowMap, const std::vector<Dir
 	SetUniform(GetUniformLocation(m_program, "lightCount"), lightCount);
 
 	glBindSampler(0, m_sampler);
-	drawScene(entites, numEntities);
+	drawScene(gameObject, numGameObject);
 	glBindSampler(0, 0);
 }
 //=============================================================================
@@ -109,16 +109,16 @@ void RPBlinnPhong::Resize(uint16_t framebufferWidth, uint16_t framebufferHeight)
 	m_fbo->UpdateAttachment(AttachmentType::RenderBuffer, AttachmentTarget::DepthStencil, m_framebufferWidth, m_framebufferHeight);
 }
 //=============================================================================
-void RPBlinnPhong::drawScene(const std::vector<Entity*>& entites, size_t numEntities)
+void RPBlinnPhong::drawScene(const std::vector<GameObject*>& gameObject, size_t numGameObject)
 {
 	ModelDrawInfo drawInfo;
 	drawInfo.bindMaterials = true;
 	drawInfo.mode = GL_TRIANGLES;
 	drawInfo.shaderProgram = m_program;
-	for (size_t i = 0; i < numEntities; i++)
+	for (size_t i = 0; i < numGameObject; i++)
 	{
-		SetUniform(m_modelMatrixId, entites[i]->modelMat);
-		entites[i]->model.Draw(drawInfo);
+		SetUniform(m_modelMatrixId, gameObject[i]->modelMat);
+		gameObject[i]->model.tDraw(drawInfo);
 	}
 }
 //=============================================================================

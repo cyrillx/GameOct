@@ -40,7 +40,7 @@ namespace
 //=============================================================================
 bool textures::Init()
 {
-	GLint currentTexture = GetCurrentTexture(GL_TEXTURE_2D);
+	GLuint currentTexture = GetCurrentTexture(GL_TEXTURE_2D);
 
 	// Create default diffuse texture
 	{
@@ -214,7 +214,7 @@ Texture2D textures::LoadTexture2D(const std::string& fileName, ColorSpace colorS
 		{
 			std::unreachable();
 		}
-		GLint currentTexture = GetCurrentTexture(GL_TEXTURE_2D);
+		GLuint currentTexture = GetCurrentTexture(GL_TEXTURE_2D);
 
 		GLuint textureID{ 0 };
 		glGenTextures(1, &textureID);

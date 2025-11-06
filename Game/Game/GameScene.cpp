@@ -6,7 +6,7 @@
 //=============================================================================
 bool GameScene::Init()
 {
-	m_entities.reserve(10000);
+	m_gameObjects.reserve(10000);
 	m_dirLights.resize(MaxDirectionalLight);
 
 	const auto wndWidth = window::GetWidth();
@@ -43,14 +43,14 @@ void GameScene::BindCamera(Camera* camera)
 	m_camera = camera;
 }
 //=============================================================================
-void GameScene::BindEntity(Entity* ent)
+void GameScene::BindGameObject(GameObject* go)
 {
-	if (m_numEntities >= m_entities.size())
-		m_entities.push_back(ent);
+	if (m_numGO >= m_gameObjects.size())
+		m_gameObjects.push_back(go);
 	else
-		m_entities[m_numEntities] = ent;
+		m_gameObjects[m_numGO] = go;
 
-	m_numEntities++;
+	m_numGO++;
 }
 //=============================================================================
 void GameScene::BindLight(DirectionalLight* ent)
@@ -71,7 +71,7 @@ void GameScene::Draw()
 		Warning("Not active camera");
 		return;
 	}
-	if (!m_numEntities)
+	if (!m_numGO)
 	{
 		Warning("Not active entities");
 		return;
@@ -104,14 +104,14 @@ void GameScene::draw()
 	//================================================================================
 	// 1 Render Pass: draw shadow maps
 	//		Set state: glEnable(GL_DEPTH_TEST);
-	m_rpDirShadowMap.Draw(m_dirLights, m_numDirLights, m_entities, m_numEntities);
+	m_rpDirShadowMap.Draw(m_dirLights, m_numDirLights, m_gameObjects, m_numGO);
 
 	if (EnableSSAO)
 	{
 		//================================================================================
 		// 2 Render Pass: geometry
 		// TODO: m_rpGeometry можно не рендерить если отключено SSAO
-		m_rpGeometry.Draw(m_entities, m_numEntities, m_camera);
+		m_rpGeometry.Draw(m_gameObjects, m_numGO, m_camera);
 
 		//================================================================================
 		// 3 Render Pass: SSAO
@@ -128,7 +128,7 @@ void GameScene::draw()
 	//================================================================================
 	// 5 Render Pass: main scenes
 	//		Set state: glEnable(GL_DEPTH_TEST);
-	m_rpBlinnPhong.Draw(m_rpDirShadowMap, m_dirLights, m_numDirLights, m_entities, m_numEntities, m_camera);
+	m_rpBlinnPhong.Draw(m_rpDirShadowMap, m_dirLights, m_numDirLights, m_gameObjects, m_numGO, m_camera);
 	
 	//================================================================================
 	// 6 Render Pass: post frame
@@ -144,7 +144,7 @@ void GameScene::draw()
 void GameScene::endDraw()
 {
 	m_camera = nullptr;
-	m_numEntities = 0;
+	m_numGO = 0;
 	m_numDirLights = 0;
 }
 //=============================================================================

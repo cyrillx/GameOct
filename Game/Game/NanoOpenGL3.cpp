@@ -5,7 +5,7 @@
 //=============================================================================
 std::unordered_map<SamplerStateInfo, GLuint> SamplerCache;
 //=============================================================================
-#if defined(_DEBUG)
+//#if defined(_DEBUG)
 namespace
 {
 	void openGLErrorCallback(GLenum source, GLenum type, GLuint id, GLenum severity, [[maybe_unused]] GLsizei length, const GLchar* message, [[maybe_unused]] const void* user_param) noexcept
@@ -68,7 +68,7 @@ namespace
 		Error(msg);
 	}
 }
-#endif
+//#endif
 //=============================================================================
 [[nodiscard]] inline GLenum GetGLEnum(ComparisonFunc func)
 {
@@ -957,15 +957,27 @@ bool oglSystem::Init()
 {
 	Close();
 
-#if defined(_DEBUG)
-	glEnable(GL_DEBUG_OUTPUT);
-	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-	glDebugMessageCallback(openGLErrorCallback, nullptr);
-	glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
-#endif
+	const char* renderer = (const char*)glGetString(GL_RENDERER);
+	const char* version = (const char*)glGetString(GL_VERSION);
+	Print("Renderer: " + std::string(renderer));
+	Print("OpenGL version supported " + std::string(version));
+
+	// enable debug context
+	int flags;
+	glGetIntegerv(GL_CONTEXT_FLAGS, &flags);
+	if (flags & GL_CONTEXT_FLAG_DEBUG_BIT)
+	{
+		Print("Enable OpenGL Debug Context");
+		glEnable(GL_DEBUG_OUTPUT);
+		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS); // makes sure errors are displayed synchronously
+		glDebugMessageCallback(openGLErrorCallback, nullptr);
+		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
+	}
 
 	glDisable(GL_DITHER);
 	glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
+
+
 
 	// TODO: reset opengl state
 

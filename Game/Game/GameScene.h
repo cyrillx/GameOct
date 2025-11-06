@@ -10,7 +10,7 @@
 #include "RPComposite.h"
 
 
-struct Entity final
+struct GameObject final
 {
 	const AABB& GetAABB() const noexcept { return model.GetAABB(); }
 
@@ -27,7 +27,7 @@ public:
 	void Draw();
 
 	void BindCamera(Camera* camera);
-	void BindEntity(Entity* ent);
+	void BindGameObject(GameObject* go);
 	void BindLight(DirectionalLight* ent);
 
 	void SetShadowQuality(ShadowQuality quality);
@@ -40,8 +40,8 @@ private:
 	void blittingToScreen(GLuint fbo, uint16_t srcWidth, uint16_t srcHeight);
 
 	Camera*                        m_camera{ nullptr };
-	std::vector<Entity*>           m_entities;
-	size_t                         m_numEntities{ 0 };
+	std::vector<GameObject*>       m_gameObjects;
+	size_t                         m_numGO{ 0 };
 	std::vector<DirectionalLight*> m_dirLights;
 	size_t                         m_numDirLights{ 0 };
 

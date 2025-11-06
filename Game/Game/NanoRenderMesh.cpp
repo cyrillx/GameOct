@@ -1,32 +1,6 @@
 ﻿#include "stdafx.h"
 #include "NanoRenderMesh.h"
 //=============================================================================
-void SetQuadVertexAttributes()
-{
-	const size_t vertexSize = sizeof(QuadVertex);
-	const VertexAttribute attributes[] =
-	{
-		{.type = GL_FLOAT, .size = 2, .offset = (void*)offsetof(QuadVertex, position)},
-		{.type = GL_FLOAT, .size = 2, .offset = (void*)offsetof(QuadVertex, texCoord)},
-	};
-	SpecifyVertexAttributes(vertexSize, attributes);
-}
-//=============================================================================
-void SetMeshVertexAttributes()
-{
-	const size_t vertexSize = sizeof(MeshVertex);
-	const VertexAttribute attributes[] =
-	{
-		{.type = GL_FLOAT, .size = 3, .offset = (void*)offsetof(MeshVertex, position)},
-		{.type = GL_FLOAT, .size = 3, .offset = (void*)offsetof(MeshVertex, color)},
-		{.type = GL_FLOAT, .size = 3, .offset = (void*)offsetof(MeshVertex, normal)},
-		{.type = GL_FLOAT, .size = 2, .offset = (void*)offsetof(MeshVertex, texCoord)},
-		{.type = GL_FLOAT, .size = 3, .offset = (void*)offsetof(MeshVertex, tangent)},
-		{.type = GL_FLOAT, .size = 3, .offset = (void*)offsetof(MeshVertex, bitangent)},
-	};
-	SpecifyVertexAttributes(vertexSize, attributes);
-}
-//=============================================================================
 Mesh::Mesh(const std::vector<MeshVertex>& vertices, const std::vector<uint32_t>& indices, std::optional<Material> material)
 {
 	assert(!vertices.empty());
@@ -49,7 +23,7 @@ Mesh::Mesh(const std::vector<MeshVertex>& vertices, const std::vector<uint32_t>&
 	glBindVertexArray(m_vao);
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 	if (m_ebo > 0) glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
-	SetMeshVertexAttributes();
+	MeshVertex::SetVertexAttributes();
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, currentVBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, currentEBO);
@@ -91,6 +65,28 @@ Mesh& Mesh::operator=(Mesh&& old) noexcept
 	return *this;
 }
 //=============================================================================
+void Mesh::Draw(GLenum mode, GLuint program, unsigned instanceCount)
+{
+	assert(m_vao);
+	glBindVertexArray(m_vao);
+
+	if (m_ebo > 0)
+	{
+		if (instanceCount > 1)
+			glDrawElementsInstanced(mode, m_indicesCount, GL_UNSIGNED_INT, 0, instanceCount);
+		else
+			glDrawElements(mode, m_indicesCount, GL_UNSIGNED_INT, 0);
+	}
+	else
+	{
+		if (instanceCount > 1)
+			; // TODO:???
+		else
+			glDrawArrays(mode, 0, m_vertexCount);
+	}
+	glBindVertexArray(0);
+}
+//=============================================================================
 void Mesh::tDraw(GLenum mode, GLuint program, bool bindMaterial, bool instancing, int amount)
 {
 	assert(m_vao);
@@ -127,16 +123,10 @@ void Mesh::tDraw(GLenum mode, GLuint program, bool bindMaterial, bool instancing
 
 		if (program)
 		{
-			// if BLINN_PHONG
 			SetUniform(GetUniformLocation(program, "material.color_diffuse"), m_material->diffuseColor);
 			SetUniform(GetUniformLocation(program, "material.color_specular"), m_material->specularColor);
 			SetUniform(GetUniformLocation(program, "material.color_ambient"), m_material->ambientColor);
 			SetUniform(GetUniformLocation(program, "material.shininess"), m_material->shininess);
-			// elif PBR
-/*			SetUniform(GetUniformLocation(program, "material.albedo"), m_material->diffuseColor);
-			SetUniform(GetUniformLocation(program, "material.metallic"), m_material->metallic);
-			SetUniform(GetUniformLocation(program, "material.roughness"), m_material->roughness);
-			SetUniform(GetUniformLocation(program, "material.ao"), 1.0f);*/
 
 			SetUniform(GetUniformLocation(program, "material.hasDiffuse"), hasDiffuseTexture ? 1 : 0);
 			SetUniform(GetUniformLocation(program, "material.hasSpecular"), hasSpecularTexture ? 1 : 0);

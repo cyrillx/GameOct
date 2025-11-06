@@ -3,7 +3,7 @@
 #include "Framebuffer.h"
 
 class Camera;
-struct Entity;
+struct GameObject;
 
 class RPGeometry final
 {
@@ -13,7 +13,7 @@ public:
 
 	void Resize(uint16_t framebufferWidth, uint16_t framebufferHeight);
 
-	void Draw(const std::vector<Entity*>& entites, size_t numEntities, Camera* camera);
+	void Draw(const std::vector<GameObject*>& gameObject, size_t numGameObject, Camera* camera);
 
 	Framebuffer* GetFBO() const { return m_fbo.get(); }
 	GLuint GetFBOId() const { return m_fbo->GetId(); }
@@ -21,7 +21,7 @@ public:
 	uint16_t GetHeight() const { return m_framebufferHeight; }
 
 private:
-	void drawScene(const std::vector<Entity*>& entites, size_t numEntities);
+	void drawScene(const std::vector<GameObject*>& gameObject, size_t numGameObject);
 
 	GLuint    m_program{ 0 };
 	int       m_projectionMatrixId{ -1 };

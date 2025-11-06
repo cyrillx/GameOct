@@ -109,6 +109,7 @@
     <ClCompile Include="NanoRenderMesh.cpp" />
     <ClCompile Include="NanoRenderModel.cpp" />
     <ClCompile Include="NanoRenderTextures.cpp" />
+    <ClCompile Include="NanoRenderVertex.cpp" />
     <ClCompile Include="NanoScene.cpp" />
     <ClCompile Include="Region.cpp" />
     <ClCompile Include="RPDirShadowMap.cpp" />
@@ -152,6 +153,7 @@
     <ClInclude Include="NanoRenderMesh.h" />
     <ClInclude Include="NanoRenderModel.h" />
     <ClInclude Include="NanoRenderTextures.h" />
+    <ClInclude Include="NanoRenderVertex.h" />
     <ClInclude Include="NanoScene.h" />
     <ClInclude Include="NanoWindow.h" />
     <ClInclude Include="Region.h" />
@@ -174,10 +176,6 @@
     <None Include="..\..\bin\data\shaders\blinn_phong\vertex.glsl" />
     <None Include="..\..\bin\data\shaders\grid\fragment.glsl" />
     <None Include="..\..\bin\data\shaders\grid\vertex.glsl" />
-    <None Include="..\..\bin\data\shaders\main\fragment.glsl" />
-    <None Include="..\..\bin\data\shaders\main\vertex.glsl" />
-    <None Include="..\..\bin\data\shaders\shadowMapping\fragment.glsl" />
-    <None Include="..\..\bin\data\shaders\shadowMapping\vertex.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

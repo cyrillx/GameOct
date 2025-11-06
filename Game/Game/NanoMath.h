@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+glm::mat4 GetTransformMatrix(const glm::vec3& position, const glm::vec3& rotation, float scale = 1.0f);
+
 inline glm::mat4 aiMatrix4x4ToGlm(const aiMatrix4x4& m)
 {
 	glm::mat4 matrix;

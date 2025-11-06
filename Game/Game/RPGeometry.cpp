@@ -59,7 +59,7 @@ void RPGeometry::Resize(uint16_t framebufferWidth, uint16_t framebufferHeight)
 	m_fbo->UpdateAttachment(AttachmentType::RenderBuffer, AttachmentTarget::DepthStencil, m_framebufferWidth, m_framebufferHeight);
 }
 //=============================================================================
-void RPGeometry::Draw(const std::vector<Entity*>& entites, size_t numEntities, Camera* camera)
+void RPGeometry::Draw(const std::vector<GameObject*>& gameObject, size_t numGameObject, Camera* camera)
 {
 	m_fbo->Bind();
 	glViewport(0, 0, static_cast<int>(m_framebufferWidth), static_cast<int>(m_framebufferHeight));
@@ -71,20 +71,20 @@ void RPGeometry::Draw(const std::vector<Entity*>& entites, size_t numEntities, C
 	SetUniform(m_viewMatrixId, camera->GetViewMatrix());
 
 	glBindSampler(0, m_sampler);
-	drawScene(entites, numEntities);
+	drawScene(gameObject, numGameObject);
 	glBindSampler(0, 0);
 }
 //=============================================================================
-void RPGeometry::drawScene(const std::vector<Entity*>& entites, size_t numEntities)
+void RPGeometry::drawScene(const std::vector<GameObject*>& gameObject, size_t numGameObject)
 {
 	ModelDrawInfo drawInfo;
 	drawInfo.bindMaterials = true;
 	drawInfo.mode = GL_TRIANGLES;
 	drawInfo.shaderProgram = m_program;
-	for (size_t i = 0; i < numEntities; i++)
+	for (size_t i = 0; i < numGameObject; i++)
 	{
-		SetUniform(m_modelMatrixId, entites[i]->modelMat);
-		entites[i]->model.Draw(drawInfo);
+		SetUniform(m_modelMatrixId, gameObject[i]->modelMat);
+		gameObject[i]->model.tDraw(drawInfo);
 	}
 }
 //=============================================================================

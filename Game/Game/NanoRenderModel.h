@@ -13,14 +13,14 @@ class Model final
 {
 public:
 	bool Load(const std::string& fileName);
-	void Create(const MeshCreateInfo& meshCreateInfo);
-	void Create(const std::vector<MeshCreateInfo>& meshes);
+	void Create(const MeshInfo& meshCreateInfo);
+	void Create(const std::vector<MeshInfo>& meshes);
 
 	void Free();
 
 	void DrawSubMesh(size_t id, GLenum mode = GL_TRIANGLES);
-	void Draw(GLenum mode = GL_TRIANGLES);
-	void Draw(const ModelDrawInfo& drawInfo);
+	void tDraw(GLenum mode = GL_TRIANGLES);
+	void tDraw(const ModelDrawInfo& drawInfo);
 
 	size_t GetNumMeshes() const noexcept { return m_meshes.size(); }
 	const std::vector<Mesh>& GetMeshes() const noexcept { return m_meshes; }

@@ -3,6 +3,7 @@
 #include "GameScene.h"
 #include "NanoLog.h"
 #include "NanoWindow.h"
+отказаться от pbr и продолжить здесь ветку BlinnPhong
 //=============================================================================
 bool RPMainScene::Init(uint16_t framebufferWidth, uint16_t framebufferHeight)
 {

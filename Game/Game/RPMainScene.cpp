@@ -3,7 +3,6 @@
 #include "GameScene.h"
 #include "NanoLog.h"
 #include "NanoWindow.h"
-отказаться от pbr и продолжить здесь ветку BlinnPhong
 //=============================================================================
 bool RPMainScene::Init(uint16_t framebufferWidth, uint16_t framebufferHeight)
 {
@@ -66,7 +65,7 @@ void RPMainScene::Close()
 	glDeleteSamplers(1, &m_sampler);
 }
 //=============================================================================
-void RPMainScene::Draw(const RPDirShadowMap& rpShadowMap, const std::vector<GameLight*>& lights, size_t numLights, const std::vector<GameObject*>& gameObject, size_t numGameObject, Camera* camera)
+void RPMainScene::Draw(const RPDirectionalLightsShadowMap& rpShadowMap, const std::vector<GameObject*>& gameObject, size_t numGameObject, Camera* camera)
 {
 	m_fbo.Bind();
 	glEnable(GL_DEPTH_TEST);
@@ -78,32 +77,30 @@ void RPMainScene::Draw(const RPDirShadowMap& rpShadowMap, const std::vector<Game
 	SetUniform(m_projectionMatrixId, m_perspective);
 	SetUniform(m_viewMatrixId, camera->GetViewMatrix());
 
-	SetUniform(m_lightCountId, (int)numLights);
+	//int textureOffset{ 10 };
+	//for (size_t i = 0; i < numLights; i++)
+	//{
+	//	const auto* light = lights[i];
 
-	int textureOffset{ 10 };
-	for (size_t i = 0; i < numLights; i++)
-	{
-		const auto* light = lights[i];
+	//	glm::vec3 direction = glm::normalize(-light->position);
+	//	glm::vec3 worldUp(0.0f, 1.0f, 0.0f);
 
-		glm::vec3 direction = glm::normalize(-light->position);
-		glm::vec3 worldUp(0.0f, 1.0f, 0.0f);
+	//	glm::vec3 right = glm::normalize(glm::cross(direction, worldUp));
+	//	glm::vec3 up = glm::normalize(glm::cross(right, direction));
 
-		glm::vec3 right = glm::normalize(glm::cross(direction, worldUp));
-		glm::vec3 up = glm::normalize(glm::cross(right, direction));
+	//	glm::mat4 lightProjection = glm::perspective(glm::radians(45.0f), 1.0f, 0.1f, 10.0f);
 
-		glm::mat4 lightProjection = glm::perspective(glm::radians(45.0f), 1.0f, 0.1f, 10.0f);
+	//	glm::mat4 lightView = glm::lookAt(light->position, light->position + direction, up);
 
-		glm::mat4 lightView = glm::lookAt(light->position, light->position + direction, up);
-
-		std::string prefix = "lights[" + std::to_string(i) + "].";
-		SetUniform(GetUniformLocation(m_program, prefix + "position"), light->position);
-		SetUniform(GetUniformLocation(m_program, prefix + "direction"), direction);
-		SetUniform(GetUniformLocation(m_program, prefix + "color"), light->color);
-		SetUniform(GetUniformLocation(m_program, prefix + "matrix"), lightProjection * lightView);
-		SetUniform(GetUniformLocation(m_program, prefix + "shadowMapSampler"), (int)(textureOffset + i));
-		//rpShadowMap.GetDepthFBO()[depthMapIndex].BindDepthTexture(textureOffset + i);
-		// TODO: shadow map texture - GL_CLAMP_TO_BORDER и borderColor[] = 1.0, 1.0, 1.0, 1.0 через GL_TEXTURE_BORDER_COLOR
-	}
+	//	std::string prefix = "lights[" + std::to_string(i) + "].";
+	//	SetUniform(GetUniformLocation(m_program, prefix + "position"), light->position);
+	//	SetUniform(GetUniformLocation(m_program, prefix + "direction"), direction);
+	//	SetUniform(GetUniformLocation(m_program, prefix + "color"), light->color);
+	//	SetUniform(GetUniformLocation(m_program, prefix + "matrix"), lightProjection * lightView);
+	//	SetUniform(GetUniformLocation(m_program, prefix + "shadowMapSampler"), (int)(textureOffset + i));
+	//	//rpShadowMap.GetDepthFBO()[depthMapIndex].BindDepthTexture(textureOffset + i);
+	//	// TODO: shadow map texture - GL_CLAMP_TO_BORDER и borderColor[] = 1.0, 1.0, 1.0, 1.0 через GL_TEXTURE_BORDER_COLOR
+	//}
 
 	glBindSampler(0, m_sampler);
 	drawScene(gameObject, numGameObject);
@@ -148,8 +145,8 @@ void RPMainScene::drawScene(const std::vector<GameObject*>& gameObject, size_t n
 				normalTex = material->normalTexture.id;
 			}
 
-			SetUniform(GetUniformLocation(m_program, "hasAlbedo"), hasAlbedo);
-			SetUniform(GetUniformLocation(m_program, "hasNormal"), hasNormal);
+			SetUniform(GetUniformLocation(m_program, "hasAlbedoMap"), hasAlbedo);
+			SetUniform(GetUniformLocation(m_program, "hasNormalMap"), hasNormal);
 
 			BindTexture2D(0, albedoTex);
 			BindTexture2D(5, normalTex);

@@ -8,6 +8,13 @@
 #include "NanoScene.h"
 #include "GridAxis.h"
 #include "GameScene.h"
+/*
+idea:
+- https://hardboiledcrab.itch.io/tiled-mediaval-building  - example tile house building
+- карту делать из таких маленьких одноцветных кубиков - https://atapataco.itch.io/cube-tilemap-desert
+		или https://wizp.itch.io/3d-tileset
+*/
+
 //=============================================================================
 namespace
 {
@@ -23,8 +30,6 @@ namespace
 	GameObject box2Entity;
 	GameObject box3Entity;
 	GameObject box4Entity;
-
-	GameLight lights[3];
 }
 //=============================================================================
 void GameApp()
@@ -67,14 +72,6 @@ void GameApp()
 		dirLight2.diffuseStrength = glm::vec3(1.0f);
 		dirLight2.specularStrength = glm::vec3(1.0f);
 
-		lights[0].position = glm::vec3(0.0f, 1.0f, -2.0f);
-		lights[0].color = glm::vec3(0.2f);
-		lights[1].position = glm::vec3(-2.0f, 1.0f, 0.0f);
-		lights[1].color = glm::vec3(0.0f, 0.2f, 0.0f);
-		lights[2].position = glm::vec3(2.0f, 1.0f, 0.0f);
-		lights[2].color = glm::vec3(0.2f, 0.0f, 0.0f);
-
-
 		while (!engine::ShouldClose())
 		{
 			engine::BeginFrame();
@@ -104,10 +101,6 @@ void GameApp()
 			scene.BindGameObject(&box2Entity);
 			scene.BindGameObject(&box3Entity);
 			scene.BindGameObject(&box4Entity);
-
-			scene.BindLight(&lights[0]);
-			scene.BindLight(&lights[1]);
-			scene.BindLight(&lights[2]);
 
 			scene.BindLight(&dirLight);
 			scene.BindLight(&dirLight2);

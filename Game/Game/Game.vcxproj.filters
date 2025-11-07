@@ -64,9 +64,6 @@
       <Filter>Example</Filter>
     </ClCompile>
     <ClCompile Include="GameApp.cpp" />
-    <ClCompile Include="GameScene.cpp">
-      <Filter>GameApp\Render</Filter>
-    </ClCompile>
     <ClCompile Include="NanoRenderTextures.cpp">
       <Filter>NanoEngine\Render</Filter>
     </ClCompile>
@@ -82,29 +79,32 @@
     <ClCompile Include="NanoRenderGeometryGen.cpp">
       <Filter>NanoEngine\Render</Filter>
     </ClCompile>
-    <ClCompile Include="RPDirShadowMap.cpp">
-      <Filter>GameApp\Render\SceneRenderPass</Filter>
+    <ClCompile Include="RPDirectionalLightsShadowMap.cpp">
+      <Filter>GameApp\SceneRenderPass</Filter>
     </ClCompile>
     <ClCompile Include="RPBlinnPhong.cpp">
-      <Filter>GameApp\Render\SceneRenderPass</Filter>
+      <Filter>GameApp\SceneRenderPass</Filter>
     </ClCompile>
     <ClCompile Include="RPComposite.cpp">
-      <Filter>GameApp\Render\SceneRenderPass</Filter>
+      <Filter>GameApp\SceneRenderPass</Filter>
     </ClCompile>
     <ClCompile Include="RPGeometry.cpp">
-      <Filter>GameApp\Render\SceneRenderPass</Filter>
+      <Filter>GameApp\SceneRenderPass</Filter>
     </ClCompile>
     <ClCompile Include="RPSSAO.cpp">
-      <Filter>GameApp\Render\SceneRenderPass</Filter>
+      <Filter>GameApp\SceneRenderPass</Filter>
     </ClCompile>
     <ClCompile Include="RPSSAOBlur.cpp">
-      <Filter>GameApp\Render\SceneRenderPass</Filter>
+      <Filter>GameApp\SceneRenderPass</Filter>
     </ClCompile>
     <ClCompile Include="NanoRenderVertex.cpp">
       <Filter>NanoEngine\Render</Filter>
     </ClCompile>
     <ClCompile Include="RPMainScene.cpp">
-      <Filter>GameApp\Render\SceneRenderPass</Filter>
+      <Filter>GameApp\SceneRenderPass</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene.cpp">
+      <Filter>GameApp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -161,9 +161,6 @@
     <ClInclude Include="SceneShadowMap.h">
       <Filter>Example\tmp</Filter>
     </ClInclude>
-    <ClInclude Include="GameScene.h">
-      <Filter>GameApp\Render</Filter>
-    </ClInclude>
     <ClInclude Include="NanoRenderTextures.h">
       <Filter>NanoEngine\Render</Filter>
     </ClInclude>
@@ -179,30 +176,36 @@
     <ClInclude Include="NanoRenderGeometryGen.h">
       <Filter>NanoEngine\Render</Filter>
     </ClInclude>
-    <ClInclude Include="RPDirShadowMap.h">
-      <Filter>GameApp\Render\SceneRenderPass</Filter>
+    <ClInclude Include="RPDirectionalLightsShadowMap.h">
+      <Filter>GameApp\SceneRenderPass</Filter>
     </ClInclude>
     <ClInclude Include="RPBlinnPhong.h">
-      <Filter>GameApp\Render\SceneRenderPass</Filter>
+      <Filter>GameApp\SceneRenderPass</Filter>
     </ClInclude>
     <ClInclude Include="RPComposite.h">
-      <Filter>GameApp\Render\SceneRenderPass</Filter>
+      <Filter>GameApp\SceneRenderPass</Filter>
     </ClInclude>
     <ClInclude Include="GameConfig.h" />
     <ClInclude Include="RPGeometry.h">
-      <Filter>GameApp\Render\SceneRenderPass</Filter>
+      <Filter>GameApp\SceneRenderPass</Filter>
     </ClInclude>
     <ClInclude Include="RPSSAO.h">
-      <Filter>GameApp\Render\SceneRenderPass</Filter>
+      <Filter>GameApp\SceneRenderPass</Filter>
     </ClInclude>
     <ClInclude Include="RPSSAOBlur.h">
-      <Filter>GameApp\Render\SceneRenderPass</Filter>
+      <Filter>GameApp\SceneRenderPass</Filter>
     </ClInclude>
     <ClInclude Include="NanoRenderVertex.h">
       <Filter>NanoEngine\Render</Filter>
     </ClInclude>
     <ClInclude Include="RPMainScene.h">
-      <Filter>GameApp\Render\SceneRenderPass</Filter>
+      <Filter>GameApp\SceneRenderPass</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene.h">
+      <Filter>GameApp</Filter>
+    </ClInclude>
+    <ClInclude Include="GameWorldData.h">
+      <Filter>GameApp</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -236,9 +239,6 @@
     <Filter Include="GameApp">
       <UniqueIdentifier>{442e05ba-91a3-44f5-90a4-b7226fdd4404}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameApp\Render">
-      <UniqueIdentifier>{6119cb67-3adb-4f87-b97c-8425a8204a48}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Example\shaders">
       <UniqueIdentifier>{0ccbfeab-b651-4032-ac9d-4d4c35564eba}</UniqueIdentifier>
     </Filter>
@@ -251,11 +251,11 @@
     <Filter Include="Example\shaders\blinn_phong">
       <UniqueIdentifier>{7f12fd78-5b61-4396-90ac-8c12ed495c05}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameApp\Render\SceneRenderPass">
-      <UniqueIdentifier>{dc214a13-b723-4b6c-b7f3-c9790647173a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="TempPhysics">
       <UniqueIdentifier>{c7007c31-eb29-4fd4-896f-b25981d8333f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameApp\SceneRenderPass">
+      <UniqueIdentifier>{dc214a13-b723-4b6c-b7f3-c9790647173a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

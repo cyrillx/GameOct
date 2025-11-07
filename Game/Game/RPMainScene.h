@@ -4,9 +4,8 @@
 
 class Camera;
 struct GameObject;
-class RPDirShadowMap;
+class RPDirectionalLightsShadowMap;
 struct DirectionalLight;
-struct GameLight;
 
 class RPMainScene final
 {
@@ -16,8 +15,7 @@ public:
 
 	void Resize(uint16_t framebufferWidth, uint16_t framebufferHeight);
 
-	void Draw(const RPDirShadowMap& rpShadowMap,
-		const std::vector<GameLight*>& lights, size_t numLights,
+	void Draw(const RPDirectionalLightsShadowMap& rpShadowMap,
 		const std::vector<GameObject*>& gameObject, size_t numGameObject,
 		Camera* camera);
 

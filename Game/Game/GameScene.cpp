@@ -6,14 +6,12 @@
 //=============================================================================
 bool GameScene::Init()
 {
-	m_gameObjects.reserve(10000);
-	m_dirLights.resize(MaxDirectionalLight);
-	m_lights.resize(MaxLight);
+	m_data.Init();
 
 	const auto wndWidth = window::GetWidth();
 	const auto wndHeight = window::GetHeight();
 
-	if (!m_rpDirShadowMap.Init())
+	if (!m_rpDirShadowMap.Init(ShadowQuality::High))
 		return false;
 	if (!m_rpGeometry.Init(wndWidth, wndHeight))
 		return false;
@@ -44,49 +42,38 @@ void GameScene::Close()
 //=============================================================================
 void GameScene::BindCamera(Camera* camera)
 {
-	m_camera = camera;
+	m_data.camera = camera;
 }
 //=============================================================================
 void GameScene::BindGameObject(GameObject* go)
 {
-	if (m_numGO >= m_gameObjects.size())
-		m_gameObjects.push_back(go);
+	if (m_data.numGameObject >= m_data.gameObjects.size())
+		m_data.gameObjects.push_back(go);
 	else
-		m_gameObjects[m_numGO] = go;
+		m_data.gameObjects[m_data.numGameObject] = go;
 
-	m_numGO++;
-}
-//=============================================================================
-void GameScene::BindLight(GameLight* ent)
-{
-	if (m_numLights >= MaxLight)
-	{
-		Error("Max light");
-		return;
-	}
-	m_lights[m_numLights] = ent;
-	m_numLights++;
+	m_data.numGameObject++;
 }
 //=============================================================================
 void GameScene::BindLight(DirectionalLight* ent)
 {
-	if (m_numDirLights >= MaxDirectionalLight)
+	if (m_data.numDirLights >= MaxDirectionalLight)
 	{
 		Error("Max dir light");
 		return;
 	}
-	m_dirLights[m_numDirLights] = ent;
-	m_numDirLights++;
+	m_data.dirLights[m_data.numDirLights] = ent;
+	m_data.numDirLights++;
 }
 //=============================================================================
 void GameScene::Draw()
 {
-	if (!m_camera)
+	if (!m_data.camera)
 	{
 		Warning("Not active camera");
 		return;
 	}
-	if (!m_numGO)
+	if (!m_data.numGameObject)
 	{
 		Warning("Not active entities");
 		return;
@@ -95,11 +82,6 @@ void GameScene::Draw()
 	beginDraw();
 	draw();
 	endDraw();
-}
-//=============================================================================
-void GameScene::SetShadowQuality(ShadowQuality quality)
-{
-	m_rpDirShadowMap.SetShadowQuality(quality);
 }
 //=============================================================================
 void GameScene::beginDraw()
@@ -118,49 +100,46 @@ void GameScene::beginDraw()
 void GameScene::draw()
 {
 	//================================================================================
-	// 1 Render Pass: draw shadow maps
+	// 1.) Render Pass: render depth of scene to texture (from light's perspective)
 	//		Set state: glEnable(GL_DEPTH_TEST);
-	m_rpDirShadowMap.Draw(m_dirLights, m_numDirLights, m_gameObjects, m_numGO);
+	m_rpDirShadowMap.Draw(m_data);
 
 	if (EnableSSAO)
 	{
 		//================================================================================
-		// 2 Render Pass: geometry
-		m_rpGeometry.Draw(m_gameObjects, m_numGO, m_camera);
+		// 2.1 Render Pass: geometry
+		m_rpGeometry.Draw(m_data.gameObjects, m_data.numGameObject, m_data.camera);
 
 		//================================================================================
-		// 3 Render Pass: SSAO
+		// 2.2 Render Pass: SSAO
 		//		Set state: glDisable(GL_DEPTH_TEST);
 		m_rpSSAO.Draw(&m_rpGeometry.GetFBO());
 
 		//================================================================================
-		// 4 Render Pass: SSAO Blur
+		// 2.3 Render Pass: SSAO Blur
 		m_rpSSAOBlur.Draw(&m_rpSSAO.GetFBO());
 	}
 	
 	//================================================================================
-	// 5 Render Pass: main scenes
+	// 3 Render Pass: main scenes
 	//		Set state: glEnable(GL_DEPTH_TEST);
 	//m_rpBlinnPhong.Draw(m_rpDirShadowMap, m_dirLights, m_numDirLights, m_gameObjects, m_numGO, m_camera);
-	m_rpMainScene.Draw(m_rpDirShadowMap, m_lights, m_numLights, m_gameObjects, m_numGO, m_camera);
+	m_rpMainScene.Draw(m_rpDirShadowMap, m_data.gameObjects, m_data.numGameObject, m_data.camera);
 	
 	//================================================================================
-	// 6 Render Pass: post frame
+	// 4 Render Pass: post frame
 	//		Set state: glDisable(GL_DEPTH_TEST);
 	//m_rpComposite.Draw(&m_rpBlinnPhong.GetFBO(), EnableSSAO ? &m_rpSSAOBlur.GetFBO() : nullptr);
 	m_rpComposite.Draw(&m_rpMainScene.GetFBO(), EnableSSAO ? &m_rpSSAOBlur.GetFBO() : nullptr);
 
 	//================================================================================
-	// 7 Render Pass: blitting main fbo
+	// 5 Render Pass: blitting main fbo
 	blittingToScreen(m_rpComposite.GetFBOId(), m_rpComposite.GetWidth(), m_rpComposite.GetHeight());
 }
 //=============================================================================
 void GameScene::endDraw()
 {
-	m_camera = nullptr;
-	m_numGO = 0;
-	m_numDirLights = 0;
-	m_numLights = 0;
+	m_data.ResetFrame();
 }
 //=============================================================================
 void GameScene::blittingToScreen(GLuint fbo, uint16_t srcWidth, uint16_t srcHeight)

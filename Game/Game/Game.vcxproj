@@ -112,7 +112,7 @@
     <ClCompile Include="NanoRenderVertex.cpp" />
     <ClCompile Include="NanoScene.cpp" />
     <ClCompile Include="Region.cpp" />
-    <ClCompile Include="RPDirShadowMap.cpp" />
+    <ClCompile Include="RPDirectionalLightsShadowMap.cpp" />
     <ClCompile Include="RPGeometry.cpp" />
     <ClCompile Include="RPBlinnPhong.cpp" />
     <ClCompile Include="RPComposite.cpp" />
@@ -140,6 +140,7 @@
     <ClInclude Include="GameApp.h" />
     <ClInclude Include="GameConfig.h" />
     <ClInclude Include="GameScene.h" />
+    <ClInclude Include="GameWorldData.h" />
     <ClInclude Include="GridAxis.h" />
     <ClInclude Include="LightO.h" />
     <ClInclude Include="NanoCore.h" />
@@ -158,7 +159,7 @@
     <ClInclude Include="NanoScene.h" />
     <ClInclude Include="NanoWindow.h" />
     <ClInclude Include="Region.h" />
-    <ClInclude Include="RPDirShadowMap.h" />
+    <ClInclude Include="RPDirectionalLightsShadowMap.h" />
     <ClInclude Include="RPGeometry.h" />
     <ClInclude Include="RPBlinnPhong.h" />
     <ClInclude Include="RPComposite.h" />

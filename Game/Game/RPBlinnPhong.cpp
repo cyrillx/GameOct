@@ -57,7 +57,7 @@ void RPBlinnPhong::Close()
 	glDeleteSamplers(1, &m_sampler);
 }
 //=============================================================================
-void RPBlinnPhong::Draw(const RPDirShadowMap& rpShadowMap, const std::vector<DirectionalLight*>& dirLights, size_t numDirLights, const std::vector<GameObject*>& gameObject, size_t numGameObject, Camera* camera)
+void RPBlinnPhong::Draw(const RPDirectionalLightsShadowMap& rpShadowMap, const std::vector<DirectionalLight*>& dirLights, size_t numDirLights, const std::vector<GameObject*>& gameObject, size_t numGameObject, Camera* camera)
 {
 	m_fbo.Bind();
 	glEnable(GL_DEPTH_TEST);

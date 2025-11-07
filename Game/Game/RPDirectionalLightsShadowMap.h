@@ -3,8 +3,6 @@
 #include "Framebuffer.h"
 #include "NanoScene.h"
 
-constexpr size_t MaxDirectionalLight = 16;
-
 enum class ShadowQuality 
 {
 	Off = 0,
@@ -16,17 +14,15 @@ enum class ShadowQuality
 	Mega = 8192
 };
 
-struct GameObject;
+struct GameWorldData;
 
-class RPDirShadowMap final
+class RPDirectionalLightsShadowMap final
 {
 public:
-	bool Init();
+	bool Init(ShadowQuality shadowQuality);
 	void Close();
 
-	void Draw(
-		const std::vector<DirectionalLight*>& dirLights, size_t numDirLights,
-		const std::vector<GameObject*>& gameObject, size_t numGameObject);
+	void Draw(const GameWorldData& worldData);
 
 	void SetShadowQuality(ShadowQuality quality);
 	float GetBias() const { return m_bias; }
@@ -35,12 +31,13 @@ public:
 	const auto& GetProjection() const { return m_orthoProjection; }
 
 private:
-	void drawScene(const std::vector<GameObject*>& gameObject, size_t numGameObject);
+	bool initProgram();
+	bool initFBO();
+	void drawScene(const glm::mat4& transformMat, const GameWorldData& worldData);
+
 	GLuint        m_program{ 0 };
-	int           m_projectionMatrixId{ -1 };
-	int           m_viewMatrixId{ -1 };
-	int           m_modelMatrixId{ -1 };
-	//int           m_hasDiffuseId{ -1 };
+	int           m_mvpMatrixId{ -1 };
+	int           m_hasAlbedoMapId{ -1 };
 
 	ShadowQuality m_shadowQuality;
 	float         m_bias;

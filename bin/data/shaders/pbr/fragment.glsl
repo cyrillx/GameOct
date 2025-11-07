@@ -29,12 +29,12 @@ uniform sampler2D brdfSampler;
 uniform bool useIBL;
 uniform bool useCheapIBL;
 
-uniform bool hasAlbedo;
-uniform bool hasMetal;
-uniform bool hasRoughness;
-uniform bool hasOcclusion;
-uniform bool hasEmissive;
-uniform bool hasNormal;
+uniform bool hasAlbedoMap;
+uniform bool hasMetalMap;
+uniform bool hasRoughnessMap;
+uniform bool hasOcclusionMap;
+uniform bool hasEmissiveMap;
+uniform bool hasNormalMap;
 
 uniform Material material;
 uniform vec3 viewPos;
@@ -58,14 +58,14 @@ layout(location = 0) out vec4 FragColor;
 void main()
 {
 	vec3 normal = normalize(fs_in.Normal);
-	if (hasNormal) {
+	if (hasNormalMap) {
 		normal = texture(material.normalSampler, fs_in.TexCoords).rgb;
 		normal = normalize(normal * 2.0 - 1.0);
 		normal = normalize(fs_in.TBN * normal);
 	}
 
 	vec4 albedo = vec4(fs_in.VertColor, 1.0);
-	if (hasAlbedo)
+	if (hasAlbedoMap)
 	{
 		albedo = texture(material.albedoSampler, fs_in.TexCoords) * albedo;
 	}

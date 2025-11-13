@@ -105,14 +105,30 @@ void GPUCuller::cull(GLuint renderVAO, const glm::mat4& viewProj) {
 void GPUCuller::drawInstanced(GLuint meshVAO, GLsizei indexCount) {
     if (instanceCount_ == 0) return;
 
+    // Bind the mesh VAO (contains per-vertex attributes)
     glBindVertexArray(meshVAO);
 
-    // Bind tfVAO attributes as per-instance data
-    glBindVertexArray(tfVAO_);
+    // Bind the feedback VBO and set up per-instance matrix attributes
+    glBindBuffer(GL_ARRAY_BUFFER, feedbackVBO_);
+    // The matrix occupies 4 attribute slots (locations 4..7)
+    for (int i = 0; i < 4; ++i) {
+        GLuint loc = 4 + i;
+        glEnableVertexAttribArray(loc);
+        glVertexAttribPointer(loc, 4, GL_FLOAT, GL_FALSE, sizeof(float) * 16, (void*)(sizeof(float) * 4 * i));
+        glVertexAttribDivisor(loc, 1);
+    }
 
     // Draw mesh with instancing, instanceCount_ instances
     glDrawElementsInstanced(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0, instanceCount_);
 
+    // Cleanup: disable the per-instance attributes
+    for (int i = 0; i < 4; ++i) {
+        GLuint loc = 4 + i;
+        glVertexAttribDivisor(loc, 0);
+        glDisableVertexAttribArray(loc);
+    }
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 }
 

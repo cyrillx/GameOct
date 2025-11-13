@@ -1,4 +1,7 @@
-﻿
+﻿https://github.com/shakesoda/tinyfx
+https://habr.com/ru/articles/440488/
+https://rekovalev.site/opengl/
+
 https://github.com/topfs2/shadow-swan
 https://github.com/Mikepicker/opengl-sandbox/blob/master/res/shaders/ubershader.vs
 https://github.com/cforfang/opengl-shadowmapping/blob/master/src/pcf/main.cpp

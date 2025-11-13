@@ -5,6 +5,11 @@
 #include "RenderLib/Frustum.hpp"
 #include "RenderLib/RenderQueue.hpp"
 #include "RenderLib/Instancing.hpp"
+#include "RenderLib/HiZBuffer.hpp"
+#include "RenderLib/Terrain.hpp"
+#include "RenderLib/Water.hpp"
+#include "RenderLib/Vegetation.hpp"
+#include "RenderLib/MirrorWater.hpp"
 #include <iostream>
 
 namespace RenderLib {
@@ -12,7 +17,8 @@ namespace RenderLib {
 ForwardRenderer::ForwardRenderer() 
     : renderQueue_(std::make_unique<RenderQueue>()),
       frustum_(std::make_unique<Frustum>()),
-      instanceBuffer_(std::make_unique<InstanceBuffer>()) {}
+      instanceBuffer_(std::make_unique<InstanceBuffer>()),
+      hizBuffer_(std::make_unique<HiZBuffer>()) {}
 
 ForwardRenderer::~ForwardRenderer() {}
 
@@ -108,6 +114,41 @@ bool ForwardRenderer::isMeshInFrustum(const glm::vec3& aabbMin, const glm::vec3&
     return frustum_->isAABBInside(aabbMin, aabbMax);
 }
 
-void ForwardRenderer::renderQueue() {
-    // TODO: implement proper queue rendering
+void ForwardRenderer::updateHiZ(const float* depthBuffer) {
+    hizBuffer_->build(depthBuffer, width_, height_);
+    occlusionCullingEnabled_ = true;
+}
+
+bool ForwardRenderer::isOccluded(const glm::vec3& aabbMin, const glm::vec3& aabbMax) const {
+    if (!occlusionCullingEnabled_) return false;
+    // TODO: implement Hi-Z visibility test
+    return false;
+}
+
+void ForwardRenderer::renderTerrain(Terrain* terrain, const glm::mat4& projection, const glm::mat4& view) {
+    if (!terrain) return;
+    // TODO: bind terrain shader and render all tiles with selected LODs
+    terrain->render();
+}
+
+void ForwardRenderer::renderWater(Water* water, const glm::mat4& projection, const glm::mat4& view) {
+    if (!water) return;
+    water->render(projection, view);
+}
+
+void ForwardRenderer::renderVegetation(Vegetation* vegetation, const glm::mat4& projection, const glm::mat4& view) {
+    if (!vegetation) return;
+    // TODO: bind grass shader and render with wind parameters
+    vegetation->render();
+}
+
+void ForwardRenderer::renderMirrorWater(MirrorWater* water, const glm::mat4& projection, const glm::mat4& view) {
+    if (!water) return;
+    water->render(projection, view);
+}
+
+void ForwardRenderer::renderMirrorWaterReflection(MirrorWater* water, const glm::mat4& projection, const glm::mat4& view) {
+    if (!water) return;
+    water->renderReflection(this, projection, view);
+}
 }

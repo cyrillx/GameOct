@@ -7,3 +7,4 @@ void ExampleApp002();
 void ExampleApp003();
 
 void GameApp();
+void OldGameApp();

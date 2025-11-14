@@ -7,10 +7,10 @@
       <Filter>Example</Filter>
     </ClCompile>
     <ClCompile Include="Framebuffer.cpp">
-      <Filter>NanoEngine\addon</Filter>
+      <Filter>Engine\addon</Filter>
     </ClCompile>
     <ClCompile Include="GridAxis.cpp">
-      <Filter>NanoEngine\addon</Filter>
+      <Filter>Engine\addon</Filter>
     </ClCompile>
     <ClCompile Include="LightO.cpp">
       <Filter>Example\tmp</Filter>
@@ -19,40 +19,40 @@
       <Filter>Example\tmp</Filter>
     </ClCompile>
     <ClCompile Include="NanoCore.cpp">
-      <Filter>NanoEngine\NanoCore</Filter>
+      <Filter>Engine\NanoCore</Filter>
     </ClCompile>
     <ClCompile Include="NanoIO.cpp">
-      <Filter>NanoEngine\NanoCore</Filter>
+      <Filter>Engine\NanoCore</Filter>
     </ClCompile>
     <ClCompile Include="NanoLog.cpp">
-      <Filter>NanoEngine\NanoCore</Filter>
+      <Filter>Engine\NanoCore</Filter>
     </ClCompile>
     <ClCompile Include="NanoMath.cpp">
-      <Filter>NanoEngine\NanoCore</Filter>
+      <Filter>Engine\NanoCore</Filter>
     </ClCompile>
     <ClCompile Include="NanoOpenGL3.cpp">
-      <Filter>NanoEngine\OpenGL</Filter>
+      <Filter>Engine\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="NanoRender.cpp">
-      <Filter>NanoEngine\Render</Filter>
+      <Filter>Engine\Render</Filter>
     </ClCompile>
     <ClCompile Include="NanoScene.cpp">
-      <Filter>NanoEngine\Scene</Filter>
+      <Filter>Engine\Scene</Filter>
     </ClCompile>
     <ClCompile Include="NanoEngine.cpp">
-      <Filter>NanoEngine\App</Filter>
+      <Filter>Engine\App</Filter>
     </ClCompile>
     <ClCompile Include="NanoWindow.cpp">
-      <Filter>NanoEngine\App</Filter>
+      <Filter>Engine\App</Filter>
     </ClCompile>
     <ClCompile Include="SceneRenderPass.cpp">
       <Filter>Example\tmp</Filter>
     </ClCompile>
     <ClCompile Include="World.cpp">
-      <Filter>GameApp</Filter>
+      <Filter>OldGameApp</Filter>
     </ClCompile>
     <ClCompile Include="Region.cpp">
-      <Filter>GameApp</Filter>
+      <Filter>OldGameApp</Filter>
     </ClCompile>
     <ClCompile Include="SceneShadowMap.cpp">
       <Filter>Example\tmp</Filter>
@@ -63,58 +63,66 @@
     <ClCompile Include="ExampleApp001.cpp">
       <Filter>Example</Filter>
     </ClCompile>
-    <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="NanoRenderTextures.cpp">
-      <Filter>NanoEngine\Render</Filter>
+      <Filter>Engine\Render</Filter>
     </ClCompile>
     <ClCompile Include="NanoRenderMaterial.cpp">
-      <Filter>NanoEngine\Render</Filter>
+      <Filter>Engine\Render</Filter>
     </ClCompile>
     <ClCompile Include="NanoRenderMesh.cpp">
-      <Filter>NanoEngine\Render</Filter>
+      <Filter>Engine\Render</Filter>
     </ClCompile>
     <ClCompile Include="NanoRenderModel.cpp">
-      <Filter>NanoEngine\Render</Filter>
+      <Filter>Engine\Render</Filter>
     </ClCompile>
     <ClCompile Include="NanoRenderGeometryGen.cpp">
-      <Filter>NanoEngine\Render</Filter>
+      <Filter>Engine\Render</Filter>
     </ClCompile>
     <ClCompile Include="RP_1_DirectionalLightsShadowMap.cpp">
-      <Filter>GameApp\SceneRenderPass</Filter>
+      <Filter>OldGameApp\SceneRenderPass</Filter>
     </ClCompile>
     <ClCompile Include="RPBlinnPhong.cpp">
-      <Filter>GameApp\SceneRenderPass</Filter>
+      <Filter>OldGameApp\SceneRenderPass</Filter>
     </ClCompile>
     <ClCompile Include="RPComposite.cpp">
-      <Filter>GameApp\SceneRenderPass</Filter>
+      <Filter>OldGameApp\SceneRenderPass</Filter>
     </ClCompile>
     <ClCompile Include="RPGeometry.cpp">
-      <Filter>GameApp\SceneRenderPass</Filter>
+      <Filter>OldGameApp\SceneRenderPass</Filter>
     </ClCompile>
     <ClCompile Include="RPSSAO.cpp">
-      <Filter>GameApp\SceneRenderPass</Filter>
+      <Filter>OldGameApp\SceneRenderPass</Filter>
     </ClCompile>
     <ClCompile Include="RPSSAOBlur.cpp">
-      <Filter>GameApp\SceneRenderPass</Filter>
+      <Filter>OldGameApp\SceneRenderPass</Filter>
     </ClCompile>
     <ClCompile Include="NanoRenderVertex.cpp">
-      <Filter>NanoEngine\Render</Filter>
+      <Filter>Engine\Render</Filter>
     </ClCompile>
     <ClCompile Include="RP_2_MainScene.cpp">
-      <Filter>GameApp\SceneRenderPass</Filter>
+      <Filter>OldGameApp\SceneRenderPass</Filter>
     </ClCompile>
     <ClCompile Include="GameScene.cpp">
-      <Filter>GameApp</Filter>
+      <Filter>OldGameApp</Filter>
+    </ClCompile>
+    <ClCompile Include="OldGameApp.cpp">
+      <Filter>OldGameApp</Filter>
+    </ClCompile>
+    <ClCompile Include="GameApp.cpp">
+      <Filter>NewGameApp</Filter>
+    </ClCompile>
+    <ClCompile Include="NanoOpenGL3Advance.cpp">
+      <Filter>Engine\OpenGL</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="GameApp.h" />
     <ClInclude Include="Framebuffer.h">
-      <Filter>NanoEngine\addon</Filter>
+      <Filter>Engine\addon</Filter>
     </ClInclude>
     <ClInclude Include="GridAxis.h">
-      <Filter>NanoEngine\addon</Filter>
+      <Filter>Engine\addon</Filter>
     </ClInclude>
     <ClInclude Include="LightO.h">
       <Filter>Example\tmp</Filter>
@@ -123,89 +131,92 @@
       <Filter>Example\tmp</Filter>
     </ClInclude>
     <ClInclude Include="NanoCore.h">
-      <Filter>NanoEngine\NanoCore</Filter>
+      <Filter>Engine\NanoCore</Filter>
     </ClInclude>
     <ClInclude Include="NanoIO.h">
-      <Filter>NanoEngine\NanoCore</Filter>
+      <Filter>Engine\NanoCore</Filter>
     </ClInclude>
     <ClInclude Include="NanoLog.h">
-      <Filter>NanoEngine\NanoCore</Filter>
+      <Filter>Engine\NanoCore</Filter>
     </ClInclude>
     <ClInclude Include="NanoMath.h">
-      <Filter>NanoEngine\NanoCore</Filter>
+      <Filter>Engine\NanoCore</Filter>
     </ClInclude>
     <ClInclude Include="NanoOpenGL3.h">
-      <Filter>NanoEngine\OpenGL</Filter>
+      <Filter>Engine\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="NanoRender.h">
-      <Filter>NanoEngine\Render</Filter>
+      <Filter>Engine\Render</Filter>
     </ClInclude>
     <ClInclude Include="NanoScene.h">
-      <Filter>NanoEngine\Scene</Filter>
+      <Filter>Engine\Scene</Filter>
     </ClInclude>
     <ClInclude Include="NanoEngine.h">
-      <Filter>NanoEngine\App</Filter>
+      <Filter>Engine\App</Filter>
     </ClInclude>
     <ClInclude Include="NanoWindow.h">
-      <Filter>NanoEngine\App</Filter>
+      <Filter>Engine\App</Filter>
     </ClInclude>
     <ClInclude Include="SceneRenderPass.h">
       <Filter>Example\tmp</Filter>
     </ClInclude>
     <ClInclude Include="World.h">
-      <Filter>GameApp</Filter>
+      <Filter>OldGameApp</Filter>
     </ClInclude>
     <ClInclude Include="Region.h">
-      <Filter>GameApp</Filter>
+      <Filter>OldGameApp</Filter>
     </ClInclude>
     <ClInclude Include="SceneShadowMap.h">
       <Filter>Example\tmp</Filter>
     </ClInclude>
     <ClInclude Include="NanoRenderTextures.h">
-      <Filter>NanoEngine\Render</Filter>
+      <Filter>Engine\Render</Filter>
     </ClInclude>
     <ClInclude Include="NanoRenderMaterial.h">
-      <Filter>NanoEngine\Render</Filter>
+      <Filter>Engine\Render</Filter>
     </ClInclude>
     <ClInclude Include="NanoRenderMesh.h">
-      <Filter>NanoEngine\Render</Filter>
+      <Filter>Engine\Render</Filter>
     </ClInclude>
     <ClInclude Include="NanoRenderModel.h">
-      <Filter>NanoEngine\Render</Filter>
+      <Filter>Engine\Render</Filter>
     </ClInclude>
     <ClInclude Include="NanoRenderGeometryGen.h">
-      <Filter>NanoEngine\Render</Filter>
+      <Filter>Engine\Render</Filter>
     </ClInclude>
     <ClInclude Include="RP_1_DirectionalLightsShadowMap.h">
-      <Filter>GameApp\SceneRenderPass</Filter>
+      <Filter>OldGameApp\SceneRenderPass</Filter>
     </ClInclude>
     <ClInclude Include="RPBlinnPhong.h">
-      <Filter>GameApp\SceneRenderPass</Filter>
+      <Filter>OldGameApp\SceneRenderPass</Filter>
     </ClInclude>
     <ClInclude Include="RPComposite.h">
-      <Filter>GameApp\SceneRenderPass</Filter>
+      <Filter>OldGameApp\SceneRenderPass</Filter>
     </ClInclude>
     <ClInclude Include="GameConfig.h" />
     <ClInclude Include="RPGeometry.h">
-      <Filter>GameApp\SceneRenderPass</Filter>
+      <Filter>OldGameApp\SceneRenderPass</Filter>
     </ClInclude>
     <ClInclude Include="RPSSAO.h">
-      <Filter>GameApp\SceneRenderPass</Filter>
+      <Filter>OldGameApp\SceneRenderPass</Filter>
     </ClInclude>
     <ClInclude Include="RPSSAOBlur.h">
-      <Filter>GameApp\SceneRenderPass</Filter>
+      <Filter>OldGameApp\SceneRenderPass</Filter>
     </ClInclude>
     <ClInclude Include="NanoRenderVertex.h">
-      <Filter>NanoEngine\Render</Filter>
+      <Filter>Engine\Render</Filter>
     </ClInclude>
     <ClInclude Include="RP_2_MainScene.h">
-      <Filter>GameApp\SceneRenderPass</Filter>
+      <Filter>OldGameApp\SceneRenderPass</Filter>
     </ClInclude>
     <ClInclude Include="GameScene.h">
-      <Filter>GameApp</Filter>
+      <Filter>OldGameApp</Filter>
     </ClInclude>
     <ClInclude Include="GameWorldData.h">
-      <Filter>GameApp</Filter>
+      <Filter>OldGameApp</Filter>
+    </ClInclude>
+    <ClInclude Include="NanoOpenGL3Advance.h">
+      <Filter>Engine\OpenGL</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -214,30 +225,6 @@
     </Filter>
     <Filter Include="Example\tmp">
       <UniqueIdentifier>{37b1790f-a2e6-43ad-a292-f9f8d8c80509}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="NanoEngine">
-      <UniqueIdentifier>{d8f71863-d93a-4335-80a6-267ea4c979a5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="NanoEngine\addon">
-      <UniqueIdentifier>{1a5b75fd-6d4f-4175-a4bd-eb5935d610b3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="NanoEngine\NanoCore">
-      <UniqueIdentifier>{41d48bbd-016e-4ced-8ef6-6b9beb65e799}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="NanoEngine\OpenGL">
-      <UniqueIdentifier>{e90b8e3c-36ab-462d-9600-c9a9a9fad00e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="NanoEngine\Render">
-      <UniqueIdentifier>{bf1588c1-e5b9-4b7c-b737-afd5bb1a1151}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="NanoEngine\Scene">
-      <UniqueIdentifier>{4896292d-24bb-46f6-833f-fff60c06ce2b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="NanoEngine\App">
-      <UniqueIdentifier>{39a56dec-9451-4530-aca5-2403c0f563a3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameApp">
-      <UniqueIdentifier>{442e05ba-91a3-44f5-90a4-b7226fdd4404}</UniqueIdentifier>
     </Filter>
     <Filter Include="Example\shaders">
       <UniqueIdentifier>{0ccbfeab-b651-4032-ac9d-4d4c35564eba}</UniqueIdentifier>
@@ -254,8 +241,35 @@
     <Filter Include="TempPhysics">
       <UniqueIdentifier>{c7007c31-eb29-4fd4-896f-b25981d8333f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GameApp\SceneRenderPass">
+    <Filter Include="OldGameApp">
+      <UniqueIdentifier>{442e05ba-91a3-44f5-90a4-b7226fdd4404}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="OldGameApp\SceneRenderPass">
       <UniqueIdentifier>{dc214a13-b723-4b6c-b7f3-c9790647173a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NewGameApp">
+      <UniqueIdentifier>{445caf56-c388-42dd-aab5-f5d3bf9002fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{d8f71863-d93a-4335-80a6-267ea4c979a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\addon">
+      <UniqueIdentifier>{1a5b75fd-6d4f-4175-a4bd-eb5935d610b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\NanoCore">
+      <UniqueIdentifier>{41d48bbd-016e-4ced-8ef6-6b9beb65e799}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\OpenGL">
+      <UniqueIdentifier>{e90b8e3c-36ab-462d-9600-c9a9a9fad00e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Render">
+      <UniqueIdentifier>{bf1588c1-e5b9-4b7c-b737-afd5bb1a1151}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Scene">
+      <UniqueIdentifier>{4896292d-24bb-46f6-833f-fff60c06ce2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\App">
+      <UniqueIdentifier>{39a56dec-9451-4530-aca5-2403c0f563a3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -85,6 +85,17 @@ enum class DataType : uint8_t
 GLenum GetDataTypeGL(DataType dataType);
 
 //=============================================================================
+// Object Handles
+//=============================================================================
+struct ProgramHandle final { GLuint handle{ 0u }; };
+struct BufferHandle final { GLuint handle{ 0u }; };
+struct TextureHandle final { GLuint handle{ 0u }; };
+struct SamplerHandle final { GLuint handle{ 0u }; };
+
+struct RenderBufferHandle { GLuint handle{ 0u }; };
+struct FrameBufferHandle { GLuint handle{ 0u }; };
+
+//=============================================================================
 // Shader Program
 //=============================================================================
 std::string LoadShaderCode(const std::string& filename, const std::vector<std::string>& defines = {});

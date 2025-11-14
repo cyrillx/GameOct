@@ -1,6 +1,6 @@
 ﻿#include "stdafx.h"
 #include "NanoRenderVertex.h"
-#include "NanoOpenGL3.h"
+#include "NanoOpenGL3Advance.h"
 //=============================================================================
 void QuadVertex::SetVertexAttributes()
 {

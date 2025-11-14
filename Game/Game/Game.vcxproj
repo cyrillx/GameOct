@@ -98,6 +98,8 @@
     <ClCompile Include="ExampleApp002.cpp" />
     <ClCompile Include="Framebuffer.cpp" />
     <ClCompile Include="GameApp.cpp" />
+    <ClCompile Include="NanoOpenGL3Advance.cpp" />
+    <ClCompile Include="OldGameApp.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="GridAxis.cpp" />
     <ClCompile Include="LightO.cpp" />
@@ -149,6 +151,7 @@
     <ClInclude Include="NanoLog.h" />
     <ClInclude Include="NanoMath.h" />
     <ClInclude Include="NanoOpenGL3.h" />
+    <ClInclude Include="NanoOpenGL3Advance.h" />
     <ClInclude Include="NanoRender.h" />
     <ClInclude Include="NanoRenderGeometryGen.h" />
     <ClInclude Include="NanoRenderMaterial.h" />

@@ -4,6 +4,61 @@
 // Enums
 //=============================================================================
 
+enum class PixelFormat : uint8_t
+{ 
+	Red,
+	Rg,
+	Rgb,
+	Rgba,
+	DepthComponent,
+	DepthStencil
+};
+
+enum class InternalFormat : uint8_t
+{
+	// Red channel
+	R8,   R8_SNORM,  R8UI,  R8I,
+	R16,  R16_SNORM, R16UI, R16I,
+	R16F, R32F,
+
+	// RG
+	RG8,   RG8_SNORM,  RG8UI,  RG8I,
+	RG16,  RG16_SNORM, RG16UI, RG16I,
+	RG16F, RG32F,
+
+	// RGB
+	RGB8,       SRGB8,  RGB565,
+	RGB8_SNORM, RGB16F, RGB32F,
+
+	// RGBA
+	RGBA8, SRGB8_ALPHA8, RGBA4, RGB5_A1, RGBA8_SNORM, RGBA16F, RGBA32F,
+
+	// Integer formats
+	R11F_G11F_B10F,
+
+	// Depth/stencil
+	DepthComponent16, DepthComponent24, DepthComponent32F,
+	Depth24Stencil8
+};
+
+// TODO: не смешивать с DataType и аналогами. Да, оно общее - но в каждом случае только часть будет использоваться. лучше сразу отказаться
+enum class PixelType : uint8_t
+{
+	UnsignedByte,
+	UnsignedShort,
+	UnsignedInt,
+	Float,
+	UnsignedInt24_8
+};
+
+enum class TextureTarget : uint8_t
+{ 
+	Texture1D,
+	Texture2D,
+	Texture3D,
+	CubeMap
+};
+
 enum class BufferUsage : uint8_t
 {
 	StaticDraw,
@@ -17,11 +72,11 @@ enum class BufferUsage : uint8_t
 	StreamCopy
 };
 
-enum class BufferType : uint8_t
+enum class BufferTarget : uint8_t
 {
-	ArrayBuffer,
-	ElementArrayBuffer,
-	UniformBuffer
+	Array,
+	ElementArray,
+	Uniform
 };
 
 enum class ComparisonFunc : uint8_t
@@ -35,8 +90,6 @@ enum class ComparisonFunc : uint8_t
 	GreaterEqual,
 	Always
 };
-
-
 
 enum class BlendFactor : uint8_t
 {
@@ -208,9 +261,9 @@ struct MeshVertex final
 // Buffer
 //=============================================================================
 
-BufferHandle CreateBuffer(BufferType target, BufferUsage usage, GLsizeiptr size, const void* data);
+BufferHandle CreateBuffer(BufferTarget target, BufferUsage usage, GLsizeiptr size, const void* data);
 
-void BufferSubData(BufferHandle bufferId, BufferType target, GLintptr offset, GLsizeiptr size, const void* data);
+void BufferSubData(BufferHandle bufferId, BufferTarget target, GLintptr offset, GLsizeiptr size, const void* data);
 
 //=============================================================================
 // Textures

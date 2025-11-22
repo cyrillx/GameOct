@@ -33,6 +33,7 @@ namespace std
 namespace
 {
 	std::unordered_map<TextureCache, Texture2D> texturesMap;
+	Texture2D defaultWhite2D;
 	Texture2D defaultDiffuse2D;
 	Texture2D defaultNormal2D;
 	Texture2D defaultSpecular2D;
@@ -41,6 +42,31 @@ namespace
 bool textures::Init()
 {
 	GLuint currentTexture = GetCurrentTexture(GL_TEXTURE_2D);
+
+	// Create white texture
+	{
+		constexpr size_t SizeTexture = 1u;
+		uint8_t data[SizeTexture][SizeTexture][3];
+		for (size_t i = 0; i < SizeTexture; i++)
+		{
+			for (size_t j = 0; j < SizeTexture; j++)
+			{
+				data[i][j][0] = 255;
+				data[i][j][1] = 255;
+				data[i][j][2] = 255;
+			}
+		}
+
+		defaultWhite2D.width = SizeTexture;
+		defaultWhite2D.height = SizeTexture;
+		glGenTextures(1, &defaultWhite2D.id);
+		glBindTexture(GL_TEXTURE_2D, defaultWhite2D.id);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, SizeTexture, SizeTexture, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	}
 
 	// Create default diffuse texture
 	{
@@ -136,6 +162,7 @@ bool textures::Init()
 //=============================================================================
 void textures::Close()
 {
+	glDeleteTextures(1, &defaultWhite2D.id); defaultWhite2D.id = 0;
 	glDeleteTextures(1, &defaultDiffuse2D.id); defaultDiffuse2D.id = 0;
 	glDeleteTextures(1, &defaultNormal2D.id); defaultNormal2D.id = 0;
 	glDeleteTextures(1, &defaultSpecular2D.id); defaultSpecular2D.id = 0;
@@ -145,6 +172,11 @@ void textures::Close()
 		glDeleteTextures(1, &it.second.id);
 	}
 	texturesMap.clear();
+}
+//=============================================================================
+Texture2D textures::GetWhiteTexture2D()
+{
+	return defaultWhite2D;
 }
 //=============================================================================
 Texture2D textures::GetDefaultDiffuse2D()

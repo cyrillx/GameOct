@@ -39,8 +39,14 @@ void RenderPass2::Draw(const RenderPass1& rpShadowMap, const GameWorldData& game
 	SetUniform(m_projectionMatrixId, m_perspective);
 	SetUniform(m_viewMatrixId, gameData.camera->GetViewMatrix());
 
-	/*int textureOffset{ 5 };
-	for (int i = 0; i < gameData.numDirLights; ++i)
+	SetUniform(m_viewPosId, gameData.camera->Position);
+
+	int textureOffset{ 5 };
+	const auto* light = gameData.dirLights[0];
+	SetUniform(GetUniformLocation(m_program, "lightSpaceMatrix"), rpShadowMap.GetLightSpaceMatrix(0));
+	rpShadowMap.BindDepthTexture(0, textureOffset);
+
+	/*for (int i = 0; i < gameData.numDirLights; ++i)
 	{
 		const auto* light = gameData.dirLights[i];
 
@@ -81,7 +87,14 @@ void RenderPass2::Resize(uint16_t framebufferWidth, uint16_t framebufferHeight)
 //=============================================================================
 void RenderPass2::drawScene(const GameWorldData& gameData)
 {
-	GLuint albedoTex = 0;
+	GLuint diffuseTex = 0;
+	GLuint specularTex = 0;
+	GLuint maskTex = 0;
+	GLuint heightMapTex = textures::GetWhiteTexture2D().id;
+	GLuint normalTex = 0;
+
+	// TODO: mask texture
+	// TODO: heightmap textuere
 
 	for (size_t i = 0; i < gameData.numGameObject; i++)
 	{
@@ -94,15 +107,28 @@ void RenderPass2::drawScene(const GameWorldData& gameData)
 		for (const auto& mesh : meshes)
 		{
 			const auto& material = mesh.GetMaterial();
-			albedoTex = 0;
+			diffuseTex = 0;
+			specularTex = 0;
+			maskTex = 0;
+			normalTex = 0;
 			if (material)
 			{
-				albedoTex = material->diffuseTextures[0].id;
+				if (!material->diffuseTextures.empty()) diffuseTex = material->diffuseTextures[0].id;
+				if (!material->specularTextures.empty()) specularTex = material->specularTextures[0].id;
+				if (!material->normalTextures.empty()) normalTex = material->normalTextures[0].id;
 			}
 
-			SetUniform(m_hasAlbedoMapId, albedoTex > 0);
+			SetUniform(m_hasDiffuseMapId, diffuseTex > 0);
+			SetUniform(m_hasSpecularMapId, specularTex > 0);
+			SetUniform(m_hasMaskMapId, maskTex > 0);
+			SetUniform(m_hasNormalMapId, normalTex > 0);
 
-			BindTexture2D(0, albedoTex);
+			BindTexture2D(0, diffuseTex);
+			BindTexture2D(1, specularTex);
+			BindTexture2D(2, maskTex);
+			BindTexture2D(3, heightMapTex);
+			BindTexture2D(4, normalTex);
+
 
 			mesh.Draw(GL_TRIANGLES);
 		}
@@ -112,6 +138,8 @@ void RenderPass2::drawScene(const GameWorldData& gameData)
 bool RenderPass2::initProgram()
 {
 	const std::vector<std::string> defines = {
+		"PARALLAX_MAPPING",
+		"NORMAL_MAPPING",
 		std::string("MAX_DIR_LIGHTS ") + std::to_string(MaxDirectionalLight),
 		std::string("MAX_POINT_LIGHTS ") + std::to_string(MaxPointLight),
 	};
@@ -124,10 +152,21 @@ bool RenderPass2::initProgram()
 	}
 	glUseProgram(m_program.handle);
 
-	int albedoMap = GetUniformLocation(m_program, "material.albedoMap");
-	assert(albedoMap > -1);
-	
-	SetUniform(albedoMap, 0);
+	int diffuseMap = GetUniformLocation(m_program, "u_DiffuseMap");
+	assert(diffuseMap > -1);
+	int specularMap = GetUniformLocation(m_program, "u_SpecularMap");
+	//assert(specularMap > -1);
+	int maskMap = GetUniformLocation(m_program, "u_MaskMap");
+	//assert(maskMap > -1);
+	int heightMap = GetUniformLocation(m_program, "u_HeightMap");
+	int normalMap = GetUniformLocation(m_program, "u_NormalMap");
+
+		
+	SetUniform(diffuseMap, 0);
+	SetUniform(specularMap, 1);
+	SetUniform(maskMap, 2);
+	if (heightMap > -1) SetUniform(heightMap, 3);
+	if (normalMap > -1) SetUniform(normalMap, 4);
 
 	m_projectionMatrixId = GetUniformLocation(m_program, "projectionMatrix");
 	assert(m_projectionMatrixId > -1);
@@ -135,10 +174,18 @@ bool RenderPass2::initProgram()
 	assert(m_viewMatrixId > -1);
 	m_modelMatrixId = GetUniformLocation(m_program, "modelMatrix");
 	assert(m_modelMatrixId > -1);
+	m_viewPosId = GetUniformLocation(m_program, "viewPos");
+	assert(m_viewPosId > -1);
 
-	m_hasAlbedoMapId = GetUniformLocation(m_program, "hasAlbedoMap");
-	assert(m_hasAlbedoMapId > -1);
-	
+	m_hasDiffuseMapId = GetUniformLocation(m_program, "hasDiffuseMap");
+	assert(m_hasDiffuseMapId > -1);
+	m_hasSpecularMapId = GetUniformLocation(m_program, "hasSpecularMap");
+	//assert(m_hasSpecularMapId > -1);
+	m_hasMaskMapId = GetUniformLocation(m_program, "hasMaskMap");
+	//assert(m_hasMaskMapId > -1);
+	m_hasNormalMapId = GetUniformLocation(m_program, "hasNormalMap");
+	//assert(m_hasNormalMapId > -1);
+
 	glUseProgram(0); // TODO: возможно вернуть прошлую версию шейдера
 
 	return true;

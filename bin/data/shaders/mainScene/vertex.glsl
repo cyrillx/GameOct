@@ -10,36 +10,41 @@ layout(location = 5) in vec3 vertexBitangent;
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 modelMatrix;
+uniform vec3 viewPos;
 
 out VS_OUT {
 	vec3 VertColor;
-	vec3 WorldPos;
+	vec3 FragPos;
 	vec2 TexCoords;
-	mat3 TBN;
 	vec3 Normal;
+	mat3 TBN;
+#if defined(PARALLAX_MAPPING)
+	vec3 TangentViewPos;
+	vec3 TangentFragPos;
+#endif
 } vs_out;
+
+mat3 ConstructTBN(mat4 model, vec3 normal, vec3 tangent, vec3 bitangent)
+{
+   return mat3(
+        normalize(vec3(model * vec4(tangent,   0.0))),
+        normalize(vec3(model * vec4(bitangent, 0.0))),
+        normalize(vec3(model * vec4(normal,    0.0)))
+    );
+}
 
 void main()
 {
-	// Calculate world position
-	vec4 worldPos = modelMatrix * vec4(vertexPosition, 1.0);
-	vs_out.WorldPos = worldPos.xyz;
-
-	// Calculate normal in world space (support non-uniform scale)
-	mat3 normalMatrix = mat3(transpose(inverse(modelMatrix))); 
-	vs_out.Normal = normalize(normalMatrix * vertexNormal);
-
-	// Calculate TBN matrix for normal mapping
-	vec3 T = normalize(normalMatrix * vertexTangent);
-	// Re-orthogalize T with respect to N (Gram-Schmidt process)
-	T = normalize(T - dot(T, vs_out.Normal) * vs_out.Normal);
-	// Calculate bitangent
-	vec3 B = cross(vs_out.Normal, T);
-	// TBN matrix for transforming from tangent to world space
-	vs_out.TBN = mat3(T, B, vs_out.Normal);
-
 	vs_out.VertColor = vertexColor;
-	vs_out.TexCoords = vertexTexCoord;
+	vs_out.FragPos   = vec3(modelMatrix * vec4(vertexPosition, 1.0));
+	vs_out.TexCoords = vertexTexCoord;	
+	vs_out.Normal    = normalize(mat3(transpose(inverse(modelMatrix))) * vertexNormal);
+	vs_out.TBN       = ConstructTBN(modelMatrix, vertexNormal, vertexTangent, vertexBitangent);
 
-	gl_Position = projectionMatrix * viewMatrix * worldPos;
+#if defined(PARALLAX_MAPPING)
+	vs_out.TangentViewPos = transpose(vs_out.TBN) * viewPos;
+	vs_out.TangentFragPos = transpose(vs_out.TBN) * vs_out.FragPos;
+#endif
+
+	gl_Position = projectionMatrix * viewMatrix * vec4(vs_out.FragPos, 1.0);
 }

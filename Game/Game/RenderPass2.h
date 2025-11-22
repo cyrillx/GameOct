@@ -34,8 +34,13 @@ private:
 	int           m_projectionMatrixId{ -1 };
 	int           m_viewMatrixId{ -1 };
 	int           m_modelMatrixId{ -1 };
+	int           m_viewPosId{ -1 };
 
-	int           m_hasAlbedoMapId{ -1 };
+	int           m_hasDiffuseMapId{ -1 };
+	int           m_hasSpecularMapId{ -1 };
+	int           m_hasMaskMapId{ -1 };
+	int           m_hasNormalMapId{ -1 };
+
 
 	Framebuffer   m_fbo;
 

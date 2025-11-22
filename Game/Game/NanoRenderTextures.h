@@ -14,6 +14,7 @@ namespace textures
 	bool Init();
 	void Close();
 
+	Texture2D GetWhiteTexture2D();
 	Texture2D GetDefaultDiffuse2D();
 	Texture2D GetDefaultNormal2D();
 	Texture2D GetDefaultSpecular2D();

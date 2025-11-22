@@ -130,12 +130,12 @@ GLenum GetDataTypeGL(DataType dataType)
 	}
 }
 //=============================================================================
-[[nodiscard]] inline GLenum GetGLEnum(BufferType type)
+[[nodiscard]] inline GLenum GetGLEnum(BufferTarget type)
 {
 	switch (type) {
-	case BufferType::ArrayBuffer:        return GL_ARRAY_BUFFER;
-	case BufferType::ElementArrayBuffer: return GL_ELEMENT_ARRAY_BUFFER;
-	case BufferType::UniformBuffer:      return GL_UNIFORM_BUFFER;
+	case BufferTarget::Array:        return GL_ARRAY_BUFFER;
+	case BufferTarget::ElementArray: return GL_ELEMENT_ARRAY_BUFFER;
+	case BufferTarget::Uniform:      return GL_UNIFORM_BUFFER;
 	default: std::unreachable();
 	}
 }
@@ -572,7 +572,7 @@ void MeshVertex::SetVertexAttributes()
 	SpecifyVertexAttributes(vertexSize, attributes);
 }
 //=============================================================================
-BufferHandle CreateBuffer(BufferType target, BufferUsage usage, GLsizeiptr size, const void* data)
+BufferHandle CreateBuffer(BufferTarget target, BufferUsage usage, GLsizeiptr size, const void* data)
 {
 	GLuint currentBuffer = GetCurrentBuffer(GetGLEnum(target));
 
@@ -585,7 +585,7 @@ BufferHandle CreateBuffer(BufferType target, BufferUsage usage, GLsizeiptr size,
 	return buffer;
 }
 //=============================================================================
-void BufferSubData(BufferHandle bufferId, BufferType target, GLintptr offset, GLsizeiptr size, const void* data)
+void BufferSubData(BufferHandle bufferId, BufferTarget target, GLintptr offset, GLsizeiptr size, const void* data)
 {
 	GLuint currentBuffer = GetCurrentBuffer(GetGLEnum(target));
 

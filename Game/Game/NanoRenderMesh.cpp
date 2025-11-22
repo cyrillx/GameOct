@@ -15,9 +15,9 @@ Mesh::Mesh(const std::vector<MeshVertex>& vertices, const std::vector<uint32_t>&
 	GLuint currentEBO = GetCurrentBuffer(GL_ELEMENT_ARRAY_BUFFER);
 
 	// Buffers
-	m_vbo = CreateBuffer(BufferType::ArrayBuffer, BufferUsage::StaticDraw, vertices.size() * sizeof(MeshVertex), vertices.data());
+	m_vbo = CreateBuffer(BufferTarget::Array, BufferUsage::StaticDraw, vertices.size() * sizeof(MeshVertex), vertices.data());
 	if (!indices.empty())
-		m_ebo = CreateBuffer(BufferType::ElementArrayBuffer, BufferUsage::StaticDraw, indices.size() * sizeof(uint32_t), indices.data());
+		m_ebo = CreateBuffer(BufferTarget::ElementArray, BufferUsage::StaticDraw, indices.size() * sizeof(uint32_t), indices.data());
 
 	// VAO
 	glGenVertexArrays(1, &m_vao);

@@ -92,7 +92,7 @@ void RenderPass1::drawScene(const glm::mat4& lightSpaceMatrix, const GameWorldDa
 		const auto& meshes = worldData.gameObjects[i]->model.GetMeshes();
 		for (const auto& mesh : meshes)
 		{
-			const auto& material = mesh.GetPbrMaterial();
+			/*const auto& material = mesh.GetPbrMaterial();
 			bool hasAlbedoMap = false;
 			GLuint albedoTex = 0;
 			if (material)
@@ -102,7 +102,7 @@ void RenderPass1::drawScene(const glm::mat4& lightSpaceMatrix, const GameWorldDa
 			}
 
 			SetUniform((GLuint)m_hasAlbedoMapId, hasAlbedoMap);
-			BindTexture2D(0, albedoTex);
+			BindTexture2D(0, albedoTex);*/
 
 			mesh.Draw(GL_TRIANGLES);
 		}
@@ -124,14 +124,14 @@ bool RenderPass1::initProgram()
 	}
 	glUseProgram(m_program.handle);
 
-	int albedoTextureId = GetUniformLocation(m_program, "albedoTexture");
+	/*int albedoTextureId = GetUniformLocation(m_program, "albedoTexture");
 	assert(albedoTextureId > -1);
 	m_hasAlbedoMapId = GetUniformLocation(m_program, "hasAlbedoMap");
-	assert(m_hasAlbedoMapId > -1);
+	assert(m_hasAlbedoMapId > -1);*/
 	m_mvpMatrixId = GetUniformLocation(m_program, "mvpMatrix");
 	assert(m_mvpMatrixId > -1);
 
-	SetUniform((GLuint)albedoTextureId, 0);
+	//SetUniform((GLuint)albedoTextureId, 0);
 
 	glUseProgram(0); // TODO: возможно вернуть прошлую
 

@@ -71,8 +71,9 @@ void GameApp()
 		box4Entity.model.Create(GeometryGenerator::CreateBox());
 		box4Entity.modelMat = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
-		dirLight.direction = glm::vec3(0.3f, -0.7f, -0.4f);
-		dirLight.color = glm::vec3(5.0f, 4.5f, 4.0f);
+		dirLight.direction = glm::vec3(-0.7f, -0.6f, -0.7f);
+		dirLight.color = glm::vec3(1.0f, 0.9f, 0.9f);
+		dirLight.luminosity = 3;
 
 		for (int i = 0; i < 10; ++i)
 		{

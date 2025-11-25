@@ -1,4 +1,4 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 #include "RenderPass1.h"
 #include "GameScene.h"
 #include "NanoIO.h"
@@ -87,22 +87,25 @@ void RenderPass1::drawScene(const glm::mat4& lightSpaceMatrix, const GameWorldDa
 		if (!worldData.gameObjects[i] || !worldData.gameObjects[i]->visible)
 			continue;
 
-		SetUniform((GLuint)m_mvpMatrixId, lightSpaceMatrix * worldData.gameObjects[i]->modelMat);
+		SetUniform(m_mvpMatrixId, lightSpaceMatrix * worldData.gameObjects[i]->modelMat);
 
 		const auto& meshes = worldData.gameObjects[i]->model.GetMeshes();
 		for (const auto& mesh : meshes)
 		{
-			/*const auto& material = mesh.GetPbrMaterial();
-			bool hasAlbedoMap = false;
-			GLuint albedoTex = 0;
+			const auto& material = mesh.GetMaterial();
+			bool hasDiffuseMap = false;
+			GLuint diffuseTex = 0;
 			if (material)
 			{
-				hasAlbedoMap = material->albedoTexture.id > 0;
-				albedoTex = material->albedoTexture.id;
+				if (!material->diffuseTextures.empty())
+				{
+					hasDiffuseMap = material->diffuseTextures[0].id;
+					diffuseTex = material->diffuseTextures[0].id;
+				}
 			}
 
-			SetUniform((GLuint)m_hasAlbedoMapId, hasAlbedoMap);
-			BindTexture2D(0, albedoTex);*/
+			SetUniform(m_hasDiffuseMapId, hasDiffuseMap);
+			BindTexture2D(0, diffuseTex);
 
 			mesh.Draw(GL_TRIANGLES);
 		}
@@ -124,16 +127,16 @@ bool RenderPass1::initProgram()
 	}
 	glUseProgram(m_program.handle);
 
-	/*int albedoTextureId = GetUniformLocation(m_program, "albedoTexture");
-	assert(albedoTextureId > -1);
-	m_hasAlbedoMapId = GetUniformLocation(m_program, "hasAlbedoMap");
-	assert(m_hasAlbedoMapId > -1);*/
+	int diffuseTextureId = GetUniformLocation(m_program, "diffuseTexture");
+	assert(diffuseTextureId > -1);
+	m_hasDiffuseMapId = GetUniformLocation(m_program, "hasDiffuseMap");
+	assert(m_hasDiffuseMapId > -1);
 	m_mvpMatrixId = GetUniformLocation(m_program, "mvpMatrix");
 	assert(m_mvpMatrixId > -1);
 
-	//SetUniform((GLuint)albedoTextureId, 0);
+	SetUniform(diffuseTextureId, 0);
 
-	glUseProgram(0); // TODO: возможно вернуть прошлую
+	glUseProgram(0); // TODO: РІРѕР·РјРѕР¶РЅРѕ РІРµСЂРЅСѓС‚СЊ РїСЂРѕС€Р»СѓСЋ
 
 	return true;
 }

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 // Render Pass DirectionalLightsShadowMap
 
@@ -40,7 +40,7 @@ private:
 
 	ProgramHandle                                m_program{ 0 };
 	int                                          m_mvpMatrixId{ -1 };
-	int                                          m_hasAlbedoMapId{ -1 };
+	int                                          m_hasDiffuseMapId{ -1 };
 
 	ShadowQuality                                m_shadowQuality;
 	float                                        m_orthoDimension;

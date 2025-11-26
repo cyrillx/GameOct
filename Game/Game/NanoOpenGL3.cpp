@@ -440,71 +440,136 @@ int GetUniformLocation(ProgramHandle program, std::string_view name)
 	return glGetUniformLocation(program.handle, name.data());
 }
 //=============================================================================
-void SetUniform(GLuint id, bool b)
+void SetUniform(int id, bool b)
 {
+	if (id < 0)
+	{
+		Error("Uniform error");
+		return;
+	}
 	glUniform1i(id, b ? 1 : 0);
 }
 //=============================================================================
-void SetUniform(GLuint id, float s)
+void SetUniform(int id, float s)
 {
+	if (id < 0)
+	{
+		Error("Uniform error");
+		return;
+	}
 	glUniform1f(id, s);
 }
 //=============================================================================
-void SetUniform(GLuint id, int s)
+void SetUniform(int id, int s)
 {
+	if (id < 0)
+	{
+		Error("Uniform error");
+		return;
+	}
 	glUniform1i(id, s);
 }
 //=============================================================================
-void SetUniform(GLuint id, unsigned s)
+void SetUniform(int id, unsigned s)
 {
+	if (id < 0)
+	{
+		Error("Uniform error");
+		return;
+	}
 	glUniform1ui(id, s);
 }
 //=============================================================================
-void SetUniform(GLuint id, const glm::vec2& v)
+void SetUniform(int id, const glm::vec2& v)
 {
+	if (id < 0)
+	{
+		Error("Uniform error");
+		return;
+	}
 	glUniform2fv(id, 1, glm::value_ptr(v));
 }
 //=============================================================================
-void SetUniform(GLuint id, std::span<const glm::vec2> v)
+void SetUniform(int id, std::span<const glm::vec2> v)
 {
-	GLsizei count = v.size();
+	if (id < 0)
+	{
+		Error("Uniform error");
+		return;
+	}
+	const GLsizei count = v.size();
 	glUniform2fv(id, count, glm::value_ptr(v[0]));
 }
 //=============================================================================
-void SetUniform(GLuint id, const glm::vec3& v)
+void SetUniform(int id, const glm::vec3& v)
 {
+	if (id < 0)
+	{
+		Error("Uniform error");
+		return;
+	}
 	glUniform3fv(id, 1, glm::value_ptr(v));
 }
 //=============================================================================
-void SetUniform(GLuint id, std::span<const glm::vec3> v)
+void SetUniform(int id, std::span<const glm::vec3> v)
 {
-	GLsizei count = v.size();
+	if (id < 0)
+	{
+		Error("Uniform error");
+		return;
+	}
+	const GLsizei count = v.size();
 	glUniform3fv(id, count, glm::value_ptr(v[0]));
 }
 //=============================================================================
-void SetUniform(GLuint id, const glm::vec4& v)
+void SetUniform(int id, const glm::vec4& v)
 {
+	if (id < 0)
+	{
+		Error("Uniform error");
+		return;
+	}
 	glUniform4fv(id, 1, glm::value_ptr(v));
 }
 //=============================================================================
-void SetUniform(GLuint id, std::span<const glm::vec4> v)
+void SetUniform(int id, std::span<const glm::vec4> v)
 {
-	GLsizei count = v.size();
+	if (id < 0)
+	{
+		Error("Uniform error");
+		return;
+	}
+	const GLsizei count = v.size();
 	glUniform4fv(id, count, glm::value_ptr(v[0]));
 }
 //=============================================================================
-void SetUniform(GLuint id, const glm::quat& v)
+void SetUniform(int id, const glm::quat& v)
 {
+	if (id < 0)
+	{
+		Error("Uniform error");
+		return;
+	}
 	glUniform4fv(id, 1, glm::value_ptr(v));
 }
 //=============================================================================
-void SetUniform(GLuint id, const glm::mat3& m)
+void SetUniform(int id, const glm::mat3& m)
 {
+	if (id < 0)
+	{
+		Error("Uniform error");
+		return;
+	}
 	glUniformMatrix3fv(id, 1, GL_FALSE, glm::value_ptr(m));
 }
 //=============================================================================
-void SetUniform(GLuint id, const glm::mat4& m)
+void SetUniform(int id, const glm::mat4& m)
 {
+	if (id < 0)
+	{
+		Error("Uniform error");
+		return;
+	}
 	glUniformMatrix4fv(id, 1, GL_FALSE, glm::value_ptr(m));
 }
 //=============================================================================

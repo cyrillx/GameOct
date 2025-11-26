@@ -189,19 +189,19 @@ ProgramHandle LoadShaderProgram(const std::string& vsFile, const std::string& gs
 //=============================================================================
 int GetUniformLocation(ProgramHandle program, std::string_view name);
 
-void SetUniform(GLuint id, bool b);
-void SetUniform(GLuint id, float s);
-void SetUniform(GLuint id, int s);
-void SetUniform(GLuint id, unsigned s);
-void SetUniform(GLuint id, const glm::vec2& v);
-void SetUniform(GLuint id, std::span<const glm::vec2> v);
-void SetUniform(GLuint id, const glm::vec3& v);
-void SetUniform(GLuint id, std::span<const glm::vec3> v);
-void SetUniform(GLuint id, const glm::vec4& v);
-void SetUniform(GLuint id, std::span<const glm::vec4> v);
-void SetUniform(GLuint id, const glm::quat& v);
-void SetUniform(GLuint id, const glm::mat3& m);
-void SetUniform(GLuint id, const glm::mat4& m);
+void SetUniform(int id, bool b);
+void SetUniform(int id, float s);
+void SetUniform(int id, int s);
+void SetUniform(int id, unsigned s);
+void SetUniform(int id, const glm::vec2& v);
+void SetUniform(int id, std::span<const glm::vec2> v);
+void SetUniform(int id, const glm::vec3& v);
+void SetUniform(int id, std::span<const glm::vec3> v);
+void SetUniform(int id, const glm::vec4& v);
+void SetUniform(int id, std::span<const glm::vec4> v);
+void SetUniform(int id, const glm::quat& v);
+void SetUniform(int id, const glm::mat3& m);
+void SetUniform(int id, const glm::mat4& m);
 
 //=============================================================================
 // VertexAttribute

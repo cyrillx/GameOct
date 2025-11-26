@@ -3,25 +3,6 @@
 #include "NanoOpenGL3.h"
 
 //=============================================================================
-// Uniform
-//=============================================================================
-
-void SetUniform(int id, bool b);
-void SetUniform(int id, float s);
-void SetUniform(int id, int s);
-void SetUniform(int id, unsigned s);
-void SetUniform(int id, const glm::vec2& v);
-void SetUniform(int id, std::span<const glm::vec2> v);
-void SetUniform(int id, const glm::vec3& v);
-void SetUniform(int id, std::span<const glm::vec3> v);
-void SetUniform(int id, const glm::vec4& v);
-void SetUniform(int id, std::span<const glm::vec4> v);
-void SetUniform(int id, const glm::quat& v);
-void SetUniform(int id, const glm::mat3& m);
-void SetUniform(int id, const glm::mat4& m);
-
-
-//=============================================================================
 // GPU Buffer
 //=============================================================================
 

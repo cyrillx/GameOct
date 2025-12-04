@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="GridAxis.h">
+      <Filter>Engine\addon</Filter>
+    </ClInclude>
+    <ClInclude Include="Framebuffer.h">
+      <Filter>Engine\addon</Filter>
+    </ClInclude>
+    <ClInclude Include="NanoMath.h">
+      <Filter>Engine\core</Filter>
+    </ClInclude>
+    <ClInclude Include="NanoCore.h">
+      <Filter>Engine\core</Filter>
+    </ClInclude>
+    <ClInclude Include="NanoIO.h">
+      <Filter>Engine\core</Filter>
+    </ClInclude>
+    <ClInclude Include="NanoLog.h">
+      <Filter>Engine\core</Filter>
+    </ClInclude>
+    <ClInclude Include="NanoWindow.h">
+      <Filter>Engine\App</Filter>
+    </ClInclude>
+    <ClInclude Include="NanoEngine.h">
+      <Filter>Engine\App</Filter>
+    </ClInclude>
+    <ClInclude Include="NanoOpenGL3.h">
+      <Filter>Engine\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="NanoOpenGL3Advance.h">
+      <Filter>Engine\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="NanoRenderTextures.h">
+      <Filter>Engine\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="NanoRender.h">
+      <Filter>Engine\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="NanoRenderGeometryGen.h">
+      <Filter>Engine\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="NanoRenderMaterial.h">
+      <Filter>Engine\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="NanoRenderMesh.h">
+      <Filter>Engine\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="NanoRenderModel.h">
+      <Filter>Engine\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="NanoScene.h">
+      <Filter>Engine\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineConfig.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="Framebuffer.cpp">
+      <Filter>Engine\addon</Filter>
+    </ClCompile>
+    <ClCompile Include="GridAxis.cpp">
+      <Filter>Engine\addon</Filter>
+    </ClCompile>
+    <ClCompile Include="NanoMath.cpp">
+      <Filter>Engine\core</Filter>
+    </ClCompile>
+    <ClCompile Include="NanoCore.cpp">
+      <Filter>Engine\core</Filter>
+    </ClCompile>
+    <ClCompile Include="NanoIO.cpp">
+      <Filter>Engine\core</Filter>
+    </ClCompile>
+    <ClCompile Include="NanoLog.cpp">
+      <Filter>Engine\core</Filter>
+    </ClCompile>
+    <ClCompile Include="NanoEngine.cpp">
+      <Filter>Engine\App</Filter>
+    </ClCompile>
+    <ClCompile Include="NanoWindow.cpp">
+      <Filter>Engine\App</Filter>
+    </ClCompile>
+    <ClCompile Include="NanoOpenGL3.cpp">
+      <Filter>Engine\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="NanoOpenGL3Advance.cpp">
+      <Filter>Engine\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="NanoRender.cpp">
+      <Filter>Engine\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="NanoRenderGeometryGen.cpp">
+      <Filter>Engine\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="NanoRenderMaterial.cpp">
+      <Filter>Engine\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="NanoRenderMesh.cpp">
+      <Filter>Engine\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="NanoRenderModel.cpp">
+      <Filter>Engine\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="NanoRenderTextures.cpp">
+      <Filter>Engine\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="NanoScene.cpp">
+      <Filter>Engine\scene</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Engine">
+      <UniqueIdentifier>{78445d58-8c6f-40f1-a47d-68307b57986a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\addon">
+      <UniqueIdentifier>{3bb12332-32a3-4679-9145-55aae33c61d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\App">
+      <UniqueIdentifier>{fcc6c727-08e5-46dd-9fe3-5ff602e146ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\OpenGL">
+      <UniqueIdentifier>{d9e1fa9f-2017-4589-9207-487567897cc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\core">
+      <UniqueIdentifier>{53aab21b-bba6-44a6-9b7c-20bb5f5aa6e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Render">
+      <UniqueIdentifier>{7b1033fe-17a2-4352-a224-12da2b7bc6df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\scene">
+      <UniqueIdentifier>{55dc66e2-a8e0-4a1b-b7ab-e8922c969627}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

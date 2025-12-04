@@ -1,0 +1,6 @@
+﻿#pragma once
+
+#define VERSION_OPENGL33 3
+#define VERSION_OPENGL46 4
+
+#define USE_OPENGL VERSION_OPENGL33

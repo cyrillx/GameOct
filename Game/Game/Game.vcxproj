@@ -61,7 +61,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <LanguageStandard_C>stdclatest</LanguageStandard_C>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdparty\;$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdparty\;$(SolutionDir)Engine\;$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
@@ -82,7 +82,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <LanguageStandard_C>stdclatest</LanguageStandard_C>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdparty\;$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdparty\;$(SolutionDir)Engine\;$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
@@ -96,23 +96,11 @@
   <ItemGroup>
     <ClCompile Include="ExampleApp001.cpp" />
     <ClCompile Include="ExampleApp002.cpp" />
-    <ClCompile Include="Framebuffer.cpp" />
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="GameScene.cpp" />
-    <ClCompile Include="NanoOpenGL3Advance.cpp" />
     <ClCompile Include="OldGameApp.cpp" />
     <ClCompile Include="GameSceneO.cpp" />
-    <ClCompile Include="GridAxis.cpp" />
     <ClCompile Include="LightO.cpp" />
-    <ClCompile Include="NanoCore.cpp" />
-    <ClCompile Include="NanoMath.cpp" />
-    <ClCompile Include="NanoRender.cpp" />
-    <ClCompile Include="NanoRenderGeometryGen.cpp" />
-    <ClCompile Include="NanoRenderMaterial.cpp" />
-    <ClCompile Include="NanoRenderMesh.cpp" />
-    <ClCompile Include="NanoRenderModel.cpp" />
-    <ClCompile Include="NanoRenderTextures.cpp" />
-    <ClCompile Include="NanoScene.cpp" />
     <ClCompile Include="Region.cpp" />
     <ClCompile Include="RenderPass1.cpp" />
     <ClCompile Include="RenderPass2.cpp" />
@@ -129,11 +117,6 @@
     <ClCompile Include="SceneShadowMap.cpp" />
     <ClCompile Include="Minimal.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="NanoEngine.cpp" />
-    <ClCompile Include="NanoIO.cpp" />
-    <ClCompile Include="NanoLog.cpp" />
-    <ClCompile Include="NanoOpenGL3.cpp" />
-    <ClCompile Include="NanoWindow.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -141,30 +124,13 @@
     <ClCompile Include="World.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Framebuffer.h" />
     <ClInclude Include="GameApp.h" />
     <ClInclude Include="GameConfig.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="GameSceneO.h" />
     <ClInclude Include="GameWorldData.h" />
     <ClInclude Include="GameWorldDataO.h" />
-    <ClInclude Include="GridAxis.h" />
     <ClInclude Include="LightO.h" />
-    <ClInclude Include="NanoCore.h" />
-    <ClInclude Include="NanoEngine.h" />
-    <ClInclude Include="NanoIO.h" />
-    <ClInclude Include="NanoLog.h" />
-    <ClInclude Include="NanoMath.h" />
-    <ClInclude Include="NanoOpenGL3.h" />
-    <ClInclude Include="NanoOpenGL3Advance.h" />
-    <ClInclude Include="NanoRender.h" />
-    <ClInclude Include="NanoRenderGeometryGen.h" />
-    <ClInclude Include="NanoRenderMaterial.h" />
-    <ClInclude Include="NanoRenderMesh.h" />
-    <ClInclude Include="NanoRenderModel.h" />
-    <ClInclude Include="NanoRenderTextures.h" />
-    <ClInclude Include="NanoScene.h" />
-    <ClInclude Include="NanoWindow.h" />
     <ClInclude Include="Region.h" />
     <ClInclude Include="RenderPass1.h" />
     <ClInclude Include="RenderPass2.h" />

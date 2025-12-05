@@ -95,12 +95,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GameApp.cpp" />
+    <ClCompile Include="GameMesh.cpp" />
     <ClCompile Include="GameScene.cpp" />
+    <ClCompile Include="OldGameScene.cpp" />
     <ClCompile Include="RenderPass1.cpp" />
     <ClCompile Include="RenderPass2.cpp" />
     <ClCompile Include="RenderPass6.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="SceneObject.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
@@ -108,8 +109,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameApp.h" />
+    <ClInclude Include="GameCamera.h" />
     <ClInclude Include="GameConfig.h" />
+    <ClInclude Include="GameDirectionalLight.h" />
+    <ClInclude Include="GameLight.h" />
+    <ClInclude Include="GameMesh.h" />
+    <ClInclude Include="GamePointLight.h" />
     <ClInclude Include="GameScene.h" />
+    <ClInclude Include="OldGameScene.h" />
     <ClInclude Include="GameWorldData.h" />
     <ClInclude Include="RenderPass1.h" />
     <ClInclude Include="RenderPass2.h" />

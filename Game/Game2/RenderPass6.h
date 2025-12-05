@@ -1,6 +1,4 @@
-#pragma once
-
-#include "Framebuffer.h"
+п»ї#pragma once
 
 class RenderPass6 final
 {
@@ -21,6 +19,6 @@ private:
 	ProgramHandle                m_program{ 0 };
 	GLuint                       m_vao{ 0 };
 	BufferHandle                 m_vbo{ 0 };
-	uint16_t                     m_framebufferWidth{ 0 }; // TODO: можно удалить - есть в m_fbo
-	uint16_t                     m_framebufferHeight{ 0 }; // TODO: можно удалить - есть в m_fbo
+	uint16_t                     m_framebufferWidth{ 0 }; // TODO: РјРѕР¶РЅРѕ СѓРґР°Р»РёС‚СЊ - РµСЃС‚СЊ РІ m_fbo
+	uint16_t                     m_framebufferHeight{ 0 }; // TODO: РјРѕР¶РЅРѕ СѓРґР°Р»РёС‚СЊ - РµСЃС‚СЊ РІ m_fbo
 };

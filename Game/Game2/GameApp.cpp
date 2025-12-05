@@ -1,12 +1,6 @@
 ﻿#include "stdafx.h"
 #include "GameApp.h"
-#include "NanoLog.h"
-#include "NanoWindow.h"
-#include "NanoEngine.h"
-#include "NanoOpenGL3Advance.h"
-#include "NanoRender.h"
-#include "NanoScene.h"
-#include "GameScene.h"
+#include "OldGameScene.h"
 
 /*
 вот такое
@@ -35,7 +29,7 @@ idea:
 //=============================================================================
 namespace
 {
-	GameScene scene;
+	OldGameScene scene;
 
 	Camera camera;
 	GameObject modelTest;

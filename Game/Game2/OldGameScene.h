@@ -1,7 +1,5 @@
 ﻿#pragma once
 
-#include "NanoRender.h"
-#include "NanoScene.h"
 #include "GameWorldData.h"
 #include "RenderPass1.h"
 #include "RenderPass2.h"

@@ -1,6 +1,4 @@
-#pragma once
-
-#include "Framebuffer.h"
+﻿#pragma once
 
 class RenderPass1;
 struct GameWorldData;

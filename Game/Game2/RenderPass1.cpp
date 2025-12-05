@@ -1,8 +1,6 @@
 ﻿#include "stdafx.h"
 #include "RenderPass1.h"
 #include "GameScene.h"
-#include "NanoIO.h"
-#include "NanoLog.h"
 //=============================================================================
 bool RenderPass1::Init(ShadowQuality shadowQuality)
 {

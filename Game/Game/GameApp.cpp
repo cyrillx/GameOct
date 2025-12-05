@@ -30,7 +30,7 @@ idea:
 //=============================================================================
 namespace
 {
-	GameScene scene;
+	OldGameScene scene;
 
 	Camera camera;
 	GameObject modelTest;

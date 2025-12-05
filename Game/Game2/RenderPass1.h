@@ -2,8 +2,6 @@
 
 // Render Pass DirectionalLightsShadowMap
 
-#include "Framebuffer.h"
-
 enum class ShadowQuality
 {
 	Off = 0,

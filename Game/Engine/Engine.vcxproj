@@ -110,6 +110,7 @@
     <ClInclude Include="NanoWindow.h" />
     <ClInclude Include="OpenGL3Enum.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Framebuffer.cpp" />

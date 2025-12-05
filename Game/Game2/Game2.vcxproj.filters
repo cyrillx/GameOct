@@ -6,7 +6,7 @@
     <ClCompile Include="GameApp.cpp">
       <Filter>GameApp</Filter>
     </ClCompile>
-    <ClCompile Include="GameScene.cpp">
+    <ClCompile Include="OldGameScene.cpp">
       <Filter>GameApp</Filter>
     </ClCompile>
     <ClCompile Include="RenderPass1.cpp">
@@ -18,8 +18,11 @@
     <ClCompile Include="RenderPass6.cpp">
       <Filter>GameApp\RenderPass</Filter>
     </ClCompile>
-    <ClCompile Include="SceneObject.cpp">
+    <ClCompile Include="GameScene.cpp">
       <Filter>GameApp\GameScene</Filter>
+    </ClCompile>
+    <ClCompile Include="GameMesh.cpp">
+      <Filter>GameApp\GameScene\Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -29,7 +32,7 @@
     <ClInclude Include="GameWorldData.h">
       <Filter>GameApp</Filter>
     </ClInclude>
-    <ClInclude Include="GameScene.h">
+    <ClInclude Include="OldGameScene.h">
       <Filter>GameApp</Filter>
     </ClInclude>
     <ClInclude Include="RenderPass1.h">
@@ -41,8 +44,26 @@
     <ClInclude Include="RenderPass6.h">
       <Filter>GameApp\RenderPass</Filter>
     </ClInclude>
-    <ClInclude Include="SceneObject.h">
+    <ClInclude Include="GameScene.h">
       <Filter>GameApp\GameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="GameCamera.h">
+      <Filter>GameApp\GameScene\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="GameDirectionalLight.h">
+      <Filter>GameApp\GameScene\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLight.h">
+      <Filter>GameApp\GameScene\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="GamePointLight.h">
+      <Filter>GameApp\GameScene\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneObject.h">
+      <Filter>GameApp\GameScene\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="GameMesh.h">
+      <Filter>GameApp\GameScene\Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -66,6 +87,9 @@
     </Filter>
     <Filter Include="GameApp\_Shaders\composite">
       <UniqueIdentifier>{cde3807f-7ab2-4b78-917a-c1ae2e34eb13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameApp\GameScene\Object">
+      <UniqueIdentifier>{1da715e4-658e-4c9d-aada-00aa64a136a1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

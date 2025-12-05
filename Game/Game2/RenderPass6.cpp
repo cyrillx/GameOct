@@ -1,9 +1,5 @@
 ﻿#include "stdafx.h"
 #include "RenderPass6.h"
-#include "NanoIO.h"
-#include "NanoOpenGL3Advance.h"
-#include "NanoLog.h"
-#include "NanoRenderMesh.h"
 //=============================================================================
 bool RenderPass6::Init(uint16_t framebufferWidth, uint16_t framebufferHeight)
 {

@@ -1,8 +1,5 @@
 ﻿#include "stdafx.h"
-#include "GameScene.h"
-#include "NanoWindow.h"
-#include "NanoIO.h"
-#include "NanoLog.h"
+#include "OldGameScene.h"
 //=============================================================================
 bool OldGameScene::Init()
 {

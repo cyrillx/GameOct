@@ -1,8 +1,6 @@
 ﻿#include "stdafx.h"
 #include "RenderPass2.h"
 #include "GameScene.h"
-#include "NanoLog.h"
-#include "NanoWindow.h"
 //=============================================================================
 bool RenderPass2::Init(uint16_t framebufferWidth, uint16_t framebufferHeight)
 {

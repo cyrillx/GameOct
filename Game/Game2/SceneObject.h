@@ -7,114 +7,71 @@ enum class ObjectType
 	Camera
 };
 
-class Transform final
+class SceneObject
 {
 public:
-	Transform(
-		glm::mat4 worldMatrix = glm::mat4(1.0f),
-		glm::vec3 rotation = glm::vec3(0.0f),
-		glm::vec3 scale = glm::vec3(1.0f),
-		glm::vec3 position = glm::vec3(0.0f),
-		glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f),
-		glm::vec3 forward = glm::vec3(0.0f, 0.0f, 1.0f),
-		glm::vec3 right = glm::vec3(1.0f, 0.0f, 0.0f)
-
-	)   : m_position(position)
-		, m_scale(scale)
-		, m_rotation(rotation)
-		, m_up(up)
-		, m_forward(forward)
-		, m_right(right)
-		, m_worldMatrix(worldMatrix)
-		, m_isDirty(true)
+	SceneObject(const std::string na, ObjectType t) : m_name(na), m_enabled(true),
+		m_child(nullptr), m_parent(nullptr), m_type(t), m_clones(0), m_selected(false)
 	{
 	}
 
-	void SetPosition(const glm::vec3& p)
+	SceneObject(const std::string na, glm::vec3 p, ObjectType t) : m_name(na), m_enabled(true),
+		m_child(nullptr), m_parent(nullptr), m_type(t), m_clones(0), m_selected(false)
 	{
-		m_position = p;
-		m_isDirty = true;
+		m_transform.SetPosition(p);
 	}
 
-	glm::vec3 GetPosition() const
+	SceneObject(glm::vec3 p, ObjectType t) : m_name(""), m_enabled(true),
+		m_child(nullptr), m_parent(nullptr), m_type(t), m_clones(0), m_selected(false)
 	{
-		return m_position;
+		m_transform.SetPosition(p);
 	}
 
-	void SetScale(const glm::vec3& s)
+	SceneObject(ObjectType t) : m_name(""), m_enabled(true),
+		m_child(nullptr), m_parent(nullptr), m_type(t), m_clones(0), m_selected(false)
 	{
-		m_scale = s;
-		m_isDirty = true;
-	}
-	glm::vec3 GetScale() const
-	{
-		return m_scale;
 	}
 
-	void SetRotation(const glm::vec3& r)
+	virtual ~SceneObject()
 	{
-		m_rotation = r;
-		m_isDirty = true;
-	}
-	glm::vec3 GetRotation() const
-	{
-		return m_rotation;
+		delete m_child;
+		delete m_parent;
 	}
 
-	void SetUp(const glm::vec3& u)
-	{
-		m_up = glm::normalize(u);
-	}
-	glm::vec3 GetUp() const
-	{
-		return m_up;
-	}
+	virtual bool IsSelected() { return m_selected; }
 
-	void SetForward(const glm::vec3& u)
-	{
-		m_forward = glm::normalize(u);
-	}
-	glm::vec3 GetForward() const
-	{
-		return m_forward;
-	}
+	virtual void SetPosition(const glm::vec3& p) { m_transform.SetPosition(p); }
+	virtual glm::vec3 GetPosition() const { return m_transform.GetPosition(); };
 
-	void SetRight(const glm::vec3& u)
-	{
-		m_right = glm::normalize(u);
-	}
-	glm::vec3 GetRight() const
-	{
-		return m_right;
-	}
+	virtual void SetRotation(const glm::vec3& p) { m_transform.SetRotation(p); }
+	virtual glm::vec3 getRotation() const { return m_transform.GetRotation(); };
 
-	glm::mat4 GetWorldMatrix()
-	{
-		if (m_isDirty)
-		{
-			m_worldMatrix = glm::mat4(1.0f);
-			m_worldMatrix = glm::translate(m_worldMatrix, m_position);
-			m_worldMatrix = glm::rotate(m_worldMatrix, m_rotation.x, glm::vec3(1, 0, 0));
-			m_worldMatrix = glm::rotate(m_worldMatrix, m_rotation.y, glm::vec3(0, 1, 0));
-			m_worldMatrix = glm::rotate(m_worldMatrix, m_rotation.z, glm::vec3(0, 0, 1));
-			m_worldMatrix = glm::scale(m_worldMatrix, m_scale);
-			m_isDirty = false;
-		}
-		return m_worldMatrix;
-	}
-	void SetWorldMatrix(const glm::mat4& w)
-	{
-		m_worldMatrix = w;
-	}
-	bool GetIsDirty() const { return m_isDirty; }
+	virtual void SetScale(const glm::vec3 s) { m_transform.SetScale(s); }
+	virtual glm::vec3 GetScale() const { return m_transform.GetScale(); }
 
-private:
-	glm::mat4 m_worldMatrix;
-	glm::vec3 m_position;
-	glm::vec3 m_rotation;
-	glm::vec3 m_scale;
-	glm::vec3 m_right;
-	glm::vec3 m_up;
-	glm::vec3 m_forward;
-	bool      m_isDirty;
+	virtual Transform* GetTransform() { return &m_transform; }
+
+	virtual void SetActive(const bool s) { m_enabled = s; }
+	virtual bool IsActive() const { return m_enabled; }
+
+	virtual std::string GetName() const { return m_name; }
+	virtual void SetName(const std::string& s) { m_name = s; }
+
+	virtual ObjectType GetObjectType() const { return m_type; }
+
+	virtual void SetTransform(const Transform& t) { m_transform = t; }
+
+protected:
+	std::string  m_name;
+
+	Transform    m_transform;
+
+	SceneObject* m_child{ nullptr };
+	SceneObject* m_parent{ nullptr };
+
+	ObjectType   m_type;
+
+	unsigned int m_clones{ 0 };
+	bool         m_enabled{ false };
+	bool         m_selected{ false };
 };

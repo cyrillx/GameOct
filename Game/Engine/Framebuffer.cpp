@@ -65,7 +65,8 @@ void Framebuffer::BindColorTexture(size_t colorAttachment, size_t slot) const
 	{
 		if (m_colorAttachmentsId[colorAttachment].type == AttachmentType::Texture)
 		{
-			BindTexture2DOLD(slot, m_colorAttachmentsId[colorAttachment].id);
+			glActiveTexture(GL_TEXTURE0 + slot);
+			glBindTexture(GL_TEXTURE_2D, m_colorAttachmentsId[colorAttachment].id);
 		}
 		else
 		{
@@ -84,7 +85,8 @@ void Framebuffer::BindDepthTexture(size_t slot) const
 	{
 		if (m_depthAttachmentId->type == AttachmentType::Texture)
 		{
-			BindTexture2DOLD(slot, m_depthAttachmentId->id);
+			glActiveTexture(GL_TEXTURE0 + slot);
+			glBindTexture(GL_TEXTURE_2D, m_depthAttachmentId->id);
 		}
 		else
 		{

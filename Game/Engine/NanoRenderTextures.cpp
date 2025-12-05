@@ -39,6 +39,18 @@ namespace
 	Texture2D defaultSpecular2D;
 }
 //=============================================================================
+bool IsValid(Texture2D tex)
+{
+	return IsValid(tex.id) && tex.width > 0 && tex.height > 0 && tex.pixelFormat != PixelFormat::None;
+}
+//=============================================================================
+void Destroy(Texture2D& tex)
+{
+	Destroy(tex.id);
+	tex.pixelFormat = PixelFormat::None;
+	tex.width = tex.height = 0;
+}
+//=============================================================================
 bool textures::Init()
 {
 	GLuint currentTexture = GetCurrentTexture(GL_TEXTURE_2D);
@@ -57,10 +69,11 @@ bool textures::Init()
 			}
 		}
 
+		defaultWhite2D.pixelFormat = PixelFormat::Rgb;
 		defaultWhite2D.width = SizeTexture;
 		defaultWhite2D.height = SizeTexture;
-		glGenTextures(1, &defaultWhite2D.id);
-		glBindTexture(GL_TEXTURE_2D, defaultWhite2D.id);
+		glGenTextures(1, &defaultWhite2D.id.handle);
+		glBindTexture(GL_TEXTURE_2D, defaultWhite2D.id.handle);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, SizeTexture, SizeTexture, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -91,10 +104,11 @@ bool textures::Init()
 			}
 		}
 
+		defaultDiffuse2D.pixelFormat = PixelFormat::Rgb;
 		defaultDiffuse2D.width = SizeTexture;
 		defaultDiffuse2D.height = SizeTexture;
-		glGenTextures(1, &defaultDiffuse2D.id);
-		glBindTexture(GL_TEXTURE_2D, defaultDiffuse2D.id);
+		glGenTextures(1, &defaultDiffuse2D.id.handle);
+		glBindTexture(GL_TEXTURE_2D, defaultDiffuse2D.id.handle);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_SRGB8, SizeTexture, SizeTexture, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -117,10 +131,11 @@ bool textures::Init()
 			}
 		}
 
+		defaultNormal2D.pixelFormat = PixelFormat::Rgb;
 		defaultNormal2D.width = SizeTexture;
 		defaultNormal2D.height = SizeTexture;
-		glGenTextures(1, &defaultNormal2D.id);
-		glBindTexture(GL_TEXTURE_2D, defaultNormal2D.id);
+		glGenTextures(1, &defaultNormal2D.id.handle);
+		glBindTexture(GL_TEXTURE_2D, defaultNormal2D.id.handle);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, SizeTexture, SizeTexture, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -143,10 +158,11 @@ bool textures::Init()
 			}
 		}
 
+		defaultSpecular2D.pixelFormat = PixelFormat::Rgb;
 		defaultSpecular2D.width = SizeTexture;
 		defaultSpecular2D.height = SizeTexture;
-		glGenTextures(1, &defaultSpecular2D.id);
-		glBindTexture(GL_TEXTURE_2D, defaultSpecular2D.id);
+		glGenTextures(1, &defaultSpecular2D.id.handle);
+		glBindTexture(GL_TEXTURE_2D, defaultSpecular2D.id.handle);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, SizeTexture, SizeTexture, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -162,14 +178,14 @@ bool textures::Init()
 //=============================================================================
 void textures::Close()
 {
-	glDeleteTextures(1, &defaultWhite2D.id); defaultWhite2D.id = 0;
-	glDeleteTextures(1, &defaultDiffuse2D.id); defaultDiffuse2D.id = 0;
-	glDeleteTextures(1, &defaultNormal2D.id); defaultNormal2D.id = 0;
-	glDeleteTextures(1, &defaultSpecular2D.id); defaultSpecular2D.id = 0;
+	Destroy(defaultWhite2D.id);
+	Destroy(defaultDiffuse2D.id);
+	Destroy(defaultNormal2D.id);
+	Destroy(defaultSpecular2D.id);
 
 	for (auto& it : texturesMap)
 	{
-		glDeleteTextures(1, &it.second.id);
+		Destroy(it.second.id);
 	}
 	texturesMap.clear();
 }
@@ -196,9 +212,9 @@ Texture2D textures::GetDefaultSpecular2D()
 //=============================================================================
 Texture2D textures::LoadTexture2D(const std::string& fileName, ColorSpace colorSpace, bool flipVertical)
 {
-	TextureCache keyMap = { .name = fileName, .sRGB = colorSpace == ColorSpace::sRGB, .flipVertical = flipVertical };
+	TextureCache keyMap = { .name = fileName, .sRGB = colorSpace == ColorSpace::sRGB, .flipVertical = flipVertical};
 	auto it = texturesMap.find(keyMap);
-	if (it != texturesMap.end())
+	if (it != texturesMap.end() && IsValid(it->second))
 	{
 		return it->second;
 	}
@@ -213,9 +229,9 @@ Texture2D textures::LoadTexture2D(const std::string& fileName, ColorSpace colorS
 
 		stbi_set_flip_vertically_on_load(flipVertical);
 
-		int width, height, channels;
-		stbi_uc* pixels = stbi_load(fileName.c_str(), &width, &height, &channels, 0);
-		if (!pixels || channels < 1 || channels > 4 || width < 0 || height < 0)
+		int width, height, nrComponents;
+		stbi_uc* pixels = stbi_load(fileName.c_str(), &width, &height, &nrComponents, 0);
+		if (!pixels || nrComponents < 1 || nrComponents > 4 || width < 0 || height < 0)
 		{
 			stbi_image_free(pixels);
 			Error("Failed to load texture " + fileName);
@@ -224,25 +240,30 @@ Texture2D textures::LoadTexture2D(const std::string& fileName, ColorSpace colorS
 
 		GLint internalFormat{ 0 };
 		GLenum dataFormat{ 0 };
-		if (channels == 1)
+		PixelFormat pixelFormat{ PixelFormat::None };
+		if (nrComponents == 1)
 		{
 			internalFormat = GL_RED;
 			dataFormat = GL_RED;
+			pixelFormat = PixelFormat::Red;
 		}
-		else if (channels == 2)
+		else if (nrComponents == 2)
 		{
 			internalFormat = GL_RG;
 			dataFormat = GL_RG;
+			pixelFormat = PixelFormat::Rg;
 		}
-		else if (channels == 3)
+		else if (nrComponents == 3)
 		{
 			internalFormat = colorSpace == ColorSpace::sRGB ? GL_SRGB8 : GL_RGB8;
 			dataFormat = GL_RGB;
+			pixelFormat = PixelFormat::Rgb;
 		}
-		else if (channels == 4)
+		else if (nrComponents == 4)
 		{
 			internalFormat = colorSpace == ColorSpace::sRGB ? GL_SRGB8_ALPHA8 : GL_RGBA8;
 			dataFormat = GL_RGBA;
+			pixelFormat = PixelFormat::Rgba;
 		}
 		else
 		{
@@ -250,9 +271,9 @@ Texture2D textures::LoadTexture2D(const std::string& fileName, ColorSpace colorS
 		}
 		GLuint currentTexture = GetCurrentTexture(GL_TEXTURE_2D);
 
-		GLuint textureID{ 0 };
-		glGenTextures(1, &textureID);
-		glBindTexture(GL_TEXTURE_2D, textureID);
+		TextureHandle textureID{ 0 };
+		glGenTextures(1, &textureID.handle);
+		glBindTexture(GL_TEXTURE_2D, textureID.handle);
 		glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, dataFormat, GL_UNSIGNED_BYTE, pixels);
 		glGenerateMipmap(GL_TEXTURE_2D);
 
@@ -267,7 +288,12 @@ Texture2D textures::LoadTexture2D(const std::string& fileName, ColorSpace colorS
 
 		Debug("Load Texture: " + fileName);
 
-		texturesMap[keyMap] = Texture2D{ .id = textureID, .width = (uint32_t)width, .height = (uint32_t)height };
+		texturesMap[keyMap] = Texture2D{ 
+			.id = textureID, 
+			.pixelFormat = pixelFormat,
+			.width = static_cast<uint32_t>(width), 
+			.height = static_cast<uint32_t>(height)
+		};
 		return texturesMap[keyMap];
 	}
 }

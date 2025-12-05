@@ -658,68 +658,6 @@ void BufferSubData(BufferHandle bufferId, BufferTarget target, GLintptr offset, 
 	glBindBuffer(GetGLEnum(target), currentBuffer);
 }
 //=============================================================================
-TextureHandle LoadTexture2D_DELETE(std::string_view path, bool gammaCorrection, bool flipVertically)
-{
-	удалить - функция в NanoRenderTexture
-
-	stbi_set_flip_vertically_on_load(flipVertically);
-
-	TextureHandle textureID{ 0 };
-
-	int width, height, nrComponents;
-	stbi_uc* data = stbi_load(path.data(), &width, &height, &nrComponents, 0);
-	if (data)
-	{
-		GLint internalFormat{ 0 };
-		GLenum dataFormat{ 0 };
-		if (nrComponents == 1)
-		{
-			internalFormat = GL_RED;
-			dataFormat = GL_RED;
-		}
-		else if (nrComponents == 2)
-		{
-			internalFormat = GL_RG;
-			dataFormat = GL_RG;
-		}
-		else if (nrComponents == 3)
-		{
-			internalFormat = gammaCorrection ? GL_SRGB8 : GL_RGB8;
-			dataFormat = GL_RGB;
-		}
-		else if (nrComponents == 4)
-		{
-			internalFormat = gammaCorrection ? GL_SRGB8_ALPHA8 : GL_RGBA8;
-			dataFormat = GL_RGBA;
-		}
-		else
-		{
-			std::unreachable();
-		}
-
-		GLuint currentTexture = GetCurrentTexture(GL_TEXTURE_2D);
-
-		glGenTextures(1, &textureID.handle);
-		glBindTexture(GL_TEXTURE_2D, textureID.handle);
-		glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, width, height, 0, dataFormat, GL_UNSIGNED_BYTE, data);
-		glGenerateMipmap(GL_TEXTURE_2D);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-		glBindTexture(GL_TEXTURE_2D, currentTexture);
-	}
-	else
-	{
-		Error("Texture failed to load at path: " + std::string(path));
-	}
-	stbi_image_free(data);
-
-	return textureID;
-}
-//=============================================================================
 GLuint CreateTexture2DOLD(GLint internalformat, GLsizei width, GLsizei height, GLenum format, GLenum type, const void* pixels)
 {
 	GLuint currentTexture = GetCurrentTexture(GL_TEXTURE_2D);
@@ -734,10 +672,21 @@ GLuint CreateTexture2DOLD(GLint internalformat, GLsizei width, GLsizei height, G
 	return textureID;
 }
 //=============================================================================
-void BindTexture2DOLD(GLenum id, GLuint texture)
+void BindTexture2DOLD(GLenum id, TextureHandle texture)
 {
 	glActiveTexture(GL_TEXTURE0 + id);
-	glBindTexture(GL_TEXTURE_2D, texture);
+	glBindTexture(GL_TEXTURE_2D, texture.handle);
+}
+//=============================================================================
+bool IsValid(TextureHandle id)
+{
+	return id.handle > 0;
+}
+//=============================================================================
+void Destroy(TextureHandle& id)
+{
+	glDeleteTextures(1, &id.handle);
+	id.handle = 0;
 }
 //=============================================================================
 std::size_t std::hash<SamplerStateInfo>::operator()(const SamplerStateInfo& k) const noexcept

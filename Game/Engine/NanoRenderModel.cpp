@@ -285,7 +285,7 @@ std::vector<Texture2D> Model::loadMaterialTextures(std::string_view directory, c
 		bool isFind{ false };
 		for (size_t j = 0; j < texs.size(); j++)
 		{
-			if (texs[j].id == texture.id)
+			if (texs[j] == texture)
 			{
 				isFind = true;
 				break;

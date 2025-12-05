@@ -12,7 +12,7 @@
     <BuildDependency Project="3rdparty/3rdparty.vcxproj" />
     <BuildDependency Project="Engine/Engine.vcxproj" />
   </Project>
-  <Project Path="Game2/Game2.vcxproj">
+  <Project Path="Game2/Game2.vcxproj" Id="b52491d5-3459-4686-86af-70e435db0ebd">
     <BuildDependency Project="3rdparty/3rdparty.vcxproj" />
     <BuildDependency Project="Engine/Engine.vcxproj" />
   </Project>

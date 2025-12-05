@@ -82,11 +82,11 @@ void RPMainScene::Resize(uint16_t framebufferWidth, uint16_t framebufferHeight)
 //=============================================================================
 void RPMainScene::drawScene(const GameWorldDataO& gameData)
 {
-	GLuint albedoTex = 0;
-	GLuint normalTex = 0;
-	GLuint metallicRoughnessTex = 0;
-	GLuint aoTex = 0;
-	GLuint emissiveTex = 0;
+	TextureHandle albedoTex{ 0 };
+	TextureHandle normalTex{ 0 };
+	TextureHandle metallicRoughnessTex{ 0 };
+	TextureHandle aoTex{ 0 };
+	TextureHandle emissiveTex{ 0 };
 
 	for (size_t i = 0; i < gameData.numGameObject; i++)
 	{
@@ -99,11 +99,11 @@ void RPMainScene::drawScene(const GameWorldDataO& gameData)
 		for (const auto& mesh : meshes)
 		{
 			const auto& material = mesh.GetPbrMaterial();
-			albedoTex = 0;
-			normalTex = 0;
-			metallicRoughnessTex = 0;
-			aoTex = 0;
-			emissiveTex = 0;
+			albedoTex.handle = 0;
+			normalTex.handle = 0;
+			metallicRoughnessTex.handle = 0;
+			aoTex.handle = 0;
+			emissiveTex.handle = 0;
 			if (material)
 			{
 				albedoTex = material->albedoTexture.id;
@@ -111,11 +111,11 @@ void RPMainScene::drawScene(const GameWorldDataO& gameData)
 				metallicRoughnessTex = material->metallicRoughnessTexture.id;
 			}
 
-			SetUniform(m_hasAlbedoMapId, albedoTex > 0);
-			SetUniform(m_hasNormalMapId, normalTex > 0);
-			SetUniform(m_hasMetallicRoughnessMapId, metallicRoughnessTex > 0);
-			SetUniform(m_hasAOMapId, aoTex > 0);
-			SetUniform(m_hasEmissiveMapId, emissiveTex > 0);
+			SetUniform(m_hasAlbedoMapId, IsValid(albedoTex));
+			SetUniform(m_hasNormalMapId, IsValid(normalTex));
+			SetUniform(m_hasMetallicRoughnessMapId, IsValid(metallicRoughnessTex));
+			SetUniform(m_hasAOMapId, IsValid(aoTex));
+			SetUniform(m_hasEmissiveMapId, IsValid(emissiveTex));
 
 			BindTexture2DOLD(0, albedoTex);
 			BindTexture2DOLD(1, normalTex);

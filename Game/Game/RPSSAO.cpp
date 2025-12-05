@@ -134,7 +134,8 @@ void RPSSAO::Draw(const Framebuffer* preFBO)
 
 	preFBO->BindColorTexture(0, 0);
 	preFBO->BindColorTexture(1, 1);
-	BindTexture2DOLD(2, m_noiseTexture);
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, m_noiseTexture);
 
 	glBindVertexArray(m_vao);
 	glDrawArrays(GL_TRIANGLES, 0, 6);

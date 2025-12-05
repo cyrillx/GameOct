@@ -126,10 +126,10 @@ void RenderPass2::Resize(uint16_t framebufferWidth, uint16_t framebufferHeight)
 //=============================================================================
 void RenderPass2::drawScene(const GameWorldData& gameData)
 {
-	GLuint diffuseTex = 0;
-	GLuint specularTex = 0;
-	GLuint heightMapTex = textures::GetWhiteTexture2D().id;
-	GLuint normalTex = 0;
+	TextureHandle diffuseTex{ 0 };
+	TextureHandle specularTex{ 0 };
+	TextureHandle heightMapTex = textures::GetWhiteTexture2D().id;
+	TextureHandle normalTex{ 0 };
 
 	// TODO: heightmap textuere
 
@@ -144,9 +144,9 @@ void RenderPass2::drawScene(const GameWorldData& gameData)
 		for (const auto& mesh : meshes)
 		{
 			const auto& material = mesh.GetMaterial();
-			diffuseTex = 0;
-			specularTex = 0;
-			normalTex = 0;
+			diffuseTex.handle = 0;
+			specularTex.handle = 0;
+			normalTex.handle = 0;
 			if (material)
 			{
 				if (!material->diffuseTextures.empty())  diffuseTex = material->diffuseTextures[0].id;
@@ -154,9 +154,9 @@ void RenderPass2::drawScene(const GameWorldData& gameData)
 				if (!material->normalTextures.empty())   normalTex = material->normalTextures[0].id;
 			}
 
-			SetUniform(m_hasDiffuseMapId, diffuseTex > 0);
-			SetUniform(m_hasSpecularMapId, specularTex > 0);
-			SetUniform(m_hasNormalMapId, normalTex > 0);
+			SetUniform(m_hasDiffuseMapId, IsValid(diffuseTex));
+			SetUniform(m_hasSpecularMapId, IsValid(specularTex));
+			SetUniform(m_hasNormalMapId, IsValid(normalTex));
 
 			BindTexture2DOLD(0, diffuseTex);
 			BindTexture2DOLD(1, specularTex);

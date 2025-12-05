@@ -4,10 +4,23 @@
 
 struct Texture2D final
 {
-	GLuint   id{ 0 };
-	uint32_t width{ 0 };
-	uint32_t height{ 0 };
+	bool operator==(const Texture2D& rhs) const
+	{
+		return id.handle   == rhs.id.handle
+			&& pixelFormat == rhs.pixelFormat
+			&& width       == rhs.width
+			&& height      == rhs.height;
+	}
+	bool operator!=(const Texture2D& rhs) const { return !(*this == rhs); }
+
+	TextureHandle id{ 0 };
+	PixelFormat   pixelFormat{ PixelFormat::None };
+	uint32_t      width{ 0 };
+	uint32_t      height{ 0 };
 };
+
+bool IsValid(Texture2D tex);
+void Destroy(Texture2D& tex);
 
 namespace textures
 {

@@ -5,7 +5,8 @@
 //=============================================================================
 
 enum class PixelFormat : uint8_t
-{ 
+{
+	None,
 	Red,
 	Rg,
 	Rgb,
@@ -268,11 +269,12 @@ void BufferSubData(BufferHandle bufferId, BufferTarget target, GLintptr offset, 
 //=============================================================================
 // Textures
 //=============================================================================
-TextureHandle LoadTexture2D_DELETE(std::string_view path, bool gammaCorrection, bool flipVertically = false);
-
 GLuint CreateTexture2DOLD(GLint internalformat, GLsizei width, GLsizei height, GLenum format, GLenum type, const void* pixels = nullptr);
 
-void BindTexture2DOLD(GLenum id, GLuint texture);
+void BindTexture2DOLD(GLenum id, TextureHandle texture);
+
+bool IsValid(TextureHandle id);
+void Destroy(TextureHandle& id);
 
 //=============================================================================
 // Sampler

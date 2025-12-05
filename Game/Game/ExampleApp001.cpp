@@ -122,25 +122,22 @@ void ExampleApp001()
 
 			glm::mat4 perspective = glm::perspective(glm::radians(60.0f), window::GetAspect(), 0.01f, 1000.0f);
 
-			glActiveTexture(GL_TEXTURE0);
-
-
 			glUseProgram(shader.handle);
 			SetUniform(GetUniformLocation(shader, "projectionMatrix"), perspective);
 			SetUniform(GetUniformLocation(shader, "viewMatrix"), camera.GetViewMatrix());
-
-			glBindTexture(GL_TEXTURE_2D, texturePlane.id);
+			
+			BindTexture2DOLD(0, texturePlane.id);
 			SetUniform(GetUniformLocation(shader, "modelMatrix"), glm::mat4(1.0f));
 			modelPlane.tDraw();
 
 			//SetUniform(GetUniformLocation(shader, "modelMatrix"), glm::scale(glm::mat4(1.0f), glm::vec3(0.6f)));
 			//modelTest.Draw();
 
-			glBindTexture(GL_TEXTURE_2D, texturePlane.id);
+			BindTexture2DOLD(0, texturePlane.id);
 			SetUniform(GetUniformLocation(shader, "modelMatrix"), glm::translate(glm::mat4(1.0f), glm::vec3(-3.0f, 1.0f, 0.0f)));
 			modelSphere.tDraw();
 
-			glBindTexture(GL_TEXTURE_2D, textureBox.id);
+			BindTexture2DOLD(0, textureBox.id);
 			SetUniform(GetUniformLocation(shader, "modelMatrix"), glm::translate(glm::mat4(1.0f), glm::vec3(3.0f, 0.5f, 0.0f)));
 			modelBox.tDraw();
 

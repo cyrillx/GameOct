@@ -17,7 +17,7 @@ LightO::~LightO()
 	glDeleteBuffers(1, &m_vbo);
 	glBindVertexArray(0);
 	glDeleteVertexArrays(1, &m_vao);
-	glDeleteTextures(1, &m_icon.id);
+	Destroy(m_icon);
 }
 
 DirectionalLightO::DirectionalLightO(glm::vec3 pos, glm::vec3 amb, glm::vec3 diff, glm::vec3 spec, glm::vec3 dir)
@@ -55,8 +55,7 @@ void DirectionalLightO::Draw()
 	//m_shaderIcon.setMatrix("model", m_model);
 	//m_shaderIcon.setMatrix("view", m_view);
 	//m_shaderIcon.setMatrix("proj", m_proj);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, m_icon.id);
+	BindTexture2DOLD(0, m_icon.id);
 	glDrawArrays(GL_POINTS, 0, 1);
 
 	/*m_shaderDirection.use();
@@ -84,8 +83,7 @@ void DirectionalLightO::Draw(float orthoDim)
 	//m_shaderIcon.setMatrix("model", m_model);
 	//m_shaderIcon.setMatrix("view", m_view);
 	//m_shaderIcon.setMatrix("proj", m_proj);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, m_icon.id);
+	BindTexture2DOLD(0, m_icon.id);
 	glDrawArrays(GL_POINTS, 0, 1);
 
 	/*m_shaderDirection.use();
@@ -157,8 +155,7 @@ void SpotLightO::Draw()
 	//m_shaderIcon.setMatrix("model", m_model);
 	//m_shaderIcon.setMatrix("view", m_view);
 	//m_shaderIcon.setMatrix("proj", m_proj);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, m_icon.id);
+	BindTexture2DOLD(0, m_icon.id);
 	glDrawArrays(GL_POINTS, 0, 1);
 
 	/*m_shaderCutOff.use();

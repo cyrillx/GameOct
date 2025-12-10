@@ -27,12 +27,14 @@ void RenderPass2::Close()
 void RenderPass2::Draw(const RenderPass1& rpShadowMap, const GameWorldData& gameData)
 {
 	m_fbo.Bind();
-	glEnable(GL_DEPTH_TEST);
 	glViewport(0, 0, static_cast<int>(m_framebufferWidth), static_cast<int>(m_framebufferHeight));
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_STENCIL_TEST);
 	glClearColor(0.3f, 0.4f, 0.9f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
 	glUseProgram(m_program.handle);
+
 	SetUniform(m_projectionMatrixId, m_perspective);
 	SetUniform(m_viewMatrixId, gameData.oldCamera->GetViewMatrix());
 
@@ -177,7 +179,7 @@ bool RenderPass2::initProgram()
 		std::string("MAX_AMBIENT_SPHERE_LIGHTS ") + std::to_string(MaxAmbientSphereLight),
 	};
 
-	m_program = LoadShaderProgram("data/shaders2/BlinnPhong/vertex.shader", "data/shaders2/BlinnPhong/fragment.shader", defines);
+	m_program = LoadShaderProgram("data/shaders2/BlinnPhong/vertexNew.shader", "data/shaders2/BlinnPhong/fragmentNew.shader", defines);
 	if (!m_program.handle)
 	{
 		Fatal("Scene Main RenderPass Shader failed!");
@@ -354,7 +356,7 @@ void OldRenderPass2::Draw(const OldRenderPass1& rpShadowMap, const GameWorldData
 	}
 	SetUniform(GetUniformLocation(m_program, "ambientSphereLightCount"), (int)gameData.numSphereLights);
 
-	glBindSampler(0, m_sampler);
+	glBindSampler(0, m_sampler.handle);
 	drawScene(gameData);
 	glBindSampler(0, 0);
 }

@@ -125,7 +125,9 @@
   <ItemGroup>
     <None Include="..\..\bin\data\shaders2\BlinnPhong.shader" />
     <None Include="..\..\bin\data\shaders2\BlinnPhong\fragment.shader" />
+    <None Include="..\..\bin\data\shaders2\BlinnPhong\fragmentNew.shader" />
     <None Include="..\..\bin\data\shaders2\BlinnPhong\vertex.shader" />
+    <None Include="..\..\bin\data\shaders2\BlinnPhong\vertexNew.shader" />
     <None Include="..\..\bin\data\shaders2\composite\fragment.shader" />
     <None Include="..\..\bin\data\shaders2\composite\vertex.shader" />
     <None Include="..\..\bin\data\shaders2\DirLightShadowFrag.shader" />

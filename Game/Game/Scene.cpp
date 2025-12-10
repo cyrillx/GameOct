@@ -401,7 +401,7 @@ void Scene::drawScene(drawScenePass scenePass)
 		
 		if (modelMatrixId >= 0)  SetUniform(modelMatrixId, m_entities[i]->modelMat);
 		if (normalMatrixId >= 0) SetUniform(normalMatrixId, glm::mat3(glm::transpose(glm::inverse(m_entities[i]->modelMat))));
-		glBindSampler(0, m_sampler);
+		glBindSampler(0, m_sampler.handle);
 		m_entities[i]->model.tDraw(drawInfo);
 	}
 }

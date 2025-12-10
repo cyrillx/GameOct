@@ -105,9 +105,6 @@
     <None Include="..\..\bin\data\shaders2\composite\vertex.shader">
       <Filter>GameApp\_Shaders\composite</Filter>
     </None>
-    <None Include="..\..\bin\data\shaders2\BlinnPhong.shader">
-      <Filter>GameApp\_Shaders</Filter>
-    </None>
     <None Include="..\..\bin\data\shaders2\shadow.shader">
       <Filter>GameApp\_Shaders</Filter>
     </None>
@@ -131,6 +128,15 @@
     </None>
     <None Include="..\..\bin\data\shaders2\PointLightShadowGeom.shader">
       <Filter>GameApp\_Shaders</Filter>
+    </None>
+    <None Include="..\..\bin\data\shaders2\BlinnPhong.shader">
+      <Filter>GameApp\_Shaders</Filter>
+    </None>
+    <None Include="..\..\bin\data\shaders2\BlinnPhong\fragmentNew.shader">
+      <Filter>GameApp\_Shaders\BlinnPhong</Filter>
+    </None>
+    <None Include="..\..\bin\data\shaders2\BlinnPhong\vertexNew.shader">
+      <Filter>GameApp\_Shaders\BlinnPhong</Filter>
     </None>
   </ItemGroup>
 </Project>

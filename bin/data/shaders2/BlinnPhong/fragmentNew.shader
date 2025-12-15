@@ -180,10 +180,10 @@ vec3 shadePointLight(vec3 lightPos, vec3 color, float intensity,float att, sampl
 	specular *= attenuation;
 
 	//Shadow 
-	float shadow = computePointShadow(shadowMap, worldPos);
-	//(material.receiveShadows && castShadows) 
-	//	? shadow = computePointShadow(shadowMap, worldPos) 
-	//	: shadow = 0.0;
+	float shadow;
+	(material.receiveShadows && castShadows) 
+		? shadow = computePointShadow(shadowMap, worldPos) 
+		: shadow = 0.0;
 
 	vec3 result = (1.0 - shadow) * (diffuse + specular) * albedo.rgb;
 	result *= intensity;

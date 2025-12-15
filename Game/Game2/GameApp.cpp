@@ -41,18 +41,6 @@ namespace
 	GamePointLight* pointLight2;
 
 	Camera camera;
-	OldGameObject modelTest;
-	DirectionalLight dirLight;
-
-	PointLight pointLights[10];
-
-	AmbientSphereLight ambientSphereLight;
-
-	OldGameObject sphereEntity;
-	OldGameObject box1Entity;
-	OldGameObject box2Entity;
-	OldGameObject box3Entity;
-	OldGameObject box4Entity;
 }
 //=============================================================================
 void GameApp()
@@ -78,39 +66,6 @@ void GameApp()
 		pointLight2 = new GamePointLight(glm::vec3(2.0f, 5.0f, 3.5f), glm::vec3(0.0f, 0.3f, 1.5f), 0.4f, 10);
 
 		camera.SetPosition(glm::vec3(0.0f, 0.5f, 0.5f));
-
-		modelTest.model.Load("data/models/ForgottenPlains/Forgotten_Plains_Demo.obj", ModelMaterialType::BlinnPhong);
-		modelTest.modelMat = glm::translate(glm::mat4(1.0f), glm::vec3(-30.0f, 0.0f, 15.0f));
-
-		sphereEntity.model.Create(GeometryGenerator::CreateSphere(0.5f, 16, 16));
-		sphereEntity.modelMat = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 2.0f, 0.0f));
-
-		box1Entity.model.Create(GeometryGenerator::CreateBox());
-		box1Entity.modelMat = glm::translate(glm::mat4(1.0f), glm::vec3(1.0f, 2.0f, 0.0f));
-		box2Entity.model.Create(GeometryGenerator::CreateBox());
-		box2Entity.modelMat = glm::translate(glm::mat4(1.0f), glm::vec3(-1.0f, 2.0f, 0.0f));
-		box3Entity.model.Create(GeometryGenerator::CreateBox());
-		box3Entity.modelMat = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 2.0f, -1.0f));
-		box4Entity.model.Create(GeometryGenerator::CreateBox());
-		box4Entity.modelMat = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-
-		dirLight.direction = glm::vec3(-0.2f, -0.6f, -0.2f);
-		dirLight.color = glm::vec3(1.0f, 0.9f, 0.9f);
-		dirLight.luminosity = 3;
-
-		for (int i = 0; i < 10; ++i)
-		{
-			float x = rand() % 20 - 10;
-			float y = rand() % 20 - 10;
-
-			pointLights[i].position = glm::vec3(x, 1.0f, y);
-			pointLights[i].color = glm::vec3(1.0f, 0.0f, 1.0f);
-		}
-
-		ambientSphereLight.position = glm::vec3(2.0f, 0.0f, 0.0f);
-		ambientSphereLight.radius = { 2.0f };
-		ambientSphereLight.intensity = 10.0f;
-		ambientSphereLight.color = glm::vec3(1.0f, 0.0, 0.0f);
 
 		while (!engine::ShouldClose())
 		{
@@ -141,19 +96,6 @@ void GameApp()
 			scene.Bind(pointLight2);
 
 			scene.BindCamera(&camera);
-
-			scene.BindGameObject(&sphereEntity);
-			scene.BindGameObject(&box1Entity);
-			scene.BindGameObject(&box2Entity);
-			scene.BindGameObject(&box3Entity);
-			scene.BindGameObject(&box4Entity);
-
-			scene.BindLight(&dirLight);
-			for (size_t i = 0; i < 10; i++)
-			{
-				scene.BindLight(&pointLights[i]);
-			}
-			scene.BindLight(&ambientSphereLight);
 
 			scene.Draw();
 

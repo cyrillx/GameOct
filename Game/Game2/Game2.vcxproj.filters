@@ -82,6 +82,9 @@
     <Filter Include="GameApp\GameScene\Object">
       <UniqueIdentifier>{1da715e4-658e-4c9d-aada-00aa64a136a1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameApp\World">
+      <UniqueIdentifier>{57949b8b-fb9c-4d2d-8436-9b684ef96483}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\bin\data\shaders2\composite\fragment.shader">

@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="GameApp.cpp" />
+    <ClCompile Include="RenderPass2.cpp">
+      <Filter>RenderPass</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene.cpp">
+      <Filter>GameScene</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderPassFinal.cpp">
+      <Filter>RenderPass</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="GameApp.h" />
+    <ClInclude Include="GameConfig.h" />
+    <ClInclude Include="RenderPass2.h">
+      <Filter>RenderPass</Filter>
+    </ClInclude>
+    <ClInclude Include="GameWorldData.h">
+      <Filter>GameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene.h">
+      <Filter>GameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderPassFinal.h">
+      <Filter>RenderPass</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="RenderPass">
+      <UniqueIdentifier>{8b8952ff-c503-4c11-aad3-528bd7633da2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameScene">
+      <UniqueIdentifier>{4c5dc519-9da7-4815-9677-144103fcb662}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="_shader">
+      <UniqueIdentifier>{4e7a3899-caa3-4d57-ade2-1b2912a44595}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\bin\data\shaders3\mainFrag.shader">
+      <Filter>_shader</Filter>
+    </None>
+    <None Include="..\..\bin\data\shaders3\mainVert.shader">
+      <Filter>_shader</Filter>
+    </None>
+    <None Include="..\..\bin\data\shaders3\compositeFrag.shader">
+      <Filter>_shader</Filter>
+    </None>
+    <None Include="..\..\bin\data\shaders3\compositeVert.shader">
+      <Filter>_shader</Filter>
+    </None>
+  </ItemGroup>
+</Project>

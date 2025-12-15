@@ -10,15 +10,6 @@
 #include "GamePointLight.h"
 #include "GameModel.h"
 
-struct OldGameObject final
-{
-	const AABB& GetAABB() const noexcept { return model.GetAABB(); }
-
-	Model     model;
-	glm::mat4 modelMat{ glm::mat4(1.0f) };
-	bool      visible{ true };
-};
-
 class GameScene final
 {
 public:

@@ -97,6 +97,7 @@
     <ClCompile Include="GameApp.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="RenderPass2.cpp" />
     <ClCompile Include="RenderPassFinal.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -107,8 +108,10 @@
   <ItemGroup>
     <ClInclude Include="GameApp.h" />
     <ClInclude Include="GameConfig.h" />
+    <ClInclude Include="GameModel.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="GameWorldData.h" />
+    <ClInclude Include="Map.h" />
     <ClInclude Include="RenderPass2.h" />
     <ClInclude Include="RenderPassFinal.h" />
     <ClInclude Include="stdafx.h" />

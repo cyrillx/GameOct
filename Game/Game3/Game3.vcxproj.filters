@@ -13,6 +13,9 @@
     <ClCompile Include="RenderPassFinal.cpp">
       <Filter>RenderPass</Filter>
     </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -30,6 +33,12 @@
     <ClInclude Include="RenderPassFinal.h">
       <Filter>RenderPass</Filter>
     </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>World</Filter>
+    </ClInclude>
+    <ClInclude Include="GameModel.h">
+      <Filter>GameScene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="RenderPass">
@@ -40,6 +49,9 @@
     </Filter>
     <Filter Include="_shader">
       <UniqueIdentifier>{4e7a3899-caa3-4d57-ade2-1b2912a44595}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="World">
+      <UniqueIdentifier>{a9d25f16-fcde-4ef3-ae22-0d09ee17e87b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -1,15 +1,11 @@
 ﻿#pragma once
 
+#include "GameModel.h"
 #include "GameWorldData.h"
 #include "RenderPass2.h"
 #include "RenderPassFinal.h"
 
-struct GameModel final
-{
-	Model     model;
-	glm::mat4 modelMat{ glm::mat4(1.0f) };
-	bool      visible{ true };
-};
+
 
 class GameScene final
 {

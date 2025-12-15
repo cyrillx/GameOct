@@ -1,12 +1,15 @@
 ﻿#include "stdafx.h"
 #include "GameApp.h"
 #include "GameScene.h"
+#include "Map.h"
 //=============================================================================
 namespace
 {
 	GameScene scene;
 	Camera camera;
 	GameModel modelLevel;
+
+	MapChunk maps;
 }
 //=============================================================================
 void GameApp()
@@ -19,9 +22,12 @@ void GameApp()
 		if (!scene.Init())
 			return;
 
+		if (!maps.Init())
+			return;
+
 		camera.SetPosition(glm::vec3(0.0f, 0.5f, 4.5f));
 		modelLevel.model.Load("data/models/ForgottenPlains/Forgotten_Plains_Demo.obj", ModelMaterialType::BlinnPhong);
-		modelLevel.modelMat = glm::translate(glm::mat4(1.0f), glm::vec3(-30.0f, 0.0f, 15.0f));
+		modelLevel.modelMat = glm::translate(glm::mat4(1.0f), glm::vec3(-30.0f, -10.0f, 15.0f));
 
 		while (!engine::ShouldClose())
 		{
@@ -47,6 +53,7 @@ void GameApp()
 
 			scene.Bind(&camera);
 			scene.Bind(&modelLevel);
+			scene.Bind(maps.GetModel());
 
 			scene.Draw();
 
@@ -59,6 +66,7 @@ void GameApp()
 	{
 		puts(exc.what());
 	}
+	maps.Close();
 	engine::Close();
 }
 //=============================================================================

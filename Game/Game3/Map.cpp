@@ -30,13 +30,15 @@ void AddCube(const glm::vec3& center, float size, std::vector<MeshVertex>& verti
 	GeometryGenerator::AddPlane(p0, p3, p2, p1, vertices, indices, blue, glm::vec2(0, 0), glm::vec2(0, 1), glm::vec2(1, 1), glm::vec2(1, 0));
 
 	// Back Face Z = center.z + halfSize (p5, p4, p7, p6) - CCW order for outward facing normal
-	GeometryGenerator::AddPlane(p5, p6, p7, p4, vertices, indices, red, glm::vec2(0, 0), glm::vec2(1, 0), glm::vec2(1, 1), glm::vec2(0, 1));
+	// Texture: Rotated 90 degrees clockwise from original (0,0)->(1,0), (1,0)->(1,1), (1,1)->(0,1), (0,1)->(0,0)
+	GeometryGenerator::AddPlane(p5, p6, p7, p4, vertices, indices, red, glm::vec2(1, 0), glm::vec2(1, 1), glm::vec2(0, 1), glm::vec2(0, 0));
 
 	// Top Face Y = center.y + halfSize (p3, p2, p6, p7) - CCW order for outward facing normal
 	GeometryGenerator::AddPlane(p3, p7, p6, p2, vertices, indices, green, glm::vec2(0, 0), glm::vec2(0, 1), glm::vec2(1, 1), glm::vec2(1, 0));
 
 	// Bottom Face Y = center.y - halfSize (p4, p5, p1, p0) - CCW order for outward facing normal
-	GeometryGenerator::AddPlane(p4, p0, p1, p5, vertices, indices, yellow, glm::vec2(0, 0), glm::vec2(1, 0), glm::vec2(1, 1), glm::vec2(0, 1));
+	// Texture: Rotated 90 degrees clockwise from original (0,0)->(1,0), (1,0)->(1,1), (1,1)->(0,1), (0,1)->(0,0)
+	GeometryGenerator::AddPlane(p4, p0, p1, p5, vertices, indices, yellow, glm::vec2(1, 0), glm::vec2(1, 1), glm::vec2(0, 1), glm::vec2(0, 0));
 
 	// Right Face X = center.x + halfSize (p1, p5, p6, p2) - CCW order for outward facing normal
 	GeometryGenerator::AddPlane(p1, p2, p6, p5, vertices, indices, cyan, glm::vec2(0, 0), glm::vec2(0, 1), glm::vec2(1, 1), glm::vec2(1, 0));
@@ -76,7 +78,7 @@ void MapChunk::generateBufferMap()
 	meshInfo[0].material = Material();
 	meshInfo[0].material->diffuseTextures.push_back(textures::LoadTexture2D("data/pics/wall1.png"));
 	meshInfo[1].material = Material();
-	meshInfo[1].material->diffuseTextures.push_back(textures::LoadTexture2D("data/pics/tile1.png"));
+	meshInfo[1].material->diffuseTextures.push_back(textures::LoadTexture2D("data/pics/tile2.png"));
 
 	const float mapOffset = MAPCHUNKSIZE / 2;
 	for (size_t iy = 0; iy < MAPCHUNKSIZE; iy++)

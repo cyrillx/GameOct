@@ -143,7 +143,7 @@ void MapChunk::generateBufferMap()
 			float x = float(ix) - mapOffset;
 			float y = float(iy) - mapOffset;
 
-			AddBox(glm::vec3(x, 0.5f + rand() % 10/10.0f, y), 1.0f, 1.0f, 1.0f, meshInfo[id].vertices, meshInfo[id].indices);
+			AddBox(glm::vec3(x, 0.5f, y), 1.0f, 1.0f, 1.0f, meshInfo[id].vertices, meshInfo[id].indices);
 		}
 	}
 	m_model.model.Create(meshInfo);

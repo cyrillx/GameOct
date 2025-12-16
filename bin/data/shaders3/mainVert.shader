@@ -13,6 +13,7 @@ uniform mat4 modelMatrix;
 
 out VS_OUT {
 	vec3 vertColor;
+	vec3 worldPos;
 	vec3 normal;
 	vec2 texCoords;
 } vs_out;
@@ -20,6 +21,7 @@ out VS_OUT {
 void main()
 {
 	vs_out.vertColor = vertexColor;
+	vs_out.worldPos = vec3(modelMatrix * vec4(vertexPosition, 1.0));
 	vs_out.texCoords = vertexTexCoord;
 	vs_out.normal = mat3(transpose(inverse(modelMatrix))) * vertexNormal;
 	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(vertexPosition, 1.0f);

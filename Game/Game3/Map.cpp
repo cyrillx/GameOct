@@ -77,12 +77,14 @@ void AddBox(const glm::vec3& center, float width, float height, float depth, std
 	GeometryGenerator::AddPlane(p0, p3, p2, p1, vertices, indices, blue, glm::vec2(0, 0), glm::vec2(0, height), glm::vec2(width, height), glm::vec2(width, 0));
 
 	// Back Face Z = center.z + halfDepth (p5, p4, p7, p6) - CCW order for outward facing normal
-	// UV: U spans width, V spans height -> (0,0) -> (width, height). Rotated 90 deg.
-	GeometryGenerator::AddPlane(p5, p6, p7, p4, vertices, indices, red, glm::vec2(0, 0), glm::vec2(width, 0), glm::vec2(width, height), glm::vec2(0, height));
+		// UV: U spans width, V spans height -> (0,0) -> (width, height).
+	GeometryGenerator::AddPlane(p5, p6, p7, p4, vertices, indices, red, glm::vec2(width, 0), glm::vec2(width, height), glm::vec2(0, height), glm::vec2(0, 0));
 
 	// Top Face Y = center.y + halfHeight (p3, p2, p6, p7) - CCW order for outward facing normal
 	// UV: U spans width, V spans depth -> (0,0) -> (width, depth). Rotated 90 deg.
-	GeometryGenerator::AddPlane(p3, p7, p6, p2, vertices, indices, green, glm::vec2(0, 0), glm::vec2(depth, 0), glm::vec2(depth, width), glm::vec2(0, width));
+	//GeometryGenerator::AddPlane(p3, p7, p6, p2, vertices, indices, green, glm::vec2(0, 0), glm::vec2(depth, 0), glm::vec2(depth, width), glm::vec2(0, width));
+	GeometryGenerator::AddPlane(p3, p7, p6, p2, vertices, indices, green, glm::vec2(0, width), glm::vec2(0, 0), glm::vec2(depth, 0), glm::vec2(depth, width));
+
 
 	// Bottom Face Y = center.y - halfHeight (p4, p5, p1, p0) - CCW order for outward facing normal
 	// UV: U spans width, V spans depth -> (0,0) -> (width, depth). Rotated 90 deg.
@@ -141,7 +143,7 @@ void MapChunk::generateBufferMap()
 			float x = float(ix) - mapOffset;
 			float y = float(iy) - mapOffset;
 
-			AddBox(glm::vec3(x, 0.5f + rand() % 10/10.0f, y), 1.0f, 5.0f, 1.0f, meshInfo[id].vertices, meshInfo[id].indices);
+			AddBox(glm::vec3(x, 0.5f + rand() % 10/10.0f, y), 1.0f, 1.0f, 1.0f, meshInfo[id].vertices, meshInfo[id].indices);
 		}
 	}
 	m_model.model.Create(meshInfo);

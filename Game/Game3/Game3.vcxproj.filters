@@ -19,6 +19,9 @@
     <ClCompile Include="MapGenGeom.cpp">
       <Filter>World</Filter>
     </ClCompile>
+    <ClCompile Include="TileMap.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -41,6 +44,9 @@
     </ClInclude>
     <ClInclude Include="GameModel.h">
       <Filter>GameScene</Filter>
+    </ClInclude>
+    <ClInclude Include="TileMap.h">
+      <Filter>World</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

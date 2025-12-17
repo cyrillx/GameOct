@@ -1,9 +1,11 @@
 ﻿#include "stdafx.h"
 #include "Map.h"
+#include "TileMap.h"
 #define MAPCHUNKSIZE 10
-int tempMap[MAPCHUNKSIZE][MAPCHUNKSIZE];
+TileInfo tempMap[MAPCHUNKSIZE][MAPCHUNKSIZE][MAPCHUNKSIZE];
 //=============================================================================
-void AddBox(const glm::vec3& center, float width, float height, float depth, const glm::vec3& color, std::vector<MeshVertex>& vertices, std::vector<unsigned int>& indices);
+void AddBox(
+	const glm::vec3& center, float width, float height, float depth, const glm::vec3& color, std::vector<MeshVertex>& verticesWall, std::vector<unsigned int>& indicesWall, std::vector<MeshVertex>& verticesCeil, std::vector<unsigned int>& indicesCeil, std::vector<MeshVertex>& verticesFloor, std::vector<unsigned int>& indicesFloor);
 //=============================================================================
 bool MapChunk::Init()
 {
@@ -11,15 +13,16 @@ bool MapChunk::Init()
 	{
 		for (size_t x = 0; x < MAPCHUNKSIZE; x++)
 		{
-			tempMap[x][y] = 0;
+			for (size_t z = 0; z < MAPCHUNKSIZE; z++)
+			{
+				tempMap[x][y][z].type = TileGeometryType::None;
+			}
+			tempMap[x][y][0].type = TileGeometryType::FullBox1;
+			tempMap[x][y][0].textureWall = textures::LoadTexture2D("data/tiles/grass01_wall.png", ColorSpace::Linear, true);
+			tempMap[x][y][0].textureCeil = textures::LoadTexture2D("data/tiles/grass01_ceil.png");
+			tempMap[x][y][0].textureFloor = textures::LoadTexture2D("data/tiles/grass01.png");
 		}
 	}
-
-	tempMap[5][6] = 1;
-	tempMap[4][5] = 1;
-	tempMap[5][5] = 1;
-	tempMap[5][4] = 1;
-	tempMap[6][5] = 1;
 
 	generateBufferMap();
 
@@ -30,26 +33,50 @@ void MapChunk::Close()
 {
 }
 //=============================================================================
+size_t addMeshInfo(std::vector<MeshInfo>& meshInfo, Texture2D texId)
+{
+	for (size_t i = 0; i < meshInfo.size(); i++)
+	{
+		if (meshInfo[i].material->diffuseTextures[0] == texId)
+		{
+			return i;
+		}
+	}
+
+	MeshInfo nmi{};
+	nmi.material = Material();
+	nmi.material->diffuseTextures.push_back(texId);
+	meshInfo.push_back(nmi);
+	return meshInfo.size() - 1;
+}
+//=============================================================================
 void MapChunk::generateBufferMap()
 {
-	std::vector<MeshInfo> meshInfo(10);
-	meshInfo[0].material = Material();
-	meshInfo[0].material->diffuseTextures.push_back(textures::LoadTexture2D("data/pics/wall1.png"));
-	meshInfo[1].material = Material();
-	meshInfo[1].material->diffuseTextures.push_back(textures::LoadTexture2D("data/pics/tile2.png"));
+	std::vector<MeshInfo> meshInfo;
 
 	const float mapOffset = MAPCHUNKSIZE / 2;
 	for (size_t iy = 0; iy < MAPCHUNKSIZE; iy++)
 	{
 		for (size_t ix = 0; ix < MAPCHUNKSIZE; ix++)
 		{
-			size_t id = tempMap[ix][iy];
-			if (id == 99) continue;
+			for (size_t iz = 0; iz < MAPCHUNKSIZE; iz++)
+			{
+				auto id = tempMap[ix][iy][iz];
+				if (id.type == TileGeometryType::None) continue;
 
-			float x = float(ix) - mapOffset;
-			float y = float(iy) - mapOffset;
+				size_t idWall = addMeshInfo(meshInfo, id.textureWall);
+				size_t idFloor = addMeshInfo(meshInfo, id.textureFloor);
+				size_t idCeil = addMeshInfo(meshInfo, id.textureCeil);
 
-			AddBox(glm::vec3(x, 0.5f, y), 1.0f, 1.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f), meshInfo[id].vertices, meshInfo[id].indices);
+				float x = float(ix) - mapOffset;
+				float y = float(iy) - mapOffset;
+				float z = float(iz) + 0.5f;
+
+				AddBox(glm::vec3(x, z, y), 1.0f, 1.0f, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f), 
+					meshInfo[idWall].vertices, meshInfo[idWall].indices,
+					meshInfo[idCeil].vertices, meshInfo[idCeil].indices,
+					meshInfo[idFloor].vertices, meshInfo[idFloor].indices);
+			}
 		}
 	}
 	m_model.model.Create(meshInfo);

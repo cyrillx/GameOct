@@ -98,6 +98,7 @@
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="MapGenGeom.cpp" />
     <ClCompile Include="RenderPass2.cpp" />
     <ClCompile Include="RenderPassFinal.cpp" />
     <ClCompile Include="stdafx.cpp">

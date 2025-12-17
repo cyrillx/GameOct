@@ -37,6 +37,7 @@ void RenderPass2::Draw(const GameWorldData& gameData)
 	glUseProgram(m_program.handle);
 	SetUniform(GetUniformLocation(m_program, "projectionMatrix"), m_perspective);
 	SetUniform(GetUniformLocation(m_program, "viewMatrix"), gameData.camera->GetViewMatrix());
+	SetUniform(GetUniformLocation(m_program, "viewPos"), gameData.camera->Position);
 	
 	glBindSampler(0, m_sampler.handle);
 	drawScene(gameData);

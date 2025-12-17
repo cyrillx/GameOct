@@ -486,3 +486,40 @@ void GeometryGenerator::AddPlane(const glm::vec3& p0, const glm::vec3& p1, const
 	indices.push_back(baseIndex + 3); // v3
 }
 //=============================================================================
+void GeometryGenerator::AddCube(const glm::vec3& center, float size, std::vector<MeshVertex>& vertices, std::vector<unsigned int>& indices)
+{
+	float halfSize = size / 2.0f;
+
+	// Define the 8 corner points relative to the center
+	glm::vec3 p0 = center + glm::vec3(-halfSize, -halfSize, -halfSize); // 0: Left-Bottom-Front
+	glm::vec3 p1 = center + glm::vec3(halfSize, -halfSize, -halfSize); // 1: Right-Bottom-Front
+	glm::vec3 p2 = center + glm::vec3(halfSize, halfSize, -halfSize); // 2: Right-Top-Front
+	glm::vec3 p3 = center + glm::vec3(-halfSize, halfSize, -halfSize); // 3: Left-Top-Front
+
+	glm::vec3 p4 = center + glm::vec3(-halfSize, -halfSize, halfSize); // 4: Left-Bottom-Back
+	glm::vec3 p5 = center + glm::vec3(halfSize, -halfSize, halfSize); // 5: Right-Bottom-Back
+	glm::vec3 p6 = center + glm::vec3(halfSize, halfSize, halfSize); // 6: Right-Top-Back
+	glm::vec3 p7 = center + glm::vec3(-halfSize, halfSize, halfSize); // 7: Left-Top-Back
+
+	// Face Colors (optional, for visual distinction)
+	glm::vec3 red(1.0f, 0.0f, 0.0f);
+	glm::vec3 green(0.0f, 1.0f, 0.0f);
+	glm::vec3 blue(0.0f, 0.0f, 1.0f);
+	glm::vec3 yellow(1.0f, 1.0f, 0.0f);
+	glm::vec3 cyan(0.0f, 1.0f, 1.0f);
+	glm::vec3 magenta(1.0f, 0.0f, 1.0f);
+
+	// Front Face Z = center.z - halfSize (p0, p1, p2, p3) - CCW order for outward facing normal
+	AddPlane(p0, p3, p2, p1, vertices, indices, blue, glm::vec2(0, 0), glm::vec2(0, 1), glm::vec2(1, 1), glm::vec2(1, 0));
+	// Back Face Z = center.z + halfSize (p5, p4, p7, p6) - CCW order for outward facing normal
+	AddPlane(p5, p6, p7, p4, vertices, indices, red, glm::vec2(1, 0), glm::vec2(1, 1), glm::vec2(0, 1), glm::vec2(0, 0));
+	// Top Face Y = center.y + halfSize (p3, p2, p6, p7) - CCW order for outward facing normal
+	AddPlane(p3, p7, p6, p2, vertices, indices, green, glm::vec2(0, 0), glm::vec2(0, 1), glm::vec2(1, 1), glm::vec2(1, 0));
+	// Bottom Face Y = center.y - halfSize (p4, p5, p1, p0) - CCW order for outward facing normal
+	AddPlane(p4, p0, p1, p5, vertices, indices, yellow, glm::vec2(1, 0), glm::vec2(1, 1), glm::vec2(0, 1), glm::vec2(0, 0));
+	// Right Face X = center.x + halfSize (p1, p5, p6, p2) - CCW order for outward facing normal
+	AddPlane(p1, p2, p6, p5, vertices, indices, cyan, glm::vec2(0, 0), glm::vec2(0, 1), glm::vec2(1, 1), glm::vec2(1, 0));
+	// Left Face X = center.x - halfSize (p4, p0, p3, p7) - CCW order for outward facing normal
+	AddPlane(p4, p7, p3, p0, vertices, indices, magenta, glm::vec2(0, 0), glm::vec2(0, 1), glm::vec2(1, 1), glm::vec2(1, 0));
+}
+//=============================================================================

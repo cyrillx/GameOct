@@ -26,4 +26,6 @@ namespace GeometryGenerator
 		const glm::vec2& uv2 = glm::vec2(1.0f, 1.0f),
 		const glm::vec2& uv3 = glm::vec2(0.0f, 1.0f));
 
+	void AddCube(const glm::vec3& center, float size, std::vector<MeshVertex>& vertices, std::vector<unsigned int>& indices);
+
 } // namespace GeometryGenerator

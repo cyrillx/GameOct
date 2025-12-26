@@ -80,6 +80,9 @@
     <ClCompile Include="picobench\picobench.cpp">
       <Filter>picobench</Filter>
     </ClCompile>
+    <ClCompile Include="tiny_obj_loader\tiny_obj_loader.cpp">
+      <Filter>tiny_obj_loader</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="stb">
@@ -120,6 +123,9 @@
     </Filter>
     <Filter Include="picobench">
       <UniqueIdentifier>{0775a6df-5d41-4c87-86c5-8009c4d23b88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="tiny_obj_loader">
+      <UniqueIdentifier>{2148dabf-d73d-4680-b28d-548e25207252}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -1284,6 +1290,9 @@
     </ClInclude>
     <ClInclude Include="picobench\picobench.hpp">
       <Filter>picobench</Filter>
+    </ClInclude>
+    <ClInclude Include="tiny_obj_loader\tiny_obj_loader.h">
+      <Filter>tiny_obj_loader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

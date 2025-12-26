@@ -4,6 +4,8 @@
 #include "GameConfig.h"
 #include "Engine/stdafx.h"
 
+#include "tiny_obj_loader/tiny_obj_loader.h"
+
 #include <Engine/NanoCore.h>
 #include <Engine/NanoIO.h>
 #include <Engine/NanoLog.h>

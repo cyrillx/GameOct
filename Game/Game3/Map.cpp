@@ -5,6 +5,7 @@
 size_t tempMap[MAPCHUNKSIZE][MAPCHUNKSIZE][MAPCHUNKSIZE] = { 0 };
 //=============================================================================
 size_t addMeshInfo(std::vector<MeshInfo>& meshInfo, Texture2D texId);
+void AddObjModel(const glm::vec3& center, float width, float height, float depth, const glm::vec3& color, std::vector<MeshVertex>& verticesWall, std::vector<unsigned int>& indicesWall, std::vector<MeshVertex>& verticesCeil, std::vector<unsigned int>& indicesCeil, std::vector<MeshVertex>& verticesFloor, std::vector<unsigned int>& indicesFloor, bool enablePlane[6]);
 //=============================================================================
 void AddBox(
 	const glm::vec3& center, float width, float height, float depth, const glm::vec3& color, std::vector<MeshVertex>& verticesWall, std::vector<unsigned int>& indicesWall, std::vector<MeshVertex>& verticesCeil, std::vector<unsigned int>& indicesCeil, std::vector<MeshVertex>& verticesFloor, std::vector<unsigned int>& indicesFloor,
@@ -46,7 +47,7 @@ bool MapChunk::Init()
 	tempMap[16][15][0] = NoTile;
 
 
-	tempTile.type = TileGeometryType::FullBox;
+	tempTile.type = TileGeometryType::NewBox;
 	tempTile.textureWall = textures::LoadTexture2D("data/tiles/grass01_wall.png", ColorSpace::Linear, true);
 	tempTile.textureCeil = textures::LoadTexture2D("data/tiles/grass01_ceil.png");
 	tempTile.textureFloor = textures::LoadTexture2D("data/tiles/grass01.png");
@@ -99,7 +100,14 @@ void MapChunk::generateBufferMap()
 						meshInfo[idFloor].vertices, meshInfo[idFloor].indices,
 						enablePlane);
 				}
-
+				else if (id.type == TileGeometryType::NewBox)
+				{
+					AddObjModel(center, 1.0f, heightBlock, 1.0f, id.color,
+						meshInfo[idWall].vertices, meshInfo[idWall].indices,
+						meshInfo[idCeil].vertices, meshInfo[idCeil].indices,
+						meshInfo[idFloor].vertices, meshInfo[idFloor].indices,
+						enablePlane);
+				}
 			}
 		}
 	}

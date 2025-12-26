@@ -22,6 +22,9 @@
     <ClCompile Include="TileMap.cpp">
       <Filter>World</Filter>
     </ClCompile>
+    <ClCompile Include="MapLoadObjTile.cpp">
+      <Filter>World</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />

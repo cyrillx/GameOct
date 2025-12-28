@@ -1,17 +1,16 @@
 ﻿#include "stdafx.h"
 //=============================================================================
-// Псевдокод (подробно):
-// 1. Загрузить OBJ через tinyobj::LoadObj.
-// 2. Для каждой формы (shapes[s]) определить, к какому массиву вершин/индексов относится (bottom/top/others).
-// 3. Использовать структуру сравнения для tinyobj::index_t, чтобы можно было использовать std::map как кэш уникальных вершин.
-//    - Сравнивать по vertex_index, затем texcoord_index, затем normal_index.
-// 4. Для каждого индекса в shapes[s].mesh.indices:
-//    - Если индекс не найден в кэше, создать MeshVertex, заполнить позицию/нормаль/uv (с проверками границ), цвет/тангенты по умолчанию,
-//      добавить в вектор вершин и сохранить соответствие index->new_index в кэше.
-//    - Добавить в выходной массив индексов значение из кэша.
-// 5. Обрабатывать предупреждения и ошибки tinyobj.
+// Структура для хранения данных модели
+struct ObjModelData
+{
+	tinyobj::attrib_t attrib;
+	std::vector<tinyobj::shape_t> shapes;
+	std::vector<tinyobj::material_t> materials;
+};
 //=============================================================================
-
+// Глобальный кэш моделей
+static std::unordered_map<std::string, ObjModelData> model_cache;
+//=============================================================================
 struct IndexLess
 {
 	bool operator()(const tinyobj::index_t& a, const tinyobj::index_t& b) const
@@ -21,24 +20,15 @@ struct IndexLess
 		return a.normal_index < b.normal_index;
 	}
 };
-
-void AddObjModel(const glm::vec3& center, float width, float height, float depth, const glm::vec3& color, std::vector<MeshVertex>& verticesWall, std::vector<unsigned int>& indicesWall, std::vector<MeshVertex>& verticesCeil, std::vector<unsigned int>& indicesCeil, std::vector<MeshVertex>& verticesFloor, std::vector<unsigned int>& indicesFloor, bool enablePlane[6])
+//=============================================================================
+void ProcessModelData(const ObjModelData& model_data, 
+	const glm::vec3& center, float width, float height, float depth,
+	std::vector<MeshVertex>& verticesWall, std::vector<unsigned int>& indicesWall,
+	std::vector<MeshVertex>& verticesCeil, std::vector<unsigned int>& indicesCeil,
+	std::vector<MeshVertex>& verticesFloor, std::vector<unsigned int>& indicesFloor)
 {
-	tinyobj::attrib_t attrib;
-
-	std::vector<tinyobj::shape_t> shapes;
-	std::vector<tinyobj::material_t> materials;
-	std::string warn, err;
-	bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, "data/tiles/test/123.obj");
-	if (!ret)
-	{
-		Fatal("Error loading OBJ file: " + err);
-		return;
-	}
-	if (!warn.empty())
-	{
-		Warning("TinyObjLoader Warning: " + warn);
-	}
+	const auto& attrib = model_data.attrib;
+	const auto& shapes = model_data.shapes;
 
 	// Проходим по всем формам (мешам)
 	for (size_t s = 0; s < shapes.size(); s++)
@@ -50,7 +40,7 @@ void AddObjModel(const glm::vec3& center, float width, float height, float depth
 		if (name == "bottom")
 		{
 			vertices = &verticesCeil;
-			indices = &indicesCeil;	
+			indices = &indicesCeil;
 		}
 		else if (name == "top")
 		{
@@ -90,9 +80,13 @@ void AddObjModel(const glm::vec3& center, float width, float height, float depth
 					// Позиция
 					if (idx.vertex_index >= 0 && static_cast<size_t>(idx.vertex_index) * 3 + 2 < attrib.vertices.size())
 					{
-						vertex.position.x = attrib.vertices[3 * idx.vertex_index + 0];
-						vertex.position.y = attrib.vertices[3 * idx.vertex_index + 1];
-						vertex.position.z = attrib.vertices[3 * idx.vertex_index + 2];
+						vertex.position.x = attrib.vertices[3 * idx.vertex_index + 0] * width + center.x;
+						vertex.position.y = attrib.vertices[3 * idx.vertex_index + 1] * height + center.y;
+						vertex.position.z = attrib.vertices[3 * idx.vertex_index + 2] * depth + center.z;
+					}
+					else
+					{
+						vertex.position = center; // Если индекс неверный, используем центр
 					}
 
 					// Нормаль
@@ -134,6 +128,45 @@ void AddObjModel(const glm::vec3& center, float width, float height, float depth
 				}
 			}
 		}
+	}
+}
+//=============================================================================
+void AddObjModel(const std::string& model_path, const glm::vec3& center, float width, float height, float depth, const glm::vec3& color, std::vector<MeshVertex>& verticesWall, std::vector<unsigned int>& indicesWall, std::vector<MeshVertex>& verticesCeil, std::vector<unsigned int>& indicesCeil, std::vector<MeshVertex>& verticesFloor, std::vector<unsigned int>& indicesFloor, bool enablePlane[6])
+{
+	// Проверяем, есть ли модель в кэше
+	auto it = model_cache.find(model_path);
+	if (it != model_cache.end())
+	{
+		// Используем кэшированные данные
+		const auto& cached_data = it->second;
+		ProcessModelData(cached_data, center, width, height, depth, verticesWall, indicesWall, verticesCeil, indicesCeil, verticesFloor, indicesFloor);
+	}
+	else
+	{
+		// Загружаем модель и сохраняем в кэш
+		tinyobj::attrib_t attrib;
+		std::vector<tinyobj::shape_t> shapes;
+		std::vector<tinyobj::material_t> materials;
+		std::string warn, err;
+		bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, model_path.c_str());
+		if (!ret)
+		{
+			Fatal("Error loading OBJ file: " + err);
+			return;
+		}
+		if (!warn.empty())
+		{
+			Warning("TinyObjLoader Warning: " + warn);
+		}
+
+		// Сохраняем данные в кэш
+		ObjModelData model_data;
+		model_data.attrib = attrib;
+		model_data.shapes = shapes;
+		model_data.materials = materials;
+		model_cache[model_path] = model_data;
+
+		ProcessModelData(model_data, center, width, height, depth, verticesWall, indicesWall, verticesCeil, indicesCeil, verticesFloor, indicesFloor);
 	}
 }
 //=============================================================================

@@ -7,6 +7,7 @@ enum class TileGeometryType
 	FullBox,
 
 	NewBox,
+	NewBox2,
 
 	DiagonalLeftForwardBox,
 	DiagonalLeftBackBox,

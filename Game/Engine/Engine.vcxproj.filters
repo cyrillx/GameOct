@@ -139,6 +139,9 @@
     <Filter Include="Engine\scene">
       <UniqueIdentifier>{55dc66e2-a8e0-4a1b-b7ab-e8922c969627}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Advance">
+      <UniqueIdentifier>{c52ed9b7-9ca9-4a2a-b10f-984e6c656fc0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="OpenGL3Enum.inl">

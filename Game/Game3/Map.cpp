@@ -33,6 +33,38 @@ size_t addMeshInfo(std::vector<MeshInfo>& meshInfo, Texture2D texId)
 void optimizeMesh(std::vector<MeshVertex>& vertices, std::vector<uint32_t>& indices)
 {
 	// TODO:
+
+	// не работает
+	//// Шаг 1: Удаление дублирующихся вершин
+	//std::vector<unsigned int> remap(vertices.size());
+	//size_t uniqueVertices = meshopt_generateVertexRemap(remap.data(), indices.data(), indices.size(), vertices.data(), vertices.size(), sizeof(MeshVertex));
+
+	//std::vector<MeshVertex> optimizedVertices(uniqueVertices);
+	//meshopt_remapVertexBuffer(optimizedVertices.data(), vertices.data(), vertices.size(), sizeof(MeshVertex), remap.data());
+
+	//meshopt_remapIndexBuffer(indices.data(), indices.data(), indices.size(), remap.data());
+
+	//// Шаг 2: Удаление вырожденных и дублирующихся треугольников
+	//std::vector<unsigned int> uniqueIndices;
+	//std::set<std::array<unsigned int, 3>> triangleSet; // Используем set для уникальности треугольников
+
+	//for (size_t i = 0; i < indices.size(); i += 3)
+	//{
+	//	std::array<unsigned int, 3> triangle = { indices[i], indices[i + 1], indices[i + 2] };
+	//	std::sort(triangle.begin(), triangle.end()); // Сортируем вершины треугольника для уникальности (т.к. треугольник ABC == BCA == CAB)
+
+	//	if (triangleSet.find(triangle) == triangleSet.end())
+	//	{
+	//		triangleSet.insert(triangle);
+	//		uniqueIndices.push_back(indices[i]);
+	//		uniqueIndices.push_back(indices[i + 1]);
+	//		uniqueIndices.push_back(indices[i + 2]);
+	//	}
+	//}
+
+	//indices = uniqueIndices;
+
+	//vertices = optimizedVertices;
 }
 //=============================================================================
 bool MapChunk::Init()
@@ -101,8 +133,6 @@ void MapChunk::Close()
 void MapChunk::generateBufferMap()
 {
 	std::vector<MeshInfo> meshInfo;
-	BlockModelInfo blockModelInfo{};
-
 
 	const float mapOffset = MAPCHUNKSIZE / 2;
 	for (size_t iy = 0; iy < MAPCHUNKSIZE; iy++)
@@ -120,8 +150,6 @@ void MapChunk::generateBufferMap()
 				float y = float(iy) - mapOffset;
 				float z = float(iz);
 
-				bool enablePlane[6] = { true }; // TODO: убрать невидимое
-
 				size_t idWall = addMeshInfo(meshInfo, id.textureWall);
 				size_t idFloor = addMeshInfo(meshInfo, id.textureFloor);
 				size_t idCeil = addMeshInfo(meshInfo, id.textureCeil);
@@ -132,16 +160,24 @@ void MapChunk::generateBufferMap()
 
 				if (id.type == TileGeometryType::FullBox)
 				{
-					blockModelInfo.modelPath = "data/tiles/test/123.obj";
+					BlockModelInfo blockModelInfo{};
+					blockModelInfo.modelPath = "data/tiles/Block00.obj";
 					blockModelInfo.color = id.color;
 					blockModelInfo.center = center;
 					blockModelInfo.size = { 1.0f, heightBlock, 1.0f };
 					blockModelInfo.rotate = glm::vec3(0.0f);
-					for (size_t i = 0; i < 6; i++)
-					{
-						blockModelInfo.enablePlane[i] = enablePlane[i];
-					}
 
+					if (ix > 0 && tempMap[ix-1][iy][iz] != NoTile)
+						blockModelInfo.enablePlane[3] = false; // left
+					if (ix < MAPCHUNKSIZE-1 && tempMap[ix + 1][iy][iz] != NoTile)
+						blockModelInfo.enablePlane[1] = false; // right
+
+					if (iy > 0 && tempMap[ix][iy - 1][iz] != NoTile)
+						blockModelInfo.enablePlane[0] = false; // forward
+					if (iy < MAPCHUNKSIZE - 1 && tempMap[ix][iy + 1][iz] != NoTile)
+						blockModelInfo.enablePlane[2] = false; // back
+
+	
 					AddObjModel(blockModelInfo,
 						meshInfo[idWall].vertices, meshInfo[idWall].indices,
 						meshInfo[idCeil].vertices, meshInfo[idCeil].indices,
@@ -149,16 +185,13 @@ void MapChunk::generateBufferMap()
 				}
 				else if (id.type == TileGeometryType::NewBox)
 				{
+					BlockModelInfo blockModelInfo{};
 					blockModelInfo.modelPath = "data/tiles/test/222.obj";
 					blockModelInfo.color = id.color;
 					blockModelInfo.center = center;
 					blockModelInfo.size = { 1.0f, heightBlock, 1.0f };
 					blockModelInfo.rotate = glm::vec3(0.0f);
-					for (size_t i = 0; i < 6; i++)
-					{
-						blockModelInfo.enablePlane[i] = enablePlane[i];
-					}
-
+	
 					AddObjModel(blockModelInfo,
 						meshInfo[idWall].vertices, meshInfo[idWall].indices,
 						meshInfo[idCeil].vertices, meshInfo[idCeil].indices,
@@ -166,16 +199,13 @@ void MapChunk::generateBufferMap()
 				}
 				else if (id.type == TileGeometryType::NewBox2)
 				{
+					BlockModelInfo blockModelInfo{};
 					blockModelInfo.modelPath = "data/tiles/test/333.obj";
 					blockModelInfo.color = id.color;
 					blockModelInfo.center = center;
 					blockModelInfo.size = { 1.0f, heightBlock, 1.0f };
 					blockModelInfo.rotate = glm::vec3(0.0f);
 					blockModelInfo.rotate.y = glm::radians(45.0f);
-					for (size_t i = 0; i < 6; i++)
-					{
-						blockModelInfo.enablePlane[i] = enablePlane[i];
-					}
 
 					AddObjModel(blockModelInfo, 
 						meshInfo[idWall].vertices, meshInfo[idWall].indices,

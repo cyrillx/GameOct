@@ -68,13 +68,45 @@ void ProcessModelData(const ObjModelData& model_data, const BlockModelInfo& mode
 
 		if (name == "bottom")
 		{
+			if (!modelInfo.enablePlane[5]) continue;
+
 			vertices = &verticesCeil;
 			indices = &indicesCeil;
 		}
 		else if (name == "top")
 		{
+			if (!modelInfo.enablePlane[4]) continue;
+
 			vertices = &verticesFloor;
 			indices = &indicesFloor;
+		}
+		else if (name == "left")
+		{
+			if (!modelInfo.enablePlane[3]) continue;
+
+			vertices = &verticesWall;
+			indices = &indicesWall;
+		}
+		else if (name == "right")
+		{
+			if (!modelInfo.enablePlane[1]) continue;
+
+			vertices = &verticesWall;
+			indices = &indicesWall;
+		}
+		else if (name == "forward")
+		{
+			if (!modelInfo.enablePlane[0]) continue;
+
+			vertices = &verticesWall;
+			indices = &indicesWall;
+		}
+		else if (name == "back")
+		{
+			if (!modelInfo.enablePlane[2]) continue;
+
+			vertices = &verticesWall;
+			indices = &indicesWall;
 		}
 		else
 		{
@@ -95,7 +127,8 @@ void ProcessModelData(const ObjModelData& model_data, const BlockModelInfo& mode
 			// Инвертируем порядок, чтобы изменить winding (CW <-> CCW)
 			// Было: idx0, idx1, idx2
 			// Стало: idx0, idx2, idx1
-			const std::array<tinyobj::index_t, 3> reversed_indices = { idx0, idx2, idx1 };
+			//const std::array<tinyobj::index_t, 3> reversed_indices = { idx0, idx2, idx1 };
+			const std::array<tinyobj::index_t, 3> reversed_indices = { idx0, idx1, idx2 };
 
 			for (const auto& idx : reversed_indices)
 			{

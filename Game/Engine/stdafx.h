@@ -36,6 +36,7 @@
 #include <string>
 #include <string_view>
 #include <span>
+#include <set>
 #include <array>
 #include <stack>
 #include <vector>

@@ -124,6 +124,9 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TileMap.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="BlockInfo.md" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

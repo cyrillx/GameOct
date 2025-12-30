@@ -68,5 +68,11 @@
     <Filter Include="World">
       <UniqueIdentifier>{a9d25f16-fcde-4ef3-ae22-0d09ee17e87b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="_DOC">
+      <UniqueIdentifier>{59dac45f-00fb-48c6-8781-6501fd5a4420}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BlockInfo.md" />
   </ItemGroup>
 </Project>

@@ -98,7 +98,10 @@
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Map.cpp" />
-    <ClCompile Include="MapGenGeom.cpp" />
+    <ClCompile Include="MapGenGeom.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="MapLoadObjTile.cpp" />
     <ClCompile Include="RenderPass2.cpp" />
     <ClCompile Include="RenderPassFinal.cpp" />
@@ -115,16 +118,11 @@
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="GameWorldData.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="MapLoadObjTile.h" />
     <ClInclude Include="RenderPass2.h" />
     <ClInclude Include="RenderPassFinal.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TileMap.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\bin\data\shaders3\compositeFrag.shader" />
-    <None Include="..\..\bin\data\shaders3\compositeVert.shader" />
-    <None Include="..\..\bin\data\shaders3\mainFrag.shader" />
-    <None Include="..\..\bin\data\shaders3\mainVert.shader" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

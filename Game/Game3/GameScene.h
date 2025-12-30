@@ -5,8 +5,6 @@
 #include "RenderPass2.h"
 #include "RenderPassFinal.h"
 
-
-
 class GameScene final
 {
 public:

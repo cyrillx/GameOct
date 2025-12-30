@@ -1,11 +1,9 @@
 ﻿#include "stdafx.h"
 #include "Map.h"
 #include "TileMap.h"
+#include "MapLoadObjTile.h"
 #define MAPCHUNKSIZE 30
 size_t tempMap[MAPCHUNKSIZE][MAPCHUNKSIZE][MAPCHUNKSIZE] = { 0 };
-//=============================================================================
-size_t addMeshInfo(std::vector<MeshInfo>& meshInfo, Texture2D texId);
-void AddObjModel(const std::string& model_path, const glm::vec3& center, float width, float height, float depth, const glm::vec3& color, std::vector<MeshVertex>& verticesWall, std::vector<unsigned int>& indicesWall, std::vector<MeshVertex>& verticesCeil, std::vector<unsigned int>& indicesCeil, std::vector<MeshVertex>& verticesFloor, std::vector<unsigned int>& indicesFloor, bool enablePlane[6]);
 //=============================================================================
 void AddBox(
 	const glm::vec3& center, float width, float height, float depth, const glm::vec3& color, std::vector<MeshVertex>& verticesWall, std::vector<unsigned int>& indicesWall, std::vector<MeshVertex>& verticesCeil, std::vector<unsigned int>& indicesCeil, std::vector<MeshVertex>& verticesFloor, std::vector<unsigned int>& indicesFloor,
@@ -14,6 +12,28 @@ void AddBox(
 void AddDiagonalBox(
 	const glm::vec3& center, float width, float height, float depth, const glm::vec3& color, std::vector<MeshVertex>& verticesWall, std::vector<unsigned int>& indicesWall, std::vector<MeshVertex>& verticesCeil, std::vector<unsigned int>& indicesCeil, std::vector<MeshVertex>& verticesFloor, std::vector<unsigned int>& indicesFloor,
 	bool enablePlane[6]);
+//=============================================================================
+size_t addMeshInfo(std::vector<MeshInfo>& meshInfo, Texture2D texId)
+{
+	for (size_t i = 0; i < meshInfo.size(); i++)
+	{
+		if (meshInfo[i].material->diffuseTextures[0] == texId)
+		{
+			return i;
+		}
+	}
+
+	MeshInfo nmi{};
+	nmi.material = Material();
+	nmi.material->diffuseTextures.push_back(texId);
+	meshInfo.push_back(nmi);
+	return meshInfo.size() - 1;
+}
+//=============================================================================
+void optimizeMesh(std::vector<MeshVertex>& vertices, std::vector<uint32_t>& indices)
+{
+	// TODO:
+}
 //=============================================================================
 bool MapChunk::Init()
 {
@@ -81,6 +101,8 @@ void MapChunk::Close()
 void MapChunk::generateBufferMap()
 {
 	std::vector<MeshInfo> meshInfo;
+	BlockModelInfo blockModelInfo{};
+
 
 	const float mapOffset = MAPCHUNKSIZE / 2;
 	for (size_t iy = 0; iy < MAPCHUNKSIZE; iy++)
@@ -110,41 +132,68 @@ void MapChunk::generateBufferMap()
 
 				if (id.type == TileGeometryType::FullBox)
 				{
-					/*AddBox(center, 1.0f, heightBlock, 1.0f, id.color,
-						meshInfo[idWall].vertices, meshInfo[idWall].indices,
-						meshInfo[idCeil].vertices, meshInfo[idCeil].indices,
-						meshInfo[idFloor].vertices, meshInfo[idFloor].indices,
-						enablePlane);*/
+					blockModelInfo.modelPath = "data/tiles/test/123.obj";
+					blockModelInfo.color = id.color;
+					blockModelInfo.center = center;
+					blockModelInfo.size = { 1.0f, heightBlock, 1.0f };
+					blockModelInfo.rotate = glm::vec3(0.0f);
+					for (size_t i = 0; i < 6; i++)
+					{
+						blockModelInfo.enablePlane[i] = enablePlane[i];
+					}
 
-					AddObjModel("data/tiles/test/123.obj",
-						center, 1.0f, heightBlock, 1.0f, id.color,
+					AddObjModel(blockModelInfo,
 						meshInfo[idWall].vertices, meshInfo[idWall].indices,
 						meshInfo[idCeil].vertices, meshInfo[idCeil].indices,
-						meshInfo[idFloor].vertices, meshInfo[idFloor].indices,
-						enablePlane);
+						meshInfo[idFloor].vertices, meshInfo[idFloor].indices);
 				}
 				else if (id.type == TileGeometryType::NewBox)
 				{
-					AddObjModel("data/tiles/test/222.obj",
-						center, 1.0f, heightBlock, 1.0f, id.color,
+					blockModelInfo.modelPath = "data/tiles/test/222.obj";
+					blockModelInfo.color = id.color;
+					blockModelInfo.center = center;
+					blockModelInfo.size = { 1.0f, heightBlock, 1.0f };
+					blockModelInfo.rotate = glm::vec3(0.0f);
+					for (size_t i = 0; i < 6; i++)
+					{
+						blockModelInfo.enablePlane[i] = enablePlane[i];
+					}
+
+					AddObjModel(blockModelInfo,
 						meshInfo[idWall].vertices, meshInfo[idWall].indices,
 						meshInfo[idCeil].vertices, meshInfo[idCeil].indices,
-						meshInfo[idFloor].vertices, meshInfo[idFloor].indices,
-						enablePlane);
+						meshInfo[idFloor].vertices, meshInfo[idFloor].indices);
 				}
 				else if (id.type == TileGeometryType::NewBox2)
 				{
-					AddObjModel("data/tiles/test/333.obj",
-						center, 1.0f, heightBlock, 1.0f, id.color,
+					blockModelInfo.modelPath = "data/tiles/test/333.obj";
+					blockModelInfo.color = id.color;
+					blockModelInfo.center = center;
+					blockModelInfo.size = { 1.0f, heightBlock, 1.0f };
+					blockModelInfo.rotate = glm::vec3(0.0f);
+					blockModelInfo.rotate.y = glm::radians(45.0f);
+					for (size_t i = 0; i < 6; i++)
+					{
+						blockModelInfo.enablePlane[i] = enablePlane[i];
+					}
+
+					AddObjModel(blockModelInfo, 
 						meshInfo[idWall].vertices, meshInfo[idWall].indices,
 						meshInfo[idCeil].vertices, meshInfo[idCeil].indices,
-						meshInfo[idFloor].vertices, meshInfo[idFloor].indices,
-						enablePlane);
+						meshInfo[idFloor].vertices, meshInfo[idFloor].indices);
 				}
-
 			}
 		}
 	}
+
+	for (size_t i = 0; i < meshInfo.size(); i++)
+	{
+		optimizeMesh(meshInfo[i].vertices, meshInfo[i].indices);
+
+		m_vertCount += meshInfo[i].vertices.size();
+		m_indexCount += meshInfo[i].indices.size();
+	}
+
 	m_model.model.Create(meshInfo);
 }
 //=============================================================================

@@ -51,6 +51,9 @@
     <ClInclude Include="TileMap.h">
       <Filter>World</Filter>
     </ClInclude>
+    <ClInclude Include="MapLoadObjTile.h">
+      <Filter>World</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="RenderPass">
@@ -65,19 +68,5 @@
     <Filter Include="World">
       <UniqueIdentifier>{a9d25f16-fcde-4ef3-ae22-0d09ee17e87b}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\bin\data\shaders3\mainFrag.shader">
-      <Filter>_shader</Filter>
-    </None>
-    <None Include="..\..\bin\data\shaders3\mainVert.shader">
-      <Filter>_shader</Filter>
-    </None>
-    <None Include="..\..\bin\data\shaders3\compositeFrag.shader">
-      <Filter>_shader</Filter>
-    </None>
-    <None Include="..\..\bin\data\shaders3\compositeVert.shader">
-      <Filter>_shader</Filter>
-    </None>
   </ItemGroup>
 </Project>

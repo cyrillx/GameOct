@@ -1,4 +1,5 @@
 ﻿#include "stdafx.h"
+#include "MapLoadObjTile.h"
 //=============================================================================
 // Структура для хранения данных модели
 struct ObjModelData
@@ -21,12 +22,40 @@ struct IndexLess
 	}
 };
 //=============================================================================
-void ProcessModelData(const ObjModelData& model_data, 
-	const glm::vec3& center, float width, float height, float depth,
+void ProcessModelData(const ObjModelData& model_data, const BlockModelInfo& modelInfo,
 	std::vector<MeshVertex>& verticesWall, std::vector<unsigned int>& indicesWall,
 	std::vector<MeshVertex>& verticesCeil, std::vector<unsigned int>& indicesCeil,
 	std::vector<MeshVertex>& verticesFloor, std::vector<unsigned int>& indicesFloor)
 {
+	glm::mat4 rotation_matrix(1.0f);
+
+	glm::mat4 rot_x(1.0f);
+	if (modelInfo.rotate.x != 0.0f)
+	{
+		rot_x[1][1] = cosf(modelInfo.rotate.x);
+		rot_x[1][2] = -sinf(modelInfo.rotate.x);
+		rot_x[2][1] = sinf(modelInfo.rotate.x);
+		rot_x[2][2] = cosf(modelInfo.rotate.x);
+	}
+
+	glm::mat4 rot_y(1.0f);
+	if (modelInfo.rotate.y != 0.0f)
+	{
+		rot_y[0][0] = cosf(modelInfo.rotate.y);
+		rot_y[0][2] = sinf(modelInfo.rotate.y);
+		rot_y[2][0] = -sinf(modelInfo.rotate.y);
+		rot_y[2][2] = cosf(modelInfo.rotate.y);
+	}
+
+	glm::mat4 rot_z(1.0f);
+	if (modelInfo.rotate.z != 0.0f)
+	{
+		rot_z[0][0] = cosf(modelInfo.rotate.z);
+		rot_z[0][1] = -sinf(modelInfo.rotate.z);
+		rot_z[1][0] = sinf(modelInfo.rotate.z);
+		rot_z[1][1] = cosf(modelInfo.rotate.z);
+	}
+
 	const auto& attrib = model_data.attrib;
 	const auto& shapes = model_data.shapes;
 
@@ -80,21 +109,48 @@ void ProcessModelData(const ObjModelData& model_data,
 					// Позиция
 					if (idx.vertex_index >= 0 && static_cast<size_t>(idx.vertex_index) * 3 + 2 < attrib.vertices.size())
 					{
-						vertex.position.x = attrib.vertices[3 * idx.vertex_index + 0] * width + center.x;
-						vertex.position.y = attrib.vertices[3 * idx.vertex_index + 1] * height + center.y;
-						vertex.position.z = attrib.vertices[3 * idx.vertex_index + 2] * depth + center.z;
+						// Исходная позиция
+						glm::vec3 pos = glm::vec3(
+							attrib.vertices[3 * idx.vertex_index + 0],
+							attrib.vertices[3 * idx.vertex_index + 1],
+							attrib.vertices[3 * idx.vertex_index + 2]
+						);
+						// скалирование
+						pos *= modelInfo.size;
+
+						rotation_matrix = glm::mat4(1.0f);
+						if (modelInfo.rotate.x != 0.0f) // Вращение вокруг X (pitch)
+							rotation_matrix = rot_x * rotation_matrix;
+						if (modelInfo.rotate.y != 0.0f) // Вращение вокруг Y (yaw)
+							rotation_matrix = rot_y * rotation_matrix;
+						if (modelInfo.rotate.z != 0.0f) // Вращение вокруг Z (roll)
+							rotation_matrix = rot_z * rotation_matrix;
+
+						// Применяем вращение к позиции
+						glm::vec4 rotated_pos = rotation_matrix * glm::vec4(pos, 1.0f);
+
+						// Сдвигаем в позицию center
+						vertex.position = glm::vec3(rotated_pos) + modelInfo.center;
 					}
 					else
 					{
-						vertex.position = center; // Если индекс неверный, используем центр
+						vertex.position = modelInfo.center; // Если индекс неверный, используем центр
 					}
 
 					// Нормаль
 					if (idx.normal_index >= 0 && static_cast<size_t>(idx.normal_index) * 3 + 2 < attrib.normals.size())
 					{
-						vertex.normal.x = attrib.normals[3 * idx.normal_index + 0];
-						vertex.normal.y = attrib.normals[3 * idx.normal_index + 1];
-						vertex.normal.z = attrib.normals[3 * idx.normal_index + 2];
+						glm::vec3 normal = glm::vec3(
+							attrib.normals[3 * idx.normal_index + 0],
+							attrib.normals[3 * idx.normal_index + 1],
+							attrib.normals[3 * idx.normal_index + 2]
+						);
+						// Применяем ту же матрицу вращения к нормали
+						glm::vec4 rotated_normal = rotation_matrix * glm::vec4(normal, 0.0f);
+						vertex.normal = glm::vec3(rotated_normal);
+
+						// Нормализуем, если нужно
+						vertex.normal = glm::normalize(vertex.normal);
 					}
 
 					// UV-координаты
@@ -131,15 +187,18 @@ void ProcessModelData(const ObjModelData& model_data,
 	}
 }
 //=============================================================================
-void AddObjModel(const std::string& model_path, const glm::vec3& center, float width, float height, float depth, const glm::vec3& color, std::vector<MeshVertex>& verticesWall, std::vector<unsigned int>& indicesWall, std::vector<MeshVertex>& verticesCeil, std::vector<unsigned int>& indicesCeil, std::vector<MeshVertex>& verticesFloor, std::vector<unsigned int>& indicesFloor, bool enablePlane[6])
+void AddObjModel(const BlockModelInfo& modelInfo, 
+	std::vector<MeshVertex>& verticesWall, std::vector<unsigned int>& indicesWall,
+	std::vector<MeshVertex>& verticesCeil, std::vector<unsigned int>& indicesCeil,
+	std::vector<MeshVertex>& verticesFloor, std::vector<unsigned int>& indicesFloor)
 {
 	// Проверяем, есть ли модель в кэше
-	auto it = model_cache.find(model_path);
+	auto it = model_cache.find(modelInfo.modelPath);
 	if (it != model_cache.end())
 	{
 		// Используем кэшированные данные
 		const auto& cached_data = it->second;
-		ProcessModelData(cached_data, center, width, height, depth, verticesWall, indicesWall, verticesCeil, indicesCeil, verticesFloor, indicesFloor);
+		ProcessModelData(cached_data, modelInfo, verticesWall, indicesWall, verticesCeil, indicesCeil, verticesFloor, indicesFloor);
 	}
 	else
 	{
@@ -148,7 +207,7 @@ void AddObjModel(const std::string& model_path, const glm::vec3& center, float w
 		std::vector<tinyobj::shape_t> shapes;
 		std::vector<tinyobj::material_t> materials;
 		std::string warn, err;
-		bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, model_path.c_str());
+		bool ret = tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, modelInfo.modelPath.c_str());
 		if (!ret)
 		{
 			Fatal("Error loading OBJ file: " + err);
@@ -164,9 +223,9 @@ void AddObjModel(const std::string& model_path, const glm::vec3& center, float w
 		model_data.attrib = attrib;
 		model_data.shapes = shapes;
 		model_data.materials = materials;
-		model_cache[model_path] = model_data;
+		model_cache[modelInfo.modelPath] = model_data;
 
-		ProcessModelData(model_data, center, width, height, depth, verticesWall, indicesWall, verticesCeil, indicesCeil, verticesFloor, indicesFloor);
+		ProcessModelData(model_data, modelInfo, verticesWall, indicesWall, verticesCeil, indicesCeil, verticesFloor, indicesFloor);
 	}
 }
 //=============================================================================

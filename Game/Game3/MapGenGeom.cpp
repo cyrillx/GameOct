@@ -1,23 +1,6 @@
 ﻿#include "stdafx.h"
 #include "Map.h"
 //=============================================================================
-size_t addMeshInfo(std::vector<MeshInfo>& meshInfo, Texture2D texId)
-{
-	for (size_t i = 0; i < meshInfo.size(); i++)
-	{
-		if (meshInfo[i].material->diffuseTextures[0] == texId)
-		{
-			return i;
-		}
-	}
-
-	MeshInfo nmi{};
-	nmi.material = Material();
-	nmi.material->diffuseTextures.push_back(texId);
-	meshInfo.push_back(nmi);
-	return meshInfo.size() - 1;
-}
-//=============================================================================
 auto getCorner(const glm::vec3& center, float width, float height, float depth)
 {
 	float halfWidth = width / 2.0f;

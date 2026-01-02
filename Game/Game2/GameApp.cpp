@@ -56,8 +56,10 @@ void GameApp()
 		cameraGame.SetFar(150);
 		cameraGame.SetPosition(glm::vec3(0.0f, 0.5f, 4.5f));
 
-		modelLevel.LoadModel("data/models/ForgottenPlains/Forgotten_Plains_Demo.obj");
-		modelLevel.SetPosition(glm::vec3(-30.0f, 0.0f, 15.0f));
+		//modelLevel.LoadModel("data/models/ForgottenPlains/Forgotten_Plains_Demo.obj");
+		modelLevel.LoadModel("data/models/1/2222.gltf");
+
+		//modelLevel.SetPosition(glm::vec3(-30.0f, 0.0f, 15.0f));
 
 		directionalLight = new GameDirectionalLight(glm::vec3(-5.0f, -5.0f, 5.0f), glm::vec3(1.0f, 0.8f, 0.8f), 2.0f);
 		directionalLight->SetPosition(glm::vec3(-5.0f, -5.0f, 5.0f));

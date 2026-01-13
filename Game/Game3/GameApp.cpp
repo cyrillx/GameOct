@@ -25,7 +25,9 @@ void GameApp()
 		if (!maps.Init())
 			return;
 
+		camera.MovementSpeed = 10.0f;
 		camera.SetPosition(glm::vec3(0.0f, 2.5f, -1.0f));
+
 		modelLevel.model.Load("data/models/ForgottenPlains/Forgotten_Plains_Demo.obj", ModelMaterialType::BlinnPhong);
 		modelLevel.modelMat = glm::translate(glm::mat4(1.0f), glm::vec3(-30.0f, -10.0f, 15.0f));
 
@@ -68,14 +70,14 @@ void GameApp()
 					ImGui::SetNextWindowPos({ v->WorkPos.x + 15.0f, v->WorkPos.y + 15.0f }, ImGuiCond_Always, { 0.0f, 0.0f });
 				}
 				ImGui::SetNextWindowBgAlpha(0.30f);
-				ImGui::SetNextWindowSize(ImVec2(ImGui::CalcTextSize("VertexCount : ________").x, 0));
+				ImGui::SetNextWindowSize(ImVec2(ImGui::CalcTextSize("VertexCount : __________").x, 0));
 				if (ImGui::Begin("##Map", nullptr,
 					ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings |
 					ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoMove))
 				{
 					ImGui::Text("Map Info :");
 					ImGui::Text("VertexCount : %i", (int)maps.GetVertexCount());
-					ImGui::Text("IndexCount : %i", (int)maps.GetIndexCount());
+					ImGui::Text("IndexCount  : %i", (int)maps.GetIndexCount());
 				}
 				ImGui::End();
 			}

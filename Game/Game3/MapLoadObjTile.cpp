@@ -68,42 +68,42 @@ void ProcessModelData(const ObjModelData& model_data, const BlockModelInfo& mode
 
 		if (name == "bottom")
 		{
-			if (!modelInfo.enablePlane[5]) continue;
+			if (!modelInfo.bottomVisible) continue;
 
 			vertices = &verticesCeil;
 			indices = &indicesCeil;
 		}
 		else if (name == "top")
 		{
-			if (!modelInfo.enablePlane[4]) continue;
+			if (!modelInfo.topVisible) continue;
 
 			vertices = &verticesFloor;
 			indices = &indicesFloor;
 		}
 		else if (name == "left")
 		{
-			if (!modelInfo.enablePlane[3]) continue;
+			if (!modelInfo.leftVisible) continue;
 
 			vertices = &verticesWall;
 			indices = &indicesWall;
 		}
 		else if (name == "right")
 		{
-			if (!modelInfo.enablePlane[1]) continue;
+			if (!modelInfo.rightVisible) continue;
 
 			vertices = &verticesWall;
 			indices = &indicesWall;
 		}
 		else if (name == "forward")
 		{
-			if (!modelInfo.enablePlane[0]) continue;
+			if (!modelInfo.forwardVisible) continue;
 
 			vertices = &verticesWall;
 			indices = &indicesWall;
 		}
 		else if (name == "back")
 		{
-			if (!modelInfo.enablePlane[2]) continue;
+			if (!modelInfo.backVisible) continue;
 
 			vertices = &verticesWall;
 			indices = &indicesWall;

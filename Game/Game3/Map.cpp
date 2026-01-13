@@ -70,6 +70,11 @@ void optimizeMesh(std::vector<MeshVertex>& vertices, std::vector<uint32_t>& indi
 bool MapChunk::Init()
 {
 	TileInfo tempTile;
+	tempTile.type = TileGeometryType::FullBox;
+	tempTile.textureWall = textures::LoadTexture2D("data/tiles/grass01_wall.png", ColorSpace::Linear, true);
+	tempTile.textureCeil = textures::LoadTexture2D("data/tiles/grass01_ceil.png");
+	tempTile.textureFloor = textures::LoadTexture2D("data/tiles/grass01.png");
+
 	for (size_t y = 0; y < MAPCHUNKSIZE; y++)
 	{
 		for (size_t x = 0; x < MAPCHUNKSIZE; x++)
@@ -77,11 +82,8 @@ bool MapChunk::Init()
 			for (size_t z = 0; z < MAPCHUNKSIZE; z++)
 			{
 				tempMap[x][y][z] = NoTile;
+				
 			}
-			tempTile.type = TileGeometryType::FullBox;
-			tempTile.textureWall = textures::LoadTexture2D("data/tiles/grass01_wall.png", ColorSpace::Linear, true);
-			tempTile.textureCeil = textures::LoadTexture2D("data/tiles/grass01_ceil.png");
-			tempTile.textureFloor = textures::LoadTexture2D("data/tiles/grass01.png");
 
 			tempMap[x][y][0] = TileBank::AddTileInfo(tempTile);
 		}
@@ -91,34 +93,31 @@ bool MapChunk::Init()
 	tempMap[14][14][0] = NoTile;
 	tempMap[14][15][0] = NoTile;
 	tempMap[14][16][0] = NoTile;
-
 	tempMap[15][14][0] = NoTile;
 	tempMap[15][16][0] = NoTile;
-
 	tempMap[16][14][0] = NoTile;
 	tempMap[16][15][0] = NoTile;
 
+	//tempTile.type = TileGeometryType::NewBox;
+	//tempTile.textureWall = textures::LoadTexture2D("data/tiles/grass01_wall.png", ColorSpace::Linear, true);
+	//tempTile.textureCeil = textures::LoadTexture2D("data/tiles/grass01_ceil.png");
+	//tempTile.textureFloor = textures::LoadTexture2D("data/tiles/grass01.png");
+	////tempTile.height = 1.5f;
+	//tempMap[15][15][0] = TileBank::AddTileInfo(tempTile);
 
-	tempTile.type = TileGeometryType::NewBox;
-	tempTile.textureWall = textures::LoadTexture2D("data/tiles/grass01_wall.png", ColorSpace::Linear, true);
-	tempTile.textureCeil = textures::LoadTexture2D("data/tiles/grass01_ceil.png");
-	tempTile.textureFloor = textures::LoadTexture2D("data/tiles/grass01.png");
-	//tempTile.height = 1.5f;
-	tempMap[15][15][0] = TileBank::AddTileInfo(tempTile);
+	//tempTile.type = TileGeometryType::NewBox2;
+	//tempTile.textureWall = textures::LoadTexture2D("data/tiles/grass01_wall.png", ColorSpace::Linear, true);
+	//tempTile.textureCeil = textures::LoadTexture2D("data/tiles/grass01_ceil.png");
+	//tempTile.textureFloor = textures::LoadTexture2D("data/tiles/grass01.png");
+	////tempTile.height = 1.5f;
+	//tempMap[16][17][1] = TileBank::AddTileInfo(tempTile);
 
-	tempTile.type = TileGeometryType::NewBox2;
-	tempTile.textureWall = textures::LoadTexture2D("data/tiles/grass01_wall.png", ColorSpace::Linear, true);
-	tempTile.textureCeil = textures::LoadTexture2D("data/tiles/grass01_ceil.png");
-	tempTile.textureFloor = textures::LoadTexture2D("data/tiles/grass01.png");
-	//tempTile.height = 1.5f;
-	tempMap[16][17][1] = TileBank::AddTileInfo(tempTile);
-
-	tempTile.type = TileGeometryType::NewBox;
-	tempTile.textureWall = textures::LoadTexture2D("data/tiles/grass01_wall.png", ColorSpace::Linear, true);
-	tempTile.textureCeil = textures::LoadTexture2D("data/tiles/grass01_ceil.png");
-	tempTile.textureFloor = textures::LoadTexture2D("data/tiles/grass01.png");
-	//tempTile.height = 1.5f;
-	tempMap[18][17][1] = TileBank::AddTileInfo(tempTile);
+	//tempTile.type = TileGeometryType::NewBox;
+	//tempTile.textureWall = textures::LoadTexture2D("data/tiles/grass01_wall.png", ColorSpace::Linear, true);
+	//tempTile.textureCeil = textures::LoadTexture2D("data/tiles/grass01_ceil.png");
+	//tempTile.textureFloor = textures::LoadTexture2D("data/tiles/grass01.png");
+	////tempTile.height = 1.5f;
+	//tempMap[18][17][1] = TileBank::AddTileInfo(tempTile);
 
 
 	generateBufferMap();
@@ -158,60 +157,28 @@ void MapChunk::generateBufferMap()
 
 				glm::vec3 center = glm::vec3(x, z + heightBlock / 2.0f, y);
 
+				BlockModelInfo blockModelInfo{};
+				blockModelInfo.color = id.color;
+				blockModelInfo.center = center;
+				blockModelInfo.size = { 1.0f, heightBlock, 1.0f };
+				blockModelInfo.rotate = glm::vec3(0.0f);
+				setVisibleBlock(id, blockModelInfo, ix, iy, iz);
 				if (id.type == TileGeometryType::FullBox)
 				{
-					BlockModelInfo blockModelInfo{};
 					blockModelInfo.modelPath = "data/tiles/Block00.obj";
-					blockModelInfo.color = id.color;
-					blockModelInfo.center = center;
-					blockModelInfo.size = { 1.0f, heightBlock, 1.0f };
-					blockModelInfo.rotate = glm::vec3(0.0f);
-
-					if (ix > 0 && tempMap[ix-1][iy][iz] != NoTile)
-						blockModelInfo.enablePlane[3] = false; // left
-					if (ix < MAPCHUNKSIZE-1 && tempMap[ix + 1][iy][iz] != NoTile)
-						blockModelInfo.enablePlane[1] = false; // right
-
-					if (iy > 0 && tempMap[ix][iy - 1][iz] != NoTile)
-						blockModelInfo.enablePlane[0] = false; // forward
-					if (iy < MAPCHUNKSIZE - 1 && tempMap[ix][iy + 1][iz] != NoTile)
-						blockModelInfo.enablePlane[2] = false; // back
-
-	
-					AddObjModel(blockModelInfo,
-						meshInfo[idWall].vertices, meshInfo[idWall].indices,
-						meshInfo[idCeil].vertices, meshInfo[idCeil].indices,
-						meshInfo[idFloor].vertices, meshInfo[idFloor].indices);
 				}
 				else if (id.type == TileGeometryType::NewBox)
 				{
-					BlockModelInfo blockModelInfo{};
 					blockModelInfo.modelPath = "data/tiles/test/222.obj";
-					blockModelInfo.color = id.color;
-					blockModelInfo.center = center;
-					blockModelInfo.size = { 1.0f, heightBlock, 1.0f };
-					blockModelInfo.rotate = glm::vec3(0.0f);
-	
-					AddObjModel(blockModelInfo,
-						meshInfo[idWall].vertices, meshInfo[idWall].indices,
-						meshInfo[idCeil].vertices, meshInfo[idCeil].indices,
-						meshInfo[idFloor].vertices, meshInfo[idFloor].indices);
 				}
 				else if (id.type == TileGeometryType::NewBox2)
 				{
-					BlockModelInfo blockModelInfo{};
 					blockModelInfo.modelPath = "data/tiles/test/333.obj";
-					blockModelInfo.color = id.color;
-					blockModelInfo.center = center;
-					blockModelInfo.size = { 1.0f, heightBlock, 1.0f };
-					blockModelInfo.rotate = glm::vec3(0.0f);
-					blockModelInfo.rotate.y = glm::radians(45.0f);
-
-					AddObjModel(blockModelInfo, 
-						meshInfo[idWall].vertices, meshInfo[idWall].indices,
-						meshInfo[idCeil].vertices, meshInfo[idCeil].indices,
-						meshInfo[idFloor].vertices, meshInfo[idFloor].indices);
 				}
+				AddObjModel(blockModelInfo,
+					meshInfo[idWall].vertices, meshInfo[idWall].indices,
+					meshInfo[idCeil].vertices, meshInfo[idCeil].indices,
+					meshInfo[idFloor].vertices, meshInfo[idFloor].indices);
 			}
 		}
 	}
@@ -225,5 +192,51 @@ void MapChunk::generateBufferMap()
 	}
 
 	m_model.model.Create(meshInfo);
+}
+//=============================================================================
+bool testVisBlock(size_t x, size_t y, size_t z)
+{
+	if ((x >= MAPCHUNKSIZE) || (y >= MAPCHUNKSIZE) || (z >= MAPCHUNKSIZE)) return false;
+	if (tempMap[x][y][z] == NoTile) return false;
+
+	const auto& b = *TileBank::GetTileInfo(tempMap[x][y][z]);
+	if (b.type == TileGeometryType::FullBox)
+	{
+		return true;
+	}
+	else
+	{
+		// TODO: другие варианты блоков
+	}
+	return false;
+}
+//=============================================================================
+void MapChunk::setVisibleBlock(const TileInfo& ti, BlockModelInfo& blockModelInfo, size_t x, size_t y, size_t z)
+{
+	if (ti.type == TileGeometryType::FullBox)
+	{
+		if (x > 0) blockModelInfo.rightVisible = !testVisBlock(x - 1, y, z);
+		if (x < MAPCHUNKSIZE - 1) blockModelInfo.leftVisible = !testVisBlock(x + 1, y, z);
+
+		if (y > 0) blockModelInfo.forwardVisible = !testVisBlock(x, y - 1, z);
+		if (y < MAPCHUNKSIZE - 1) blockModelInfo.backVisible = !testVisBlock(x, y + 1, z);
+
+		if (z > 0) blockModelInfo.bottomVisible = !testVisBlock(x, y, z - 1);
+		if (z < MAPCHUNKSIZE - 1) blockModelInfo.topVisible = !testVisBlock(x, y, z + 1);
+	}
+	else
+	{
+		// TODO: другие варианты блоков
+	}
+
+	//if (ix > 0 && tempMap[ix-1][iy][iz] != NoTile)
+	//	blockModelInfo.enablePlane[3] = false; // left
+	//if (ix < MAPCHUNKSIZE-1 && tempMap[ix + 1][iy][iz] != NoTile)
+	//	blockModelInfo.enablePlane[1] = false; // right
+
+	//if (iy > 0 && tempMap[ix][iy - 1][iz] != NoTile)
+	//	blockModelInfo.enablePlane[0] = false; // forward
+	//if (iy < MAPCHUNKSIZE - 1 && tempMap[ix][iy + 1][iz] != NoTile)
+	//	blockModelInfo.enablePlane[2] = false; // back
 }
 //=============================================================================

@@ -2,14 +2,6 @@
 
 struct BlockModelInfo final
 {
-	BlockModelInfo()
-	{
-		for (size_t i = 0; i < 6; i++)
-		{
-			enablePlane[i] = true;
-		}
-	}
-
 	std::string modelPath;
 	glm::vec3 color{ 1.0f };
 
@@ -17,8 +9,12 @@ struct BlockModelInfo final
 	glm::vec3 size{ 1.0f };
 	glm::vec3 rotate{ 0.0f }; // Порядок вращения: Z (roll), Y (yaw), X (pitch) в радианах
 
-	// forward, right, back, left, top, bottom
-	bool enablePlane[6];
+	bool forwardVisible{ true };
+	bool backVisible{ true };
+	bool rightVisible{ true };
+	bool leftVisible{ true };
+	bool topVisible{ true };
+	bool bottomVisible{ true };
 };
 
 void AddObjModel(const BlockModelInfo& modelInfo, 

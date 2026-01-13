@@ -52,7 +52,7 @@ BufferHandle CreateBuffer(BufferTarget target, BufferUsage usage, size_t size, c
 	BufferHandle buffer{};
 	glGenBuffers(1, &buffer.handle);
 	glBindBuffer(glTarget, buffer.handle);
-	glBufferData(glTarget, static_cast<GLsizeiptr>(size), data, glTarget);
+	glBufferData(glTarget, static_cast<GLsizeiptr>(size), data, EnumToValue(usage));
 	glBindBuffer(glTarget, currentBuffer);
 
 	return buffer;

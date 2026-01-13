@@ -109,21 +109,6 @@ bool MapChunk::Init()
 	tempTile.rotate = RotateAngleY::Rotate0;
 	tempMap[17][17][1] = TileBank::AddTileInfo(tempTile);
 
-	//tempTile.type = TileGeometryType::NewBox2;
-	//tempTile.textureWall = textures::LoadTexture2D("data/tiles/grass01_wall.png", ColorSpace::Linear, true);
-	//tempTile.textureCeil = textures::LoadTexture2D("data/tiles/grass01_ceil.png");
-	//tempTile.textureFloor = textures::LoadTexture2D("data/tiles/grass01.png");
-	////tempTile.height = 1.5f;
-	//tempMap[16][17][1] = TileBank::AddTileInfo(tempTile);
-
-	//tempTile.type = TileGeometryType::NewBox;
-	//tempTile.textureWall = textures::LoadTexture2D("data/tiles/grass01_wall.png", ColorSpace::Linear, true);
-	//tempTile.textureCeil = textures::LoadTexture2D("data/tiles/grass01_ceil.png");
-	//tempTile.textureFloor = textures::LoadTexture2D("data/tiles/grass01.png");
-	////tempTile.height = 1.5f;
-	//tempMap[18][17][1] = TileBank::AddTileInfo(tempTile);
-
-
 	generateBufferMap();
 
 	return true;
@@ -180,6 +165,10 @@ void MapChunk::generateBufferMap()
 				else if (id.type == TileGeometryType::Block01)
 				{
 					blockModelInfo.modelPath = "data/tiles/Block01.obj";
+				}
+else if (id.type == TileGeometryType::Block02)
+				{
+					blockModelInfo.modelPath = "data/tiles/Block02.obj";
 				}
 				AddObjModel(blockModelInfo,
 					meshInfo[idWall].vertices, meshInfo[idWall].indices,

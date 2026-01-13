@@ -14,6 +14,7 @@ enum class TileGeometryType
 
 	Block00,
 	Block01,
+	Block02,
 };
 
 struct TileInfo final
